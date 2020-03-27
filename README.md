@@ -3,7 +3,7 @@ Generic Game Chat Bot easy extendable.
 
 A Discord Bot that will listens on a channel and return chat/images according to selected game and command.
 
-##Example: ##
+## Example: ##
 - \g Zombicide
 
 will start new game Zombicide
@@ -15,12 +15,12 @@ draws an equipment Card from Zombicide and shows it in channel.
 run maven clean install to generate image lists
 enter you discord secret_token into application.yml or into environment Variable SECRET_TOKEN 
 
-##Extension ##
-####new Game####
+## Extension ##
+#### New Game ####
 - add Class extending Game interface
-####new Method####
+#### New Method ####
 - add Method with GameMethod annotation
-####new Images####
+#### New Images ####
 - add images under resources static/$gamename/$deckname
 - extend maven ant plugin to generate image lists on build.
 
