@@ -63,7 +63,7 @@ public class MyBotListener extends ListenerAdapter {
             return;
         }
         if (getAvailableMethodNames(game).contains(command)) {
-            callGameMethod(command, game, event);
+            callGameMethod(command, game, event, parts);
         } else {
             describeGameBot(game, event);
         }
@@ -92,11 +92,18 @@ public class MyBotListener extends ListenerAdapter {
         }
     }
 
-    private Object[] getParamters(Method method,MessageReceivedEvent event){
+    private Object[] getParamters(Method method,MessageReceivedEvent event, String[] parts){
         return Arrays.asList(method.getParameters()).stream().map(
                 parameter->{
                     if(parameter.getName().equals("userId")) {
                         return event.getAuthor().getId();
+                    }
+                    try {
+                        if (parameter.getName().equals("arg1")) {
+                            return parts[1];
+                        }
+                    }catch (Exception e){
+                        LOG.error("", e);
                     }
                     LOG.error("Declare "+parameter.getName()+" Parameter for GameMethod. " +
                                 "Do not use discord specific Objects Games are independent of discord");
@@ -105,24 +112,25 @@ public class MyBotListener extends ListenerAdapter {
         ).toArray();
     }
 
-    private void callGameMethod(String command, Game game, MessageReceivedEvent event) {
+    private void callGameMethod(String command, Game game, MessageReceivedEvent event,String[] parts) {
         try {
             Method method = getAvailableMethods(game).stream().filter(m -> m.getName().equals(command)).findFirst().get();
             GameMethodType type = method.getAnnotation(GameMethod.class).type();
-            Object[] parameters = getParamters(method,event);
+            boolean isPrivate = method.getAnnotation(GameMethod.class).isPrivate();
+            Object[] parameters = getParamters(method,event,parts);
             if (type.equals(GameMethodType.Image)) {
                 String imagePath = (String) method.invoke(game,parameters);
-                sendEmbeddedImageMessage(event, "@" + event.getAuthor().getName(), Arrays.asList(imagePath));
+                sendEmbeddedImageMessage(event, "@" + event.getAuthor().getName(), Arrays.asList(imagePath),isPrivate);
                 return;
             }
             if (type.equals(GameMethodType.Text)) {
                 String text = (String) method.invoke(game,parameters);
-                event.getChannel().sendMessage("@" + event.getAuthor().getName() + " " + text).queue();
+                sendTextMessage(event,"@" + event.getAuthor().getName() + " " + text,isPrivate);
                 return;
             }
             if (type.equals(GameMethodType.ImageList)) {
                 List<String> imagePaths = (List<String>) method.invoke(game,parameters);
-                sendEmbeddedImageMessage(event, "@" + event.getAuthor().getName(), imagePaths);
+                sendEmbeddedImageMessage(event, "@" + event.getAuthor().getName(), imagePaths,isPrivate);
                 return;
             }
         } catch (IllegalAccessException | InvocationTargetException e) {
@@ -170,12 +178,17 @@ public class MyBotListener extends ListenerAdapter {
         result.setFooter("type \\g new $gamename to start a new game");
     }
 
-    private void sendEmbeddedImageMessage(MessageReceivedEvent event, String message, List<String> imagePaths) {
+    private void sendTextMessage(MessageReceivedEvent event,String message,boolean isPrivate){
+        event.getChannel().sendMessage(message).queue();
+        chat.sendToChat(event.getChannel().getId(),message);
+    }
+
+    private void sendEmbeddedImageMessage(MessageReceivedEvent event, String message, List<String> imagePaths, boolean isPrivate) {
         if(imagePaths.size() == 1){
             message = message+ " "+imagePaths.get(0);
         }
         MessageAction messageAction = event.getChannel()
-                .sendMessage(message);
+                    .sendMessage(message);
         Map<String, InputStream> inputStreams = new HashMap();
 
         imagePaths.forEach(imagePath->{

@@ -16,9 +16,25 @@ public class Zombicide implements Game {
         spawn = Deck.getFor("zombicide", "spawn");
     }
 
-    @GameMethod(type=GameMethodType.ImageList)
+    @GameMethod(type=GameMethodType.ImageList,isPrivate=true)
     public List<String> hand(String userId){
         return getHand(userId);
+    }
+
+    @GameMethod(type=GameMethodType.Image)
+    public String add(String userId,String arg1) {
+        getHand(userId).add(arg1);
+        return arg1;
+    }
+
+    @GameMethod(type=GameMethodType.Text)
+    public String drop(String userId,String arg1) {
+        String message = "Card not in hand";
+        if(getHand(userId).contains(arg1)){
+            message = "Card dropped";
+            getHand(userId).remove(arg1);
+        }
+        return message;
     }
 
     @GameMethod
