@@ -190,10 +190,10 @@ public class MyBotListener extends ListenerAdapter {
         MessageAction messageAction = event.getChannel()
                     .sendMessage(message);
         Map<String, InputStream> inputStreams = new HashMap();
-
         imagePaths.forEach(imagePath->{
-            inputStreams.put(imagePath,getClass().getClassLoader().getResourceAsStream("static"+imagePath));
-            messageAction.addFile(inputStreams.get(imagePath), imagePath);
+            int counter = inputStreams.size();
+            inputStreams.put(counter+imagePath,getClass().getClassLoader().getResourceAsStream("static"+imagePath));
+            messageAction.addFile(inputStreams.get(counter+imagePath), counter+imagePath);
         });
         messageAction.queue(m ->
                         inputStreams.forEach(
