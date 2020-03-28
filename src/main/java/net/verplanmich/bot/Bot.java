@@ -51,13 +51,8 @@ public class Bot {
     }
 
     public void sendEmbeddedImageMessage(MessageReceivedEvent event, String message, List<String> imagePaths) {
-        EmbedBuilder result = new EmbedBuilder();
-        result.setTitle(message);
-        imagePaths.forEach(imagePath-> {
-                    result.setImage("attachment://" + imagePath);
-        });
         MessageAction messageAction = event.getChannel()
-                .sendMessage(result.build());
+                .sendMessage(message);
         Map<String, InputStream> inputStreams = new HashMap();
         imagePaths.forEach(imagePath->{
             inputStreams.put(imagePath,getClass().getClassLoader().getResourceAsStream(imagePath));
