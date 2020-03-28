@@ -20,7 +20,11 @@ public class Deck {
         try (
                 InputStream inputStream = Deck.class.getClassLoader().getResourceAsStream(gamename + "." + deckName + ".list");
                 Scanner sc = new Scanner(inputStream, StandardCharsets.UTF_8.name())) {
-            List cards = Arrays.asList(sc.nextLine().split(","));
+            List<String> cards = new ArrayList();
+            while(sc.hasNext()) {
+                List moreCards = Arrays.asList(sc.nextLine().split(","));
+                cards.addAll(moreCards);
+            }
             return new Deck(cards);
         }
     }

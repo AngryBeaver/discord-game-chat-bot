@@ -1,6 +1,7 @@
 package net.verplanmich.bot.games;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,16 +24,17 @@ public class Zombicide implements Game {
 
     @GameMethod(type=GameMethodType.Image)
     public String add(String userId,String arg1) {
-        getHand(userId).add(arg1);
-        return arg1;
+        String cardId = Paths.get(arg1).normalize().toString();
+        getHand(userId).add(cardId);
+        return cardId;
     }
 
     @GameMethod(type=GameMethodType.Text)
     public String drop(String userId,String arg1) {
         String message = "Card not in hand";
-        if(getHand(userId).contains(arg1)){
+        if(getHand(userId).contains(Paths.get(arg1).normalize().toString())){
             message = "Card dropped";
-            getHand(userId).remove(arg1);
+            getHand(userId).remove(Paths.get(arg1).normalize().toString());
         }
         return message;
     }
