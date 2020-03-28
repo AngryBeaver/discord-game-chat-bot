@@ -1,6 +1,7 @@
-package net.verplanmich.bot;
+package net.verplanmich.bot.website;
 
 
+import net.verplanmich.bot.Bot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,4 +15,5 @@ public class MyRestController {
 
         //bot.sendMessage(message.getGuild(), message.getChannel(), message.getMessage());
     }
+    
 }

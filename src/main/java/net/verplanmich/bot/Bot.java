@@ -50,32 +50,4 @@ public class Bot {
 
     }
 
-    public void sendEmbeddedImageMessage(MessageReceivedEvent event, String message, List<String> imagePaths) {
-        MessageAction messageAction = event.getChannel()
-                .sendMessage(message);
-        Map<String, InputStream> inputStreams = new HashMap();
-        imagePaths.forEach(imagePath->{
-            inputStreams.put(imagePath,getClass().getClassLoader().getResourceAsStream(imagePath));
-            messageAction.addFile(inputStreams.get(imagePath), imagePath);
-        });
-        messageAction.queue(m ->
-            inputStreams.forEach(
-                    (key,inputStream) -> {
-                        try {
-                            inputStream.close();
-                        } catch (Exception e) {
-                            LOG.error(key, e);
-                        }
-                    }
-            ), error -> inputStreams.forEach(
-                (key,inputStream) -> {
-                    try {
-                        inputStream.close();
-                    } catch (Exception e) {
-                        LOG.error(key, e);
-                    }
-                }
-            )
-        );
-    }
 }

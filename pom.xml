@@ -54,6 +54,37 @@
             <artifactId>JDA</artifactId>
             <version>4.1.1_101</version>
         </dependency>
+
+
+        <!-- WebSite -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>webjars-locator-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>sockjs-client</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>stomp-websocket</artifactId>
+            <version>2.3.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>3.3.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery</artifactId>
+            <version>3.1.1-1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -73,7 +104,7 @@
                             <target>
                                 <fileset id="my-fileset" dir="src/main/resources/static/zombicide/equipment"/>
                                 <pathconvert targetos="unix" pathsep="," property="my-file-list" refid="my-fileset">
-                                    <map from="${basedir}${file.separator}src${file.separator}main${file.separator}resources${file.separator}"
+                                    <map from="${basedir}${file.separator}src${file.separator}main${file.separator}resources${file.separator}static"
                                          to=""/>
                                 </pathconvert>
                                 <echo file="${basedir}${file.separator}target${file.separator}classes${file.separator}zombicide.equipment.list">
@@ -81,7 +112,7 @@
                                 </echo>
                                 <fileset id="my-fileset" dir="src/main/resources/static/zombicide/spawn"/>
                                 <pathconvert targetos="unix" pathsep="," property="my-file-list2" refid="my-fileset">
-                                    <map from="${basedir}${file.separator}src${file.separator}main${file.separator}resources${file.separator}"
+                                    <map from="${basedir}${file.separator}src${file.separator}main${file.separator}resources${file.separator}static"
                                          to=""/>
                                 </pathconvert>
                                 <echo file="${basedir}${file.separator}target${file.separator}classes${file.separator}zombicide.spawn.list">

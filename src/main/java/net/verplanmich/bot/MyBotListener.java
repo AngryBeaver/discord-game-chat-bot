@@ -4,14 +4,17 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.requests.restaction.MessageAction;
 import net.verplanmich.bot.games.Game;
 import net.verplanmich.bot.games.GameMethod;
 import net.verplanmich.bot.games.GameMethodType;
+import net.verplanmich.bot.website.Chat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -29,12 +32,14 @@ public class MyBotListener extends ListenerAdapter {
     private static Map<String, List<Method>> gameMethods = new HashMap();
 
     @Autowired
-    Bot bot;
-
+    Chat chat;
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        if (event.getAuthor().isBot()) return;
+        if (event.getAuthor().isBot() && !event.getAuthor().getName().equals("jabbawookie")){
+            chat.sendToChat(event.getChannel().getId(),event.getMessage().getContentDisplay());
+            return;
+        }
         Message message = event.getMessage();
         String content = message.getContentRaw();
         if (content.startsWith("\\g")) {
@@ -107,7 +112,7 @@ public class MyBotListener extends ListenerAdapter {
             Object[] parameters = getParamters(method,event);
             if (type.equals(GameMethodType.Image)) {
                 String imagePath = (String) method.invoke(game,parameters);
-                bot.sendEmbeddedImageMessage(event, "@" + event.getAuthor().getName(), Arrays.asList(imagePath));
+                sendEmbeddedImageMessage(event, "@" + event.getAuthor().getName(), Arrays.asList(imagePath));
                 return;
             }
             if (type.equals(GameMethodType.Text)) {
@@ -117,7 +122,7 @@ public class MyBotListener extends ListenerAdapter {
             }
             if (type.equals(GameMethodType.ImageList)) {
                 List<String> imagePaths = (List<String>) method.invoke(game,parameters);
-                bot.sendEmbeddedImageMessage(event, "@" + event.getAuthor().getName(), imagePaths);
+                sendEmbeddedImageMessage(event, "@" + event.getAuthor().getName(), imagePaths);
                 return;
             }
         } catch (IllegalAccessException | InvocationTargetException e) {
@@ -163,6 +168,40 @@ public class MyBotListener extends ListenerAdapter {
 
     private void setFooter(EmbedBuilder result) {
         result.setFooter("type \\g new $gamename to start a new game");
+    }
+
+    private void sendEmbeddedImageMessage(MessageReceivedEvent event, String message, List<String> imagePaths) {
+        if(imagePaths.size() == 1){
+            message = message+ " "+imagePaths.get(0);
+        }
+        MessageAction messageAction = event.getChannel()
+                .sendMessage(message);
+        Map<String, InputStream> inputStreams = new HashMap();
+
+        imagePaths.forEach(imagePath->{
+            inputStreams.put(imagePath,getClass().getClassLoader().getResourceAsStream("static"+imagePath));
+            messageAction.addFile(inputStreams.get(imagePath), imagePath);
+        });
+        messageAction.queue(m ->
+                        inputStreams.forEach(
+                                (key,inputStream) -> {
+                                    try {
+                                        inputStream.close();
+                                    } catch (Exception e) {
+                                        LOG.error(key, e);
+                                    }
+                                }
+                        ), error -> inputStreams.forEach(
+                (key,inputStream) -> {
+                    try {
+                        inputStream.close();
+                    } catch (Exception e) {
+                        LOG.error(key, e);
+                    }
+                }
+                )
+        );
+        chat.sendImagesToChat(event.getChannel().getId(),message,imagePaths);
     }
 
 }

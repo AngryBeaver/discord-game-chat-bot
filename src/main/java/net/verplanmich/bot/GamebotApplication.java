@@ -1,4 +1,4 @@
-package net.verplanmich;
+package net.verplanmich.bot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
