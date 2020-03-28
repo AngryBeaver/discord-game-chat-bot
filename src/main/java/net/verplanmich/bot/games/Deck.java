@@ -18,7 +18,7 @@ public class Deck {
 
     public static Deck getFor(String gamename, String deckName) throws IOException {
         try (
-                InputStream inputStream = Deck.class.getClassLoader().getResourceAsStream(gamename+"."+deckName+".list");
+                InputStream inputStream = Deck.class.getClassLoader().getResourceAsStream(gamename + "." + deckName + ".list");
                 Scanner sc = new Scanner(inputStream, StandardCharsets.UTF_8.name())) {
             List cards = Arrays.asList(sc.nextLine().split(","));
             return new Deck(cards);
@@ -31,17 +31,17 @@ public class Deck {
         Collections.shuffle(drawPile);
     }
 
-    public String showDrawCard(){
-        return drawPile.get(drawPile.size()-1);
+    public String showDrawCard() {
+        return drawPile.get(drawPile.size() - 1);
     }
 
-    public String showDiscardCard(){
-        return discardPile.get(discardPile.size()-1);
+    public String showDiscardCard() {
+        return discardPile.get(discardPile.size() - 1);
     }
 
     public String drawCard() {
         String cardId = showDrawCard();
-        drawPile.remove( drawPile.size() - 1 );
+        drawPile.remove(drawPile.size() - 1);
         return cardId;
     }
 

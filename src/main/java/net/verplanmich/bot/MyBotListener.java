@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.verplanmich.bot.games.Game;
 import net.verplanmich.bot.games.GameMethod;
+import net.verplanmich.bot.games.GameMethodType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,7 @@ import org.springframework.stereotype.Service;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -55,11 +53,11 @@ public class MyBotListener extends ListenerAdapter {
             newGame(parts[1], event);
             return;
         }
-        if (games.get(event.getChannel().getId()) == null){
+        if (games.get(event.getChannel().getId()) == null) {
             describeGameBot(event);
             return;
         }
-        if(getAvailableMethodNames(game).contains(command)) {
+        if (getAvailableMethodNames(game).contains(command)) {
             callGameMethod(command, game, event);
         } else {
             describeGameBot(game, event);
@@ -70,7 +68,7 @@ public class MyBotListener extends ListenerAdapter {
     private void newGame(String gameName, MessageReceivedEvent event) {
         try {
             gameName = gameName.substring(0, 1).toUpperCase() + gameName.substring(1);
-            Class gameClass = Class.forName("net.verplanmich.bot.games."+gameName);
+            Class gameClass = Class.forName("net.verplanmich.bot.games." + gameName);
             if (Game.class.isAssignableFrom(gameClass)) {
                 Game game = (Game) gameClass.newInstance();
                 games.put(event.getChannel().getId(), game);
@@ -89,16 +87,43 @@ public class MyBotListener extends ListenerAdapter {
         }
     }
 
+    private Object[] getParamters(Method method,MessageReceivedEvent event){
+        return Arrays.asList(method.getParameters()).stream().map(
+                parameter->{
+                    if(parameter.getName().equals("userId")) {
+                        return event.getAuthor().getId();
+                    }
+                    LOG.error("Declare "+parameter.getName()+" Parameter for GameMethod. " +
+                                "Do not use discord specific Objects Games are independent of discord");
+                    return Void.class;
+                }
+        ).toArray();
+    }
+
     private void callGameMethod(String command, Game game, MessageReceivedEvent event) {
         try {
             Method method = getAvailableMethods(game).stream().filter(m -> m.getName().equals(command)).findFirst().get();
-            method.getAnnotation(GameMethod.class);
-            String result = (String) method.invoke(game);
-            bot.sendEmbeddedImageMessage(event, "@ " + event.getAuthor().getName(), result);
+            GameMethodType type = method.getAnnotation(GameMethod.class).type();
+            Object[] parameters = getParamters(method,event);
+            if (type.equals(GameMethodType.Image)) {
+                String imagePath = (String) method.invoke(game,parameters);
+                bot.sendEmbeddedImageMessage(event, "@" + event.getAuthor().getName(), Arrays.asList(imagePath));
+                return;
+            }
+            if (type.equals(GameMethodType.Text)) {
+                String text = (String) method.invoke(game,parameters);
+                event.getChannel().sendMessage("@" + event.getAuthor().getName() + " " + text).queue();
+                return;
+            }
+            if (type.equals(GameMethodType.ImageList)) {
+                List<String> imagePaths = (List<String>) method.invoke(game,parameters);
+                bot.sendEmbeddedImageMessage(event, "@" + event.getAuthor().getName(), imagePaths);
+                return;
+            }
         } catch (IllegalAccessException | InvocationTargetException e) {
             LOG.error("", e);
-            event.getChannel().sendMessage(command + " seems broken plz contact developer").queue();
         }
+        event.getChannel().sendMessage(command + " seems broken plz contact developer").queue();
     }
 
     private List<String> getAvailableMethodNames(Game game) {
@@ -136,7 +161,7 @@ public class MyBotListener extends ListenerAdapter {
         event.getChannel().sendMessage(result.build()).queue();
     }
 
-    private void setFooter(EmbedBuilder result){
+    private void setFooter(EmbedBuilder result) {
         result.setFooter("type \\g new $gamename to start a new game");
     }
 
