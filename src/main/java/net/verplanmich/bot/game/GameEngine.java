@@ -16,18 +16,21 @@ import java.util.stream.Collectors;
 @Service
 public class GameEngine {
 
-    private static Map<String, Game> games = new HashMap();
+    private static Map<Integer, Game> games = new HashMap();
+    private static Integer gameId = 0;
     private static final Logger LOG = LoggerFactory.getLogger(GameEngine.class);
 
     private static Map<String, List<Method>> gameMethods = new HashMap();
 
-    public void newGame(String gameName,GameData gameData) throws Exception {
+    public int newGame(String gameName) throws Exception {
         try{
             gameName = gameName.substring(0, 1).toUpperCase() + gameName.substring(1);
-            Class gameClass = Class.forName("net.verplanmich.bot.game." + gameName);
+            Class gameClass = Class.forName("net.verplanmich.bot.game." +gameName.toLowerCase()+"."+gameName);
             if (Game.class.isAssignableFrom(gameClass)) {
                 Game game = (Game) gameClass.newInstance();
-                games.put(gameData.getGameId(), game);
+                Integer gameId = this.gameId++;
+                games.put(gameId, game);
+                return gameId;
             } else {
                 throw new Exception("smart you think you are? Outsmart me you will not!");
             }
@@ -83,9 +86,7 @@ public class GameEngine {
                         return gameData.getUserId();
                     }
                     try {
-                        if (parameter.getName().equals("cardId")) {
-                            return optionals[0];
-                        }
+                        return optionals[0];
                     }catch (Exception e){
                         LOG.error("", e);
                     }

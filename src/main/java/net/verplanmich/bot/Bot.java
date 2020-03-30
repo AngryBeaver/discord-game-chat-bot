@@ -3,6 +3,7 @@ package net.verplanmich.bot;
 import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.requests.restaction.MessageAction;
+import net.verplanmich.bot.game.GameData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,13 +42,5 @@ public class Bot {
         }
     }
 
-    public void sendMessage(String guild, String channel, String message) {
-        jda
-                .getGuildById(guild)
-                .getTextChannelById(channel)
-                .sendMessage(message)
-                .queue();
-
-    }
 
 }

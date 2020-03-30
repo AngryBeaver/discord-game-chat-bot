@@ -7,20 +7,13 @@ public class GameData {
 
     private String userId;
     private String userName;
-    private String gameId;
+    private Integer gameId;
 
-    public GameData(MessageReceivedEvent event){
-        this.userId = event.getAuthor().getId();
-        this.userName = event.getAuthor().getName();
-        this.gameId = event.getChannel().getId();
-    };
-
-
-    public String getGameId() {
+    public Integer getGameId() {
         return gameId;
     }
 
-    public void setGameId(String gameId) {
+    public void setGameId(Integer gameId) {
         this.gameId = gameId;
     }
 

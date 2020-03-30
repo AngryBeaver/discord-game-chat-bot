@@ -28,9 +28,11 @@ public class MyBotListener extends ListenerAdapter {
     @Autowired
     GameEngine gameEngine;
 
+    private static Map<String,Integer> gameIdMap = new HashMap();
+
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        GameData gameData = new GameData(event);
+        GameData gameData = gameDataFrom(event);
         if (event.getAuthor().isBot() && !gameData.getUserName().equals("jabbawookie")){
             GameResult gameResult = new GameResult();
             gameResult.setText(event.getMessage().getContentDisplay());
@@ -53,17 +55,18 @@ public class MyBotListener extends ListenerAdapter {
     }
 
     private void handleCommand(String command, MessageReceivedEvent event, String[] optionals) {
-        GameData gameData = new GameData(event);
-        Game game = gameEngine.getGame(gameData);
+        GameData gameData = gameDataFrom(event);
         if (command.equals("new") && optionals.length >= 1 && !optionals[0].trim().isEmpty()) {
             try {
-                gameEngine.newGame(optionals[0],gameData);
+                Integer gameId = gameEngine.newGame(optionals[0]);
+                gameIdMap.put(event.getChannel().getId(),gameId);
                 event.getChannel().sendMessage("new Game "+optionals[0] ).queue();
             }catch(Exception e){
                 event.getChannel().sendMessage(e.getMessage() ).queue();
             }
             return;
         }
+        Game game = gameEngine.getGame(gameData);
         if (game == null) {
             describeGameBot(event);
             return;
@@ -134,5 +137,14 @@ public class MyBotListener extends ListenerAdapter {
         );
         chat.sendToChat(gameData,gameResult);
     }
+
+    private GameData gameDataFrom(MessageReceivedEvent event){
+        GameData gameData = new GameData();
+        gameData.setGameId(gameIdMap.get(event.getChannel().getId()));
+        gameData.setUserId(event.getAuthor().getId());
+        gameData.setUserName(event.getAuthor().getName());
+
+        return gameData;
+    };
 
 }
