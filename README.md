@@ -1,23 +1,23 @@
 ## Description ##
 Generic Game Chat Bot easy extendable.
+Example Game Zombicide
 
 - A Discord Bot that will listens on a channel and return chat/images according to selected game and command.
 - A Website that will print bot chat of a channel to use as streaming overlay.
 
 
-
 ## Example: ##
-- \g Zombicide
+- \g 
+shows avaiable commands depending on selected game.
 
 will start new game Zombicide
-- \g drawEquipment Card
+- \g new zombicide
 
-draws an equipment Card from Zombicide and shows it in channel.
 
 ## Setup ##
-run maven clean install to generate image lists
-enter you discord secret_token into application.yml or into environment Variable SECRET_TOKEN
-StreamingOverlay: localhost:8090/?channelId=$yourchannelId 
+- run maven clean install to generate image lists
+- enter you discord secret_token into application.yml or into environment Variable SECRET_TOKEN
+- StreamingOverlay: localhost:8090/?channelId=$yourchannelId 
 
 ## Extension ##
 #### New Game ####
