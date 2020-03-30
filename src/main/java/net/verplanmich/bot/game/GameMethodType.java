@@ -1,4 +1,4 @@
-package net.verplanmich.bot.games;
+package net.verplanmich.bot.game;
 
 public enum GameMethodType {
     Image,

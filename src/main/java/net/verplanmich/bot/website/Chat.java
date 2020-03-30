@@ -2,6 +2,8 @@ package net.verplanmich.bot.website;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.verplanmich.bot.game.GameData;
+import net.verplanmich.bot.game.GameResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,18 +23,21 @@ public class Chat {
     private SimpMessagingTemplate template;
 
 
-    public void sendImagesToChat(String channelId, String text, List<String> imagePaths){
-        text = text + "<br/>";
-        for (String imagePath:imagePaths) {
-            text += "<img width='150' src='"+imagePath+"' />";
+    private Message getGameResultAsHtml(GameResult gameResult) {
+        String msg = gameResult.getText();
+        if(!gameResult.getImageIds().isEmpty()){
+            msg = msg + "<br/>";
         }
-        sendToChat(channelId,text);
+        for (String imagePath:gameResult.getImageIds()) {
+            msg += "<img width='150' src='"+imagePath+"' />";
+        }
+        return new Message(msg);
     }
 
-    public void sendToChat(String channelId, String text) {
-        Message message = new Message(text);
+    public void sendToChat(GameData gameData, GameResult gameResult) {
+        Message message = getGameResultAsHtml(gameResult);
         try {
-            template.convertAndSend("/topic/" + channelId, mapper.writeValueAsString( message));
+            template.convertAndSend("/topic/" + gameData.getGameId(), mapper.writeValueAsString( message));
         } catch (JsonProcessingException e) {
             LOG.error("",e);
         }

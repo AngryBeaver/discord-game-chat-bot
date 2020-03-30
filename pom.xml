@@ -22,6 +22,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <parse.deckName>spawn</parse.deckName>
+        <parse.gameName>zombicide</parse.gameName>
     </properties>
 
     <repositories>
@@ -102,21 +104,13 @@
                         <phase>generate-sources</phase>
                         <configuration>
                             <target>
-                                <fileset id="my-fileset" dir="src/main/resources/static/zombicide/equipment"/>
-                                <pathconvert targetos="unix" pathsep="," property="my-file-list" refid="my-fileset">
-                                    <map from="${basedir}${file.separator}src${file.separator}main${file.separator}resources${file.separator}static"
+                                <fileset id="my-fileset" dir="src/main/resources/static/${parse.gameName}/${parse.deckName}"/>
+                                <pathconvert targetos="unix" pathsep="${line.separator}" property="my-file-list" refid="my-fileset">
+                                    <map from="${basedir}${file.separator}src${file.separator}main${file.separator}resources${file.separator}static${file.separator}${parse.gameName}${file.separator}${parse.deckName}${file.separator}"
                                          to=""/>
                                 </pathconvert>
-                                <echo file="${basedir}${file.separator}target${file.separator}classes${file.separator}zombicide.equipment.list">
+                                <echo file="${basedir}${file.separator}target${file.separator}classes${file.separator}${parse.gameName}.${parse.deckName}.list">
                                     ${my-file-list}
-                                </echo>
-                                <fileset id="my-fileset" dir="src/main/resources/static/zombicide/spawn"/>
-                                <pathconvert targetos="unix" pathsep="," property="my-file-list2" refid="my-fileset">
-                                    <map from="${basedir}${file.separator}src${file.separator}main${file.separator}resources${file.separator}static"
-                                         to=""/>
-                                </pathconvert>
-                                <echo file="${basedir}${file.separator}target${file.separator}classes${file.separator}zombicide.spawn.list">
-                                    ${my-file-list2}
                                 </echo>
                             </target>
                         </configuration>
