@@ -28,6 +28,10 @@ public class Zombicide implements Game {
         chars = Deck.getFor(NAME, CHARS);
     }
 
+    public String getName(){
+        return NAME;
+    }
+
     public User getUser(String userId){
         if(users.get(userId)==null) {
             users.put(userId, new User(chars.drawCard()));

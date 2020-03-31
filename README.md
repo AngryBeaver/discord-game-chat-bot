@@ -7,12 +7,16 @@ Example Game Zombicide
 
 
 ## Example: ##
-- \g 
-shows avaiable commands depending on selected game.
+### Discord: ###
+- \g : shows avaiable commands depending on selected game.
 
-will start new game Zombicide
-- \g new zombicide
 
+- \g new zombicide : will start new game Zombicide
+### Website: ###
+- localhost:8090 : 
+ - - shows all avaiable games
+ - - you can login with discord, 
+ - - view streamOverlay.
 
 ## Setup ##
 - run maven clean install to generate image lists

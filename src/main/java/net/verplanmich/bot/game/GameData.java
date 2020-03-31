@@ -7,13 +7,13 @@ public class GameData {
 
     private String userId;
     private String userName;
-    private Integer gameId;
+    private String gameId;
 
-    public Integer getGameId() {
+    public String getGameId() {
         return gameId;
     }
 
-    public void setGameId(Integer gameId) {
+    public void setGameId(String gameId) {
         this.gameId = gameId;
     }
 

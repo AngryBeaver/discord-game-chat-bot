@@ -2,3 +2,24 @@ server:
   port: 8090
 discord:
   secret_token: ${SECRET_TOKEN}
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          discord:
+            client-id: 692456983365681152
+            client-secret:  ${CLIENT_SECRET}
+            clientAuthenticationMethod: post
+            authorizationGrantType: authorization_code
+            scope:
+              - identify
+            redirectUri: 'http://localhost:8090/login/oauth2/code/discord'
+            clientName: jabbawookie
+        provider:
+          discord:
+            authorizationUri: https://discordapp.com/api/oauth2/authorize
+            tokenUri: https://discordapp.com/api/oauth2/token
+            userInfoUri: https://discordapp.com/api/users/@me
+            usernameAttribute: username

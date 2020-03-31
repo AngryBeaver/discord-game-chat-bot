@@ -28,8 +28,6 @@ public class MyBotListener extends ListenerAdapter {
     @Autowired
     GameEngine gameEngine;
 
-    private static Map<String,Integer> gameIdMap = new HashMap();
-
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         GameData gameData = gameDataFrom(event);
@@ -58,8 +56,7 @@ public class MyBotListener extends ListenerAdapter {
         GameData gameData = gameDataFrom(event);
         if (command.equals("new") && optionals.length >= 1 && !optionals[0].trim().isEmpty()) {
             try {
-                Integer gameId = gameEngine.newGame(optionals[0]);
-                gameIdMap.put(event.getChannel().getId(),gameId);
+                gameEngine.newGame(optionals[0], event.getChannel().getId());
                 event.getChannel().sendMessage("new Game "+optionals[0] ).queue();
             }catch(Exception e){
                 event.getChannel().sendMessage(e.getMessage() ).queue();
@@ -140,10 +137,9 @@ public class MyBotListener extends ListenerAdapter {
 
     private GameData gameDataFrom(MessageReceivedEvent event){
         GameData gameData = new GameData();
-        gameData.setGameId(gameIdMap.get(event.getChannel().getId()));
+        gameData.setGameId(event.getChannel().getId());
         gameData.setUserId(event.getAuthor().getId());
         gameData.setUserName(event.getAuthor().getName());
-
         return gameData;
     };
 
