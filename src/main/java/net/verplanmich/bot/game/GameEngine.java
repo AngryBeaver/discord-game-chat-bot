@@ -69,11 +69,10 @@ public class GameEngine {
         return getAvailableMethods(gameData).stream().filter(m -> m.getName().equals(command)).findFirst();
     }
 
-    public void callGameMethod(String command, GameData gameData, Consumer<GameResult> consumer, String... optionals) throws Exception{
+    public GameResult callGameMethod(String command, GameData gameData, String... optionals) throws Exception{
         Method method = getGameMethod(command,gameData).get();
         Object[] parameters = getParamters(method,gameData,optionals);
-        GameResult gameresult = (GameResult) method.invoke(getGame(gameData),parameters);
-        consumer.accept(gameresult);
+        return (GameResult) method.invoke(getGame(gameData),parameters);
     }
 
     private Object[] getParamters(Method method, GameData gameData, String... optionals){

@@ -70,9 +70,8 @@ public class MyBotListener extends ListenerAdapter {
         }
         if (gameEngine.hasGameMethod(command,gameData)) {
             try {
-                gameEngine.callGameMethod(command, gameData, result -> {
-                    sendMessage(event, gameData, result);
-                }, optionals);
+                GameResult gameResult = gameEngine.callGameMethod(command, gameData, optionals);
+                sendMessage(event, gameData, gameResult);
             }catch(Exception e){
                 event.getChannel().sendMessage(command + " seems broken plz contact developer").queue();
             }

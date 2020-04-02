@@ -2,10 +2,10 @@ var stompClient = null;
 
 function connect() {
     var socket = new SockJS('/chat');
-    var channelId = getUrlParameter("channelId");
+    var gameId = getUrlParameter("gameId");
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
-        stompClient.subscribe('/topic/'+channelId, function (message) {
+        stompClient.subscribe('/topic/'+gameId, function (message) {
             console.log(message)
             showMessage(JSON.parse(message.body));
         });
@@ -19,10 +19,6 @@ function showMessage(message) {
         $("html, body").animate({ scrollTop: $(document).height() }, 1000)
     }
 }
-
-$(function () {
-    connect();
-});
 
 function getUrlParameter(sParam) {
     var sPageURL = window.location.search.substring(1),
