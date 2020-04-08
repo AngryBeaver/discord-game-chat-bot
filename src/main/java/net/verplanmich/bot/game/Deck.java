@@ -9,15 +9,15 @@ import java.util.stream.Collectors;
 
 public class Deck {
 
-    private String gameName;
-    private String deckName;
     private List<String> availableCards;
     private List<String> drawPile = new ArrayList();
     private List<String> discardPile = new ArrayList();
 
-    Deck(List availableCards, String gameName, String deckName) {
-        this.gameName = gameName;
-        this.deckName = deckName;
+    public Deck(){
+        this(new ArrayList());
+    }
+
+    public Deck(List availableCards) {
         this.availableCards = availableCards;
         initialize();
     }
@@ -33,7 +33,7 @@ public class Deck {
                 cards.addAll(moreCards);
             }
             List<String> cardIds = cards.stream().map(s-> Paths.get(s).normalize().toString()).collect(Collectors.toList());
-            return new Deck(cardIds,gameName,deckName);
+            return new Deck(cardIds);
         }
     }
 
@@ -57,6 +57,13 @@ public class Deck {
         return cardId;
     }
 
+    public void toDrawPileTop(String cardId) {
+        drawPile.add(0,cardId);
+    }
+    public void toDrawPileBottom(String cardId) {
+        drawPile.add(cardId);
+    }
+
     public void discardCard(String cardId) {
         discardPile.add(cardId);
     }
@@ -71,5 +78,7 @@ public class Deck {
         return drawPile.isEmpty();
     }
 
-
+    public List<String> getAvailableCards() {
+        return new ArrayList<>(availableCards);
+    }
 }

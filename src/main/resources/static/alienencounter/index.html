@@ -2,8 +2,8 @@
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    <script src="http://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
@@ -11,223 +11,18 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
-    <style>
-        body {
-            background: url("title.jpg");
-            background-size: cover;
-        }
-
-        div.darkall:before {
-            content: "";
-            display: block;
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            left: 0;
-            top: 0;
-            z-index: -1;
-            background-color: rgba(0, 0, 0, 0.9);
-        }
-
-        #footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-
-        div.area {
-            color: white;
-            background-color: rgba(0, 0, 0, 0.9);
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-            padding: 20px;
-        }
-
-        .glowBorder {
-            box-shadow: inset 0 0 5px #000000, /* inner white */ inset 20px 0 80px rgba(10, 22, 255, 0.05), /* inner left magenta short */ inset -20px 0 80px rgba(24, 240, 255, 0.05), /* inner right cyan short */ inset 20px 0 300px rgba(10, 22, 255, 0.05), /* inner left magenta broad */ inset -20px 0 300px rgba(24, 240, 255, 0.05), /* inner right cyan broad */ 0 0 5px #fff, /* outer white */ -0px 0 10px #18f0ff, /* outer left magenta */ 0px 0 10px #0a16ff; /* outer right cyan */
-        }
-
-        #footer .cardContainer {
-            margin: 10px;
-        }
-
-        .cardArea {
-            position: relative;
-            height: 325px;
-            border-radius: 10px;
-            display: inline-block;
-            overflow: hidden;
-            margin: 10px;
-            color: white;
-            padding-top: 5px;
-            padding-left: 5px;
-        }
-
-        #game .row {
-            margin-right: 0px;
-            margin-left: 0px;
-        }
-
-        #game .row .col {
-            padding-right: 10px;
-            padding-left: 10px;
-        }
-
-        .corridor {
-            min-width: 930px;
-        }
-
-        .crew {
-            min-width: 1165px;
-        }
-
-        .combat {
-            min-width: 460px;
-        }
-
-        .title {
-            position: absolute;
-            width: 100%;
-            z-index: -1;
-        }
-
-        .title p {
-            font-size: 300%;
-            color: rgba(0, 0, 0, 0.6);
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            width: 100%;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .glow {
-            text-shadow: 0 0 10px #FFFFFF,
-            0 0 20px #FFFFFF,
-            0 0 30px #FFFFFF,
-            0 0 40px #00fffe,
-            0 0 70px #00f1ff,
-            0 0 80px #3871ff,
-            0 0 100px #4475ff,
-            0 0 150px #03f0ff;
-        }
-
-        .nav-link {
-            font-size: 150%;
-        }
-
-        .nav-link.active {
-            background-color: transparent !important;
-            color: #FFFFFF;
-            text-shadow: 0 0 10px #000,
-            0 0 20px #FFFFFF,
-            0 0 30px #FFFFFF,
-            0 0 40px #00fffe,
-            0 0 70px #00f1ff,
-            0 0 80px #3871ff,
-            0 0 100px #4475ff,
-            0 0 150px #03f0ff;
-        }
-
-        .close {
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            border: 1px solid rgba(56, 113, 255, 0.4);
-            border-radius: 5px;
-            height: 30px;
-            width: 30px;
-            margin: 2px;
-            padding-left: 7px;
-        }
-
-        img {
-            height: 315px;
-        }
-
-        .actionArea {
-            display: inline-block;
-        }
-
-        .cardContainer {
-            height: 315px;
-            width: 225px;
-            border-radius: 10px;
-            display: inline-block;
-            overflow: hidden;
-            background-size: cover;
-        }
-
-        .cardGlow {
-            box-shadow: 0 0 5px #fff, /* outer white */ -0px 0 5px #18f0ff, /* outer left magenta */ 0px 0 5px #0a16ff; /* outer right cyan */
-        }
-
-
-        .overlayd {
-            position: absolute;
-            width: 100%;
-        }
-
-        .overlayd p {
-            color: rgba(0, 0, 0, 0.6);
-            height: 100%;
-            width: 100%;
-            justify-content: center;
-            align-items: center;
-        }
-
-
-        .cardContainer:hover .footer {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .header {
-            z-index: -1;
-            font-size: 150%;
-            top: 0px;
-            text-align: center;
-        }
-
-        .cardContainer .overlayd {
-            width: 225px;
-        }
-
-        .footer {
-            font-size: 150%;
-            color: black;
-            border-radius: 5px;
-            bottom: 0px;
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background-color: rgba(255, 255, 255, 0.6);
-        }
-
-        .singleDeck {
-            flex-grow:inherit;
-            margin-right: 10px;
-        }
-
-        .hq {
-            border-radius: 10px;
-        }
-
-        #game .hq .col:first-child {
-            padding-left:0px;
-        }
-
-        #game .hq .col:last-child {
-            padding-right:0px;
-        }
-
-
-    </style>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/js/app.js"></script>
+    <link rel="stylesheet" href="alienencounter.css"/>
 </head>
 <body id="game">
-<div class="cardArea corridor wrapper">
+<div id="eventChannel" class="cardArea wrapper glowBorder">
+    <div class="chat">
+    </div>
+</div>
+
+<div class=" cardArea corridor wrapper">
     <div class="row">
         <div class="col">
             <div class="cardContainer glowBorder" id="complex5" href="#">
@@ -305,216 +100,731 @@
 
 <div class="crew cardArea wrapper">
     <div class="row">
-        <div class="col singleDeck">
-            <div class="cardContainer glowBorder" href="#">
+        <div class="col singleDeck" id="sergeant">
+            <a class="cardContainer glowBorder" data-toggle="collapse" href="#headQuarterDetails">
                 <div class="cardHolder">
 
                 </div>
                 <div class="header overlayd"><p class="glow">sergeant</div>
                 <div class="footer overlayd">
                     <div class="row">
-                        <div class="col">buy</div>
+                        <div class="col">sergeant</div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
 
         <div class="col">
-            <div class="row glowBorder hq">
+            <div class="row glowBorder" id="hq">
                 <div class="col">
-                    <div class="cardContainer" href="#">
+                    <a class="cardContainer" data-toggle="collapse" href="#headQuarterDetails">
                         <div class="cardHolder">
-                            <img src="crew/captain-of-the-ship.png">
+
                         </div>
+                        <div class="header overlayd"><p class="glow">head quarter</div>
                         <div class="footer overlayd">
                             <div class="row">
-                                <div class="col">buy</div>
-                                |
-                                <div class="col">drop</div>
+                                <div class="col">head quarter</div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
-                <div class="title"><p class="glow">Combat</p></div>
+                <div class="title"><p class="glow">Head Quarter</p></div>
                 <div class="col">
-                    <div class="cardContainer" href="#">
+                    <a class="cardContainer" data-toggle="collapse" href="#headQuarterDetails">
                         <div class="cardHolder">
-                            <img src="crew/captain-of-the-ship.png">
+
                         </div>
+                        <div class="header overlayd"><p class="glow">head quarter</div>
                         <div class="footer overlayd">
                             <div class="row">
-                                <div class="col">buy</div>
-                                |
-                                <div class="col">drop</div>
+                                <div class="col">head quarter</div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col">
-                    <div class="cardContainer" href="#">
+                    <a class="cardContainer" data-toggle="collapse" href="#headQuarterDetails">
                         <div class="cardHolder">
-                            <img src="crew/captain-of-the-ship.png">
+
                         </div>
+                        <div class="header overlayd"><p class="glow">head quarter</div>
                         <div class="footer overlayd">
                             <div class="row">
-                                <div class="col">buy</div>
-                                |
-                                <div class="col">drop</div>
+                                <div class="col">head quarter</div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col">
-                    <div class="cardContainer" href="#">
+                    <a class="cardContainer" data-toggle="collapse" href="#headQuarterDetails">
                         <div class="cardHolder">
-                            <img src="crew/captain-of-the-ship.png">
+
                         </div>
+                        <div class="header overlayd"><p class="glow">head quarter</div>
                         <div class="footer overlayd">
                             <div class="row">
-                                <div class="col">buy</div>
-                                |
-                                <div class="col">drop</div>
+                                <div class="col">head quarter</div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col">
-                    <div class="cardContainer" href="#">
+                    <a class="cardContainer" data-toggle="collapse" href="#headQuarterDetails">
                         <div class="cardHolder">
-                            <img src="crew/captain-of-the-ship.png">
+
                         </div>
+                        <div class="header overlayd"><p class="glow">head quarter</div>
                         <div class="footer overlayd">
                             <div class="row">
-                                <div class="col">buy</div>
-                                |
-                                <div class="col">drop</div>
+                                <div class="col">head quarter</div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
 
         <div class="col singleDeck">
-            <div class="cardContainer glowBorder" href="#">
+            <a class="cardContainer glowBorder" data-toggle="collapse" href="#barracksDetails">
                 <div class="cardHolder">
 
                 </div>
                 <div class="header overlayd"><p class="glow">barracks</div>
                 <div class="footer overlayd">
                     <div class="row">
-                        <div class="col"> scan: 2</div>
+                        <div class="col">
+                            barracks
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 </div>
+</div>
+
 
 <div id="footer">
-    <div class="wrapper">
-        <p>
-            <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button"
-               aria-expanded="false"
-               aria-controls="collapseExample">
-                AngryBeaver
-            </a>
-        </p>
-        <div class="collapse area glowBorder" id="collapseExample">
-            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-info" role="tab"
-                       aria-controls="pills-profile" aria-selected="false">Info</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-cards" role="tab"
-                       aria-controls="pills-home" aria-selected="true">Cards</a>
-                </li>
-            </ul>
-            <div class="row">
-                <div class="col-sm-1">
-                    <div class="wrapper">
-                        <nav id="sidebar">
-                            <ul class="list-unstyled components">
-                                <p>Actions</p>
-                                <li>
-                                    <a href="#">invasion</a>
-                                </li>
-                                <li>
-                                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false"
-                                       class="dropdown-toggle">turn</a>
-                                    <ul class="collapse list-unstyled" id="pageSubmenu">
-                                        <li>
-                                            <a href="#">draw</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">look barack</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">buy sergeant</a>
-                                        </li>
-                                    </ul>
+    <div class="collapse area glowBorder collapseFooter show" id="selectUser" data-parent="#footer">
+        <button class="btn btn-primary" data-toggle="collapse" data-target="#gameDetails">
+            Game
+        </button>
+    </div>
 
-                                </li>
-                                <li>
-                                    <a href="#">wound</a>
-                                </li>
-                                <li>
-                                    <a href="#">end</a>
-                                </li>
-                            </ul>
-                        </nav>
-
-                        <!-- Page Content -->
-                        <div id="content">
-                            <!-- We'll fill this with dummy content -->
-                        </div>
-                    </div>
+    <div class="collapse area glowBorder collapseFooter" id="gameDetails" data-parent="#footer">
+        <ul class="nav nav-pills mb-3" id="game-tab" role="tablist">
+            <li class="nav-item">
+                <div class="nav-link disabled" role="tab">
+                    <img src="game.png">
+                    alienencounter
                 </div>
-                <div class="col">
-                    <div class="tab-content" id="pills-tabContent">
-                        <div class="tab-pane fade" id="pills-info" role="tabpanel" aria-labelledby="pills-home-tab">
-                            <div class="row">
-                                <div class="col-sm12">
-                                    <div class="cardContainer"></div>
-                                </div>
+            </li>
 
-                            </div>
-                        </div>
-                        <div class="tab-pane fade show active" id="pills-cards" role="tabpanel"
-                             aria-labelledby="pills-profile-tab">
-                            <p class="cardContainer ">
-                                <img height="315px" src="crew/captain-of-the-ship.png">
-                            </p>
-                            <p class="cardContainer ">
-                                <img height="315px" src="crew/captain-of-the-ship.png">
-                            </p>
-                            <p class="cardContainer ">
-                                <img height="315px" src="crew/captain-of-the-ship.png">
-                            </p>
-                            <p class="cardContainer ">
-                                <img height="315px" src="crew/captain-of-the-ship.png">
-                            </p>
-                            <p class="cardContainer ">
-                                <img height="315px" src="crew/captain-of-the-ship.png">
-                            </p>
-                            <p class="cardContainer ">
-                                <img height="315px" src="crew/captain-of-the-ship.png">
-                            </p>
-                            <p class="cardContainer ">
-                                <img height="315px" src="crew/captain-of-the-ship.png">
-                            </p>
-                        </div>
-                        <div class="tab-pane fade" id="pills-wounds" role="tabpanel"
-                             aria-labelledby="pills-contact-tab">...
-                        </div>
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#" role="tab">
+                </a>
+            </li>
+        </ul>
+        <div class="row">
+            <div class="col-sm-1">
+                <div class="wrapper">
+                    <nav>
+                        <ul class="list-unstyled components">
+                            <p>Actions</p>
+                            <li>
+                                <a href="javascript:startGame()">start Game</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="col">
+                <div id="missionInfo" class="tab-pane fade show active cards" role="tabpanel">
+                </div>
+            </div>
+        </div>
+        <a class="close" data-toggle="collapse" href="#selectUser" role="button">x</a>
+    </div>
+
+    <div class="collapse area glowBorder collapseFooter" id="sergeantDetails" data-parent="#footer">
+        <ul class="nav nav-pills mb-3" id="sergeant-tab" role="tablist">
+            <li class="nav-item">
+                <div class="nav-link disabled" role="tab">
+                    <img src="sergeant.png">
+                    sergeant
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#" role="tab">
+                </a>
+            </li>
+        </ul>
+        <div class="row">
+            <div class="col-sm-1">
+                <div class="wrapper">
+                    <nav>
+                        <ul class="list-unstyled components">
+                            <p>Actions</p>
+                            <li>
+                                <a href="javascript:doCardAction('toDiscard','#sergeantDetails')">recruit</a>
+                            </li>
+                            <li>
+                                <a href="javascript:doCardAction('toHand','#sergeantDetails')">use</a>
+                            </li>
+                            <li>
+                                <a href="javascript:doCardAction('remove','#sergeantDetails')">kill</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="col">
+                <div id="sergeantDeck" class="tab-pane fade show active cards" role="tabpanel">
+                    <div class="area">
+                        <a class="cardContainer" href="#">
+                            <img height="315px" src="crew/captain-of-the-ship.png">
+                        </a>
                     </div>
                 </div>
             </div>
-            <a class="close" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
-               aria-controls="collapseExample">x</a>
         </div>
+        <a class="close" data-toggle="collapse" href="#selectUser" role="button">x</a>
+    </div>
+
+    <div class="collapse area glowBorder collapseFooter" id="headQuarterDetails" data-parent="#footer">
+        <ul class="nav nav-pills mb-3" id="hq-tab" role="tablist">
+            <li class="nav-item">
+                <div class="nav-link disabled" role="tab">
+                    <img src="hq.png">
+                    head quarter
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#" role="tab">
+                </a>
+            </li>
+        </ul>
+        <div class="row">
+            <div class="col-sm-1">
+                <div class="wrapper">
+                    <nav>
+                        <ul class="list-unstyled components">
+                            <p>Actions</p>
+                            <li>
+                                <a href="javascript:doCardAction('toDiscard','#headQuarterDeck')">recruit</a>
+                            </li>
+                            <li>
+                                <a href="javascript:doCardAction('toHand','#headQuarterDeck')">use</a>
+                            </li>
+                            <li>
+                                <a href="javascript:doCardAction('toBarracksDown','#headQuarterDeck')">backDown</a>
+                            </li>
+                            <li>
+                                <a href="javascript:doCardAction('remove','#headQuarterDeck')">kill</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="col">
+                <div id="headQuarterDeck" class="tab-pane fade show active cards" role="tabpanel">
+                    <div class="area">
+                        <a class="cardContainer" href="#">
+                            <img height="315px" src="crew/captain-of-the-ship.png">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="close" data-toggle="collapse" href="#selectUser" role="button">x</a>
+    </div>
+
+    <div class="collapse area glowBorder collapseFooter" id="barracksDetails" data-parent="#footer">
+        <ul class="nav nav-pills mb-3" id="barracks-tab" role="tablist">
+
+            <li class="nav-item">
+                <div class="nav-link disabled" role="tab">
+                    <img src="barracks.png">
+                    barracks
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#" role="tab">
+                    first</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#" role="tab">
+                    second</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#" role="tab"
+                   aria-controls="pills-home" aria-selected="true">all</a>
+            </li>
+        </ul>
+        <div class="row">
+            <div class="col-sm-1">
+                <div class="wrapper">
+                    <nav>
+                        <ul class="list-unstyled components">
+                            <p>Actions</p>
+                            <li>
+                                <a href="javascript:doCardAction('toDiscard','#barracksDeck')">recruit</a>
+                            </li>
+                            <li>
+                                <a href="javascript:doCardAction('toHand','#barracksDeck')">use</a>
+                            </li>
+                            <li>
+                                <a href="javascript:doCardAction('toBarracksDown','#barracksDeck')">backDown</a>
+                            </li>
+                            <li>
+                                <a href="javascript:doCardAction('toBarracksTop','#barracksDeck')">backTop</a>
+                            </li>
+                            <li>
+                                <a href="javascript:doCardAction('remove','#barracksDeck')">kill</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="col">
+                <div id="barracksDeck" class="tab-pane fade show active cards" role="tabpanel">
+                    <div class="area">
+                        <a class="cardContainer" href="#">
+                            <img height="315px" src="crew/captain-of-the-ship.png">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="close" data-toggle="collapse" href="#selectUser" role="button">x</a>
+    </div>
+
+
+    <div class="collapse area glowBorder collapseFooter" id="userDetails" data-parent="#footer">
+        <ul class="nav nav-pills mb-3" role="tablist">
+            <li class="nav-item">
+                <div class="nav-link disabled" role="tab">
+                    <img src="chars/researcher-avatar.png">
+                    AngryBeaver
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#char-info" role="tab"
+                   aria-controls="pills-profile" aria-selected="false">info</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#char-hand" role="tab"
+                   aria-controls="pills-home" aria-selected="true">hand</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#pills-cards" role="tab"
+                   aria-controls="pills-home" aria-selected="true">discard pile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#pills-cards" role="tab"
+                   aria-controls="pills-home" aria-selected="true">draw pile</a>
+            </li>
+        </ul>
+        <div class="row">
+            <div class="col-sm-1">
+                <div class="wrapper">
+                    <nav>
+                        <ul class="list-unstyled components">
+                            <p>Actions</p>
+                            <li>
+                                <a href="javascript:doPlayerAction('invasion')">invasion</a>
+                            </li>
+                            <li>
+                                <a href="javascript:doPlayerAction('draw')">draw</a>
+                            </li>
+                            <li>
+                                <a href="javascript:doPlayerAction('wound')">wound</a>
+                            </li>
+                            <li>
+                                <a href="javascript:doPlayerAction('end turn')">end turn</a>
+                            </li>
+                            <li>
+                                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="true"
+                                   class="dropdown-toggle">manage cards</a>
+                                <ul class="list-unstyled collapse" id="pageSubmenu">
+                                    <li>
+                                        <a href="javascript:doPlayerCardAction('toHand')">to hand</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:doPlayerCardAction('discard')">discard</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:doPlayerCardAction('toBarracksDown')">to barracks</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:doPlayerCardAction('remove')">kill</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="col">
+                <div class="tab-content">
+                    <div class="tab-pane fade" id="char-info" role="tabpanel">
+                        <div class="row cards">
+                            <div class="col" id="strikeDeck">
+                                <div class="cardContainer">
+                                    <img src="chars/researcher-char.png">
+                                </div>
+                                <div class="area">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show active" id="char-hand" role="tabpanel">
+                        <p class="cardContainer">
+                            <img height="315px" src="crew/captain-of-the-ship.png">
+                        </p>
+                        <p class="cardContainer ">
+                            <img height="315px" src="crew/captain-of-the-ship.png">
+                        </p>
+                        <p class="cardContainer ">
+                            <img height="315px" src="crew/captain-of-the-ship.png">
+                        </p>
+                        <p class="cardContainer ">
+                            <img height="315px" src="crew/captain-of-the-ship.png">
+                        </p>
+                        <p class="cardContainer ">
+                            <img height="315px" src="crew/captain-of-the-ship.png">
+                        </p>
+                        <p class="cardContainer ">
+                            <img height="315px" src="crew/captain-of-the-ship.png">
+                        </p>
+                        <p class="cardContainer ">
+                            <img height="315px" src="crew/captain-of-the-ship.png">
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="close" data-toggle="collapse" href="#selectUser" role="button">x</a>
     </div>
 </div>
+<script type="application/javascript">
+    //TEST
+    var testBarrackDeck = ["crew/captain-of-the-ship.png", "crew/captain-of-the-ship.png", "crew/captain-of-the-ship.png"];
+    var testHQDeck = ["crew/first-aid.png", "crew/here-kitty-kitty.png", "crew/right.png", "crew/captain-of-the-ship.png", "crew/motion-detector.png"];
+    var testSergeant = ["crew/sergeant-green.png"];
+    var testStrikes = ["strike/flesh-wound.png"];
+    var testUser = {
+        "10": {"char": "priest", "name": "AngryBeaver"},
+        "11": {"char": "scout", "name": "Player2"},
+        "12": {"char": "scout", "name": "Player3"}
+    }
+    var game = {};
+
+    //FOOTER
+    var footer = $('#footer');
+    footer.on('shown.bs.collapse', '.collapseFooter', function (e) {
+        if (e.target.id.trim() == 'barracksDetails') {
+            openBarracks();
+        }
+        if (e.target.id.trim() == 'headQuarterDetails') {
+            openHQ();
+        }
+        if (e.target.id.trim() == 'userDetails') {
+            openUser();
+        }
+        if (e.target.id.trim() == 'selectUser') {
+            openSelection();
+        }
+        if (e.target.id.trim() == 'gameDetails') {
+            openGame();
+        }
+    });
+
+    //GAME
+    function startGame(){
+        action("start", "nostromo");
+    }
+
+    function fillMission() {
+        if(game.mission != undefined) {
+            var html = '<img height="315px" src="mission/' + game.mission + '-location.png"/>';
+            html += '<img height="315px" src="mission/' + game.mission + '-objective' + game.objective + '.png"/>';
+            $('#missionInfo').html(html);
+        }
+    }
+
+    function openGame() {
+        fillMission();
+    }
+
+    function getGameInfo(){
+        action("getGameInfo").then(gameResult=>{
+            game.mission=gameResult.map.mission;
+            game.objective=gameResult.map.objective;
+            fillMission();
+        })
+    }
+
+
+
+
+
+    //SELECTION
+    var fallback = false;
+    footer.on('hidden.bs.collapse', '.collapseFooter', function () {
+        console.log(fallback);
+        if (!fallback) {
+            footer.find('#selectUser').collapse('show');
+        }
+        fallback = false;
+        $('#barracksDeck .area').html("");
+    });
+    footer.on('show.bs.collapse', '.collapseFooter', function () {
+        fallback = true;
+        console.log("in");
+    });
+
+    function openSelection() {
+        //users.forEach(value =>);
+    }
+
+
+    //SERGEANT
+    function fillSergeant() {
+        $('#sergeant .cardContainer .cardHolder').html("");
+        Object.entries(testSergeant).forEach(([key, value]) => {
+            $('#sergeant .cardContainer .cardHolder:eq(' + key + ')').html('<img src="' + value + '"/>');
+        });
+    }
+
+
+    //HQ
+    function fillHQDetails() {
+        var html = getHtmlFromDeck(testSergeant);
+        html += getHtmlFromDeck(testHQDeck);
+        $('#headQuarterDeck .area').html(html);
+    }
+
+    function openHQ() {
+        fillHQDetails();
+        fillHQ();
+        fillSergeant();
+        activateSelectableCards();
+    }
+
+    function fillHQ() {
+        $('#hq .cardContainer .cardHolder').html("");
+        Object.entries(testHQDeck).forEach(([key, value]) => {
+            $('#hq .cardContainer .cardHolder:eq(' + key + ')').html('<img src="' + value + '"/>');
+        });
+    }
+
+
+    //BARRACKS
+    $('#playerDetails a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        if (e.target.id.trim() == 'info') {
+            fillInfo();
+        }
+    });
+
+
+    function fillBarracks(deck) {
+        var html = getHtmlFromDeck(deck);
+        $('#barracksDeck .area').html(html);
+    }
+
+    function showBarracks() {
+        $('#barracksDeck a.cardContainer').hide();
+        var visibility = $('#barracksDetails .nav-link.active').text().trim();
+        if (visibility == "all") {
+            $('#barracksDeck a.cardContainer').show();
+        }
+        if (visibility == "first") {
+            $('#barracksDeck a.cardContainer').first().show();
+        }
+        if (visibility == "second") {
+            $('#barracksDeck a.cardContainer:lt(2)').show();
+        }
+    }
+
+    function openBarracks() {
+        $('#barracksDetails .nav-link:eq(1)').tab('show');
+        fillBarracks(testBarrackDeck);
+        showBarracks();
+        activateSelectableCards();
+    }
+
+    //USER
+    $('#userDetails a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        showUser();
+    });
+
+
+    function fillStrikes() {
+        var html = getHtmlFromDeck(testStrikes);
+        $('#strikeDeck .area').html(html);
+    }
+
+    function fillUser(userId) {
+        var html = '<img src="chars/' + testUser[userId].char + '-avatar.png">';
+        html += testUser[userId].name;
+        $('#userDetails .nav-link.disabled').html(html);
+    }
+
+    function showUser() {
+        var userTab = $('#userDetails .nav-link.active').text().trim();
+        console.dir($('#userDetails').find('a.cardContainer.glowBorder'));
+        $('#userDetails').find('a.cardContainer.glowBorder').removeClass('glowBorder');
+        if (userTab == "info") {
+            //$('#barracksDeck a.cardContainer').show();
+        }
+        if (userTab == "hand") {
+            //$('#barracksDeck a.cardContainer').first().show();
+        }
+        if (userTab == "discard") {
+            //$('#barracksDeck a.cardContainer:lt(2)').show();
+        }
+        if (userTab == "draw") {
+            //$('#barracksDeck a.cardContainer:lt(2)').show();
+        }
+    }
+
+    function openUser() {
+        $('#userDetails .nav-link:eq(2)').tab('show');
+        fillStrikes();
+        fillUser(10);
+        activateSelectableCards();
+    }
+
+
+    //UTILITIES
+    function getHtmlFromDeck(deck) {
+        var html = '';
+        deck.forEach(function (value) {
+            html += '<a class="cardContainer" href="#">';
+            html += '<img height="315px" src="' + value + '">';
+            html += '</a>';
+        });
+        return html;
+    }
+
+    function activateSelectableCards() {
+        var selectCard = $('.cards .area a.cardContainer');
+        selectCard.on('click', function () {
+            console.log($(this).parent('.area'));
+            $(this).parent('.area').find('a.cardContainer.glowBorder').removeClass('glowBorder');
+            $(this).addClass('glowBorder');
+        });
+    }
+
+    function doCardAction(action, selector) {
+        var src = getCardSelection(selector);
+        if (src == undefined) {
+            alert("Select a Card");
+            return;
+        }
+        alert(action + " " + src);
+    }
+
+    function getCardSelection(selector) {
+        return $(selector).find('a.cardContainer.glowBorder img').attr('src');
+    }
+
+
+
+    //CHAT
+    function showMessage(message) {
+        if (message.content != "") {
+            $("#eventChannel .chat").append("<div>" + message + "</div>");
+            scrollChat();
+        }
+    }
+
+    function scrollChat(){
+        $("#eventChannel").animate({ scrollTop:  $('#eventChannel .chat').height() }, 1000);
+    }
+
+
+    function typeWriteMessage(message){
+        var i = 0;
+        let speed = 100;
+        typeWriter();
+
+        function typeWriter() {
+            if (i < message.length) {
+                $("#eventChannel .chat").append( message.charAt(i));
+                i++;
+                setTimeout(typeWriter, speed);
+            }else{
+                $("#eventChannel .chat").append("<br/>");
+                scrollChat();
+            }
+
+        }
+    }
+
+    //EVENT
+    $(function () {
+        socket("event",parseEvents);
+
+        let EVENT_START = "start";
+        let EVENT_REFRESH_HQ = "hq";
+        let EVENT_REFRESH_BARRACKS = "barracks";
+        let EVENT_REFRESH_USER_HAND = "hand";
+        let EVENT_REFRESH_USER_WOUND = "wound";
+        let EVENT_REFRESH_GAME = "game";
+        let EVENT_INFO = "info";
+
+        function parseEvents(gameResult) {
+            if(gameResult.events.includes(EVENT_START)){
+                eventStart(gameResult);
+            }
+            if(gameResult.events.includes(EVENT_REFRESH_GAME)){
+                getGameInfo();
+            }
+        }
+
+        function eventStart(gameResult){
+            let html = '<video autoplay id="vid" width="320">';
+            html += '<source src="startsequence.mp4" type="video/mp4">';
+            html += '</video>';
+            showMessage(html);
+            setTimeout(function(){
+                typeWriteMessage(gameResult.text);
+            }, 1000);
+            setTimeout(function(){
+                html = '<img width="315" src="mission/' +gameResult.map.mission + '-location.png">';
+                showMessage(html);
+            }, 7000);
+            setTimeout(function(){
+                html = '<img src="mission/' +gameResult.map.mission + '-objective1.png">';
+                showMessage(html);
+                $('#vid')[0].pause();
+            }, 24000);
+
+        }
+    });
+
+
+    //GENERIC REST
+    function action(command,option) {
+        return fetch("/games/" + gameId + "/"+command+"/"+option)
+            .then(function (response) {
+                return response.json().then(function (data) {
+                    if (response.status != 200) {
+                        throw Exception(data.message);
+                    }
+                    return data;
+                })
+            });
+    }
+
+
+</script>
 </body>
 </html>

@@ -1,13 +1,13 @@
 var stompClient = null;
+var gameId = getUrlParameter("gameId");
 
-function connect() {
-    var socket = new SockJS('/chat');
+function socket(channel, handleMessage ) {
+    var socket = new SockJS('/websocket');
     var gameId = getUrlParameter("gameId");
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
-        stompClient.subscribe('/topic/'+gameId, function (message) {
-            console.log(message)
-            showMessage(JSON.parse(message.body));
+        stompClient.subscribe('/'+channel+'/'+gameId, function (message) {
+            handleMessage(JSON.parse(message.body));
         });
     });
 }

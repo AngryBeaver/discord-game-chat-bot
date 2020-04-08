@@ -4,6 +4,8 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.verplanmich.bot.MyBotListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
@@ -15,18 +17,20 @@ import java.util.stream.Collectors;
 
 @Service
 public class GameEngine {
-
     private static Map<String, Game> games = new HashMap();
     private static final Logger LOG = LoggerFactory.getLogger(GameEngine.class);
 
     private static Map<String, List<Method>> gameMethods = new HashMap();
+
+    @Autowired
+    private ApplicationContext applicationContext;
 
     public void newGame(String gameName,String gameId) throws Exception {
         try{
             gameName = gameName.substring(0, 1).toUpperCase() + gameName.substring(1);
             Class gameClass = Class.forName("net.verplanmich.bot.game." +gameName.toLowerCase()+"."+gameName);
             if (Game.class.isAssignableFrom(gameClass)) {
-                Game game = (Game) gameClass.newInstance();
+                Game game = (Game) applicationContext.getBean(gameClass);
                 games.put(gameId, game);
             } else {
                 throw new Exception("smart you think you are? Outsmart me you will not!");
@@ -70,9 +74,15 @@ public class GameEngine {
     }
 
     public GameResult callGameMethod(String command, GameData gameData, String... optionals) throws Exception{
-        Method method = getGameMethod(command,gameData).get();
-        Object[] parameters = getParamters(method,gameData,optionals);
-        return (GameResult) method.invoke(getGame(gameData),parameters);
+        GameResult gameResult;
+        try {
+            Method method = getGameMethod(command, gameData).get();
+            Object[] parameters = getParamters(method, gameData, optionals);
+            gameResult = (GameResult) method.invoke(getGame(gameData), parameters);
+        }catch(GameResultException e){
+            gameResult = e.getGameResult();
+        }
+        return gameResult;
     }
 
     private Object[] getParamters(Method method, GameData gameData, String... optionals){

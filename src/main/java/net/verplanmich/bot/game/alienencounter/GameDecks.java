@@ -1,16 +1,15 @@
 package net.verplanmich.bot.game.alienencounter;
 
 import net.verplanmich.bot.game.Deck;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
+@Service
 public class GameDecks {
 
     static final String NAME = "alienencounter";
-    static final String WEYLAND_CORPORATION = "Weyland Corporation";
 
     static final String CHIEF_ENGINEER_PARKER = "chiefengineerparker";
     static final String ENGINEER_BRETT = "engineerbrett";
@@ -19,28 +18,36 @@ public class GameDecks {
     static final String NAVIGATOR_LAMBERT = "navigatorlambert";
     static final String CAPTAIN_DALLAS = "captaindallas";
 
-    private Deck cepDeck;
-    private Deck ebDeck;
+    static final String CHARS = "chars";
 
-    public enum Location {
-        NOSTROMO,
-        SULACI,
-        FURI,
-        AURIGA;
-    }
-
-    private HashMap<Location, List<Deck>> crews = new HashMap();
+    private HashMap<Mission, List<Deck>> crews = new HashMap();
+    private Deck chars;
 
     public GameDecks() throws IOException {
+        chars = Deck.getFor(NAME,CHARS);
         List nostromoCrew = new ArrayList();
-        crews.put(Location.NOSTROMO,nostromoCrew);
+        crews.put(Mission.NOSTROMO,nostromoCrew);
         nostromoCrew.add(Deck.getFor(NAME, CHIEF_ENGINEER_PARKER));
         nostromoCrew.add(Deck.getFor(NAME, ENGINEER_BRETT));
         nostromoCrew.add(Deck.getFor(NAME, EXECUTIV_OFFICER_KANE));
         nostromoCrew.add(Deck.getFor(NAME, WARRANT_OFFICER_RIPLEY));
         nostromoCrew.add(Deck.getFor(NAME, NAVIGATOR_LAMBERT));
-        nostromoCrew.add(Deck.getFor(NAME,CAPTAIN_DALLAS));
+        nostromoCrew.add(Deck.getFor(NAME, CAPTAIN_DALLAS));
+    }
 
+    public Deck barracksFor(Mission mission){
+        List<String> barrackCards = new ArrayList();
+        List<Deck> nostromoCrew = new ArrayList();
+        nostromoCrew.addAll(crews.get(mission));
+        Collections.shuffle(nostromoCrew);
+        nostromoCrew.stream().limit(4).forEach(
+            d-> barrackCards.addAll(d.getAvailableCards())
+        );
+        return new Deck(barrackCards);
+    }
+
+    public Deck getChars(){
+        return new Deck(chars.getAvailableCards());
     }
 
 }

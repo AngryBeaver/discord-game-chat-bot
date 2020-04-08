@@ -37,7 +37,7 @@ public class Chat {
     public void sendToChat(GameData gameData, GameResult gameResult) {
         Message message = getGameResultAsHtml(gameResult);
         try {
-            template.convertAndSend("/topic/" + gameData.getGameId(), mapper.writeValueAsString( message));
+            template.convertAndSend("/chat/" + gameData.getGameId(), mapper.writeValueAsString( message));
         } catch (JsonProcessingException e) {
             LOG.error("",e);
         }
