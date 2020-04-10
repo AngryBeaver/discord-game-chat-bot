@@ -20,14 +20,17 @@ public class GameDecks {
 
     static final String CHARS = "chars";
     static final String STRIKES = "strikes";
+    static final String SERGEANT = "sergeant";
 
     private HashMap<Mission, List<Deck>> crews = new HashMap();
     private Deck chars;
     private Deck strikes;
+    private Deck sergeant;
 
     public GameDecks() throws IOException {
         chars = Deck.getFor(NAME,CHARS);
         strikes = Deck.getFor(NAME,STRIKES);
+        sergeant = Deck.getFor(NAME,SERGEANT);
         List nostromoCrew = new ArrayList();
         crews.put(Mission.NOSTROMO,nostromoCrew);
         nostromoCrew.add(Deck.getFor(NAME, CHIEF_ENGINEER_PARKER));
@@ -49,6 +52,10 @@ public class GameDecks {
             d-> barrackCards.addAll(d.getDrawPile())
         );
         return new Deck(barrackCards);
+    }
+
+    public Deck getSergeant(){
+        return new Deck(sergeant.getDrawPile());
     }
 
     public Deck getChars(){

@@ -19,7 +19,6 @@ div.darkall:before {
     position: fixed;
     bottom: 0;
     width: 100%;
-    padding:10px;
 }
 
 .collapseFooter.area {
@@ -28,6 +27,7 @@ div.darkall:before {
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     margin-left: 325px;
+    padding:5px;
 }
 .collapseFooter button:first-child{
     margin-left:20px;

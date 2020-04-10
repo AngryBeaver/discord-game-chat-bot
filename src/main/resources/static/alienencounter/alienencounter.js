@@ -13,6 +13,7 @@ var testUser = {
 }
 let barracks = []
 let hqCards = [];
+let sergeant = "";
 let game = {};
 let userMap = {};
 let userId = "guest";
@@ -101,17 +102,28 @@ function openSelection() {
 
 }
 
+//SERGEANT
+function fillSergeant(){
+    $('#sergeant .cardContainer .cardHolder').html("");
+    sergeant.forEach(function (value) {
+        let html ='<img src="' + value + '"/>';
+        $('#sergeant .cardContainer .cardHolder').html(html);
+    });
+}
+
 //HQ
 function getHqInfo() {
     action("getHq").then(gameResult => {
         hqCards = gameResult.map.hq;
+        sergeant = gameResult.map.sergeant;
         fillHqDetails();
         fillHq();
+        fillSergeant();
     })
 }
 
 function fillHqDetails() {
-    let html = getHtmlFromDeck(testSergeant);
+    let html = getHtmlFromDeck(sergeant);
     html += getHtmlFromDeck(hqCards);
     $('#headQuarterDeck .area').html(html);
     activateSelectableCards();
@@ -129,18 +141,21 @@ function fillHq() {
 }
 
 //BARRACKS
+$('#barracksDetails a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    showBarrackDetails();
+});
+
 function getBarracksInfo() {
     action("getBarracks", "all").then(gameResult => {
         barracks = gameResult.map.barracks;
         fillBarracks();
         fillBarrackDetails();
-        showBarrackDetails();
     })
 }
 
 function openBarracks() {
     $('#barracksDetails .nav-link:eq(1)').tab('show');
-    showBarrackDetails();
+    fillBarrackDetails();
 }
 
 function fillBarracks() {
@@ -151,8 +166,9 @@ function fillBarracks() {
 }
 
 function fillBarrackDetails() {
-    var html = getHtmlFromDeck(barracks);
+    let html = getHtmlFromDeck(barracks);
     $('#barracksDeck .area').html(html);
+    showBarrackDetails();
 }
 
 function showBarrackDetails() {
@@ -238,7 +254,7 @@ function fillStrikes() {
 
 function fillUserInfo() {
     if (selectedUserId != undefined) {
-        let html = '<a data-toggle="collapse" data-target="#userDetails"><img src="char/' + userMap[selectedUserId].userChar + '-avatar.png"></a>';
+        let html = '<a data-toggle="collapse" data-target="#userDetails" href="#" ><img src="char/' + userMap[selectedUserId].userChar + '-avatar.png"></a>';
         html += userMap[selectedUserId].userName;
         $('#userDetails .nav-link.disabled').html(html);
 
@@ -274,13 +290,12 @@ function fillUserDraw() {
 
 function showUser() {
     var userTab = $('#userDetails .nav-link.active').text().trim();
-    console.dir($('#userDetails').find('a.cardContainer.glowBorder'));
     $('#userDetails').find('a.cardContainer.glowBorder').removeClass('glowBorder');
     if (userTab == "info") {
-        //$('#barracksDeck a.cardContainer').show();
+
     }
     if (userTab == "hand") {
-        //$('#barracksDeck a.cardContainer').first().show();
+
     }
     if (userTab == "discard pile") {
         getUserDiscard();
@@ -290,11 +305,19 @@ function showUser() {
     }
 }
 
+function showUserNavi(){
+    $('#userDetails .col-sm-1').hide();
+ if(selectedUserId == userId){
+     $('#userDetails .col-sm-1').show();
+ }
+}
+
 function openUser() {
     $('#userDetails .nav-link:eq(1)').tab('show');
     fillUserInfo();
     getUserStrikes();
     getUserHand();
+    showUserNavi();
 }
 
 //USER ACTION
@@ -331,12 +354,25 @@ function activateSelectableCards() {
     });
 }
 
+function doHqAction(activity, selector) {
+    let position = getCardPosition(selector);
+    if (position == undefined) {
+        throw "Select a Card";
+    }
+    return action(activity,position-1);
+}
+
 function doCardAction(activity, selector) {
     let cardId = getCardSelection(selector);
     if (cardId == undefined) {
         throw "Select a Card";
     }
     return action(activity,cardId);
+}
+
+function getCardPosition(selector) {
+    let selection = $(selector).find('a.cardContainer.glowBorder img');
+    return $(selector).find('a.cardContainer img').index(selection);
 }
 
 function getCardSelection(selector) {
@@ -378,6 +414,9 @@ function typeWriteMessage(message) {
 
 //EVENT
 $(function () {
+    getHqInfo();
+    getBarracksInfo();
+
     socket("event", parseEvents);
 
     let EVENT_START = "start";
@@ -387,6 +426,8 @@ $(function () {
     let EVENT_REFRESH_USER_STRIKES = "strike";
     let EVENT_REFRESH_USER_INFO = "user";
     let EVENT_REFRESH_GAME = "game";
+    let EVENT_REFRESH_USER_DRAW = "draw";
+    let EVENT_REFRESH_USER_DISCARD = "discard";
     let EVENT_INFO = "info";
 
     function parseEvents(gameResult) {
@@ -407,6 +448,12 @@ $(function () {
         }
         if (gameResult.events.includes(EVENT_REFRESH_USER_HAND)) {
             getUserHand();
+        }
+        if (gameResult.events.includes(EVENT_REFRESH_USER_DRAW)) {
+            getUserDraw();
+        }
+        if (gameResult.events.includes(EVENT_REFRESH_USER_DISCARD)) {
+            getUserDiscard();
         }
         if (gameResult.events.includes(EVENT_REFRESH_USER_STRIKES)) {
             getUserStrikes();
@@ -431,16 +478,22 @@ $(function () {
         showMessage(html);
         setTimeout(function () {
             typeWriteMessage(gameResult.text);
-        }, 1000);
+        }, 7000);
         setTimeout(function () {
             html = '<img width="300" src="mission/' + gameResult.map.mission + '-location.png">';
             showMessage(html);
-        }, 7000);
+        }, 24000);
+        setTimeout(function () {
+            getBarracksInfo();
+        }, 46000);
+        setTimeout(function () {
+            getHqInfo();
+        }, 62000);
         setTimeout(function () {
             html = '<img width="300" src="mission/' + gameResult.map.mission + '-objective1.png">';
             showMessage(html);
-            $('#vid')[0].pause();
-        }, 24000);
+            getGameInfo();
+        }, 79000);
 
     }
 });
