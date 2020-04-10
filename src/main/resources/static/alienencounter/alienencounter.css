@@ -19,6 +19,16 @@ div.darkall:before {
     position: fixed;
     bottom: 0;
     width: 100%;
+    padding-left:15px;
+    margin-left:14vw;
+}
+
+.collapseFooter{
+    height:38vh;
+}
+
+#selectUser.collapseFooter{
+    height:100%
 }
 
 .collapseFooter.area {
@@ -26,7 +36,7 @@ div.darkall:before {
     background-color: rgba(0, 0, 0, 0.9);
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    margin-left: 325px;
+    margin-left: 15px;
     padding:5px;
 }
 .collapseFooter button:first-child{
@@ -38,7 +48,8 @@ div.darkall:before {
 }
 
 #footer .cardContainer {
-    margin: 10px;
+    margin: 0px 10px;
+
 }
 
 #strikeDeck.area {
@@ -47,50 +58,58 @@ div.darkall:before {
 
 .cardArea {
     position: relative;
-    height: 325px;
+    height: calc(100%/10*3);
     border-radius: 10px;
     display: inline-block;
     overflow: hidden;
-    margin: 10px;
+    margin: 2px;
+    padding: 5px;
     color: white;
-    padding-top: 5px;
-    padding-left: 5px;
 }
 
 #game .row {
     margin-right: 0px;
     margin-left: 0px;
+    height:100%;
 }
 
-#game .row .col {
-    padding-right: 10px;
-    padding-left: 10px;
+.row .col {
+    padding: 0px;
+}
+
+#hq .col {
+    padding-right: 0px;
+    padding-left: 0px;
 }
 
 .corridor {
-    min-width: 930px;
-    margin-left:5px;
+    width: calc(100%/9*5);
+    margin:5px;
+}
+#corridor {
+    border-radius: 10px;
 }
 
 .crew {
-    min-width: 1165px;
+    width: calc(100%/9*5);
 }
 
 .combat {
-    min-width: 460px;
-    top:-5px;
-    height:315px;
+    width: calc(100%/9*2);
+}
+#combat {
+    border-radius: 10px;
 }
 #barracks {
-    min-width: 240px;
-    padding-left:10px;
+    width: calc(100%/9);
+    margin-left:10px;
 }
 #barracks .cardContainer{
     position: relative;
 }
 #sergeant {
-    min-width: 240px;
-    padding-left:10px;
+    width: calc(100%/9);
+    margin-left:5px;
 }
 #sergeant .cardContainer{
     position: relative;
@@ -100,7 +119,7 @@ div.darkall:before {
     position: absolute;
     width: 100%;
     z-index: -1;
-    top: 100px;
+    top: 25%;
 }
 
 .title p {
@@ -173,7 +192,8 @@ nav {
 }
 
 .cardContainer img {
-    height: 315px;
+    height: 100%;
+    width:100%;
 }
 
 .actionArea {
@@ -181,12 +201,13 @@ nav {
 }
 
 .cardContainer {
-    height: 315px;
-    width: 225px;
+    height: 100%;
+    width: 100%;
     border-radius: 10px;
     display: inline-block;
     overflow: hidden;
     background-size: cover;
+    position:relative;
 }
 
 .cardGlow {
@@ -231,7 +252,7 @@ nav {
 }
 
 .cardContainer .overlayd {
-    width: 225px;
+    width: 100%;
 }
 
 .footer {
@@ -255,12 +276,9 @@ nav {
     border-radius: 10px;
 }
 
-#hq .col:first-child {
-    padding-left: 0px;
-}
-
-#hq .col:last-child {
+#hq .col {
     padding-right: 0px;
+    padding-left: 0px;
 }
 
 .cards {
@@ -269,8 +287,15 @@ nav {
 
 .cards .area {
     overflow-y: auto;
-    height: 345px;
+    height: calc(11vw/300*420);
+    margin-top:15px;
 }
+
+.cards .area .cardContainer{
+    overflow-y: auto;
+    width: calc(11vw);
+}
+
 
 #pageSubmenu {
     padding-left: 10px;
@@ -278,12 +303,31 @@ nav {
 
 #eventChannel {
     height: 97%;
-    width: 310px;
     float: left;
     background-color: rgba(0, 0, 0, 0.8);
     overflow: hidden;
     position: relative;
+    margin-left:7px;
+    margin-top:7px;
 }
+#eventChannel .chat{
+    width: 14vw
+}
+
+#eventChannel .chat video{
+    width: 14vw;
+    margin-bottom: 5px;
+}
+
+#eventChannel .chat img{
+    width: 14vw;
+    margin-bottom: 5px;
+}
+
 #userList button{
     margin:5px;
+}
+
+#missionInfo img{
+    height: 32vh;
 }

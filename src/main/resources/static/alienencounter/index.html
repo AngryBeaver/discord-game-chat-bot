@@ -22,79 +22,90 @@
     </div>
 </div>
 
-<div class=" cardArea corridor wrapper">
+<div class="corridor cardArea wrapper">
     <div class="row">
         <div class="col">
-            <div class="cardContainer glowBorder" id="complex5" href="#">
-                <div class="cardHolder">
+            <div class="row glowBorder" id="corridor">
+                <div class="col">
+                    <a class="cardContainer" data-toggle="collapse" href="#corridorDetails">
+                        <div class="cardHolder">
 
+                        </div>
+                        <div class="header overlayd"><p class="glow">airlock</div>
+                        <div class="footer overlayd">
+                            <div class="row">
+                                <div class="col">scan 2</div>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-                <div class="header overlayd"><p class="glow">Airlock</div>
-                <div class="footer overlayd">
-                    <div class="row">
-                        <div class="col"> scan: 2</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="cardContainer glowBorder" id="complex4" href="#">
-                <div class="cardHolder">
+                <div class="title"><p class="glow">corridor</p></div>
+                <div class="col">
+                    <a class="cardContainer" data-toggle="collapse" href="#corridorDetails">
+                        <div class="cardHolder">
 
+                        </div>
+                        <div class="header overlayd"><p class="glow">med-lab</div>
+                        <div class="footer overlayd">
+                            <div class="row">
+                                <div class="col">scan 2</div>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-                <div class="header overlayd"><p class="glow">Med-Lab</p></div>
-                <div class="footer overlayd">
-                    <div class="row">
-                        <div class="col"> scan: 2</div>
-                    </div>
-                </div>
+                <div class="col">
+                    <a class="cardContainer" data-toggle="collapse" href="#corridorDetails">
+                        <div class="cardHolder">
 
-            </div>
-        </div>
-        <div class="col">
-            <div class="cardContainer glowBorder" id="complex3" href="#">
-                <div class="cardHolder">
+                        </div>
+                        <div class="header overlayd"><p class="glow">weapons locker</div>
+                        <div class="footer overlayd">
+                            <div class="row">
+                                <div class="col">scan 3</div>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-                <div class="header overlayd"><p class="glow">Weapons<br/>Locker</p></div>
-                <div class="footer overlayd">
-                    <div class="row">
-                        <div class="col"> scan: 3</div>
-                    </div>
+                <div class="col">
+                    <a class="cardContainer" data-toggle="collapse" href="#headQuarterDetails">
+                        <div class="cardHolder">
+
+                        </div>
+                        <div class="header overlayd"><p class="glow">power station</div>
+                        <div class="footer overlayd">
+                            <div class="row">
+                                <div class="col">scan 3</div>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="cardContainer glowBorder" id="complex2" href="#">
-                <div class="cardHolder">
-                </div>
-                <div class="header overlayd"><p class="glow">Power<br/>Station</p></div>
-                <div class="footer overlayd">
-                    <div class="row">
-                        <div class="col"> scan: 3</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="cardContainer glowBorder" id="complex1" href="#">
-                <div class="cardHolder">
-                </div>
-                <div class="header overlayd"><p class="glow">Ventialtion</br>Shafts</p></div>
-                <div class="footer overlayd">
-                    <div class="row">
-                        <div class="col"> scan: 4</div>
-                    </div>
+                <div class="col">
+                    <a class="cardContainer" data-toggle="collapse" href="#headQuarterDetails">
+                        <div class="cardHolder">
+
+                        </div>
+                        <div class="header overlayd"><p class="glow">ventialtion shafts</div>
+                        <div class="footer overlayd">
+                            <div class="row">
+                                <div class="col">scan 4</div>
+                            </div>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="glowBorder cardArea combat">
-    <div class="title"><p class="glow">Combat</p></div>
-    <div class="row">
+
+<div class="combat cardArea wrapper">
+    <div class="row glowBorder" id="combat">
         <div class="col">
+            <div class="cardHolder">
+
+            </div>
         </div>
+        <div class="title"><p class="glow">combat</p></div>
     </div>
 </div>
 
@@ -201,7 +212,6 @@
             </div>
         </div>
     </div>
-</div>
 </div>
 
 
@@ -402,7 +412,7 @@
                             </nav>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col area">
                         <div id="userChar" class="cardContainer">
 
                         </div>
@@ -430,7 +440,8 @@
                                         <a href="javascript:doCardAction('handToDiscard','#userHand')">discard</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:doCardAction('handToBarracksUp','#userHand')">to barracks</a>
+                                        <a href="javascript:doCardAction('handToBarracksUp','#userHand')">to
+                                            barracks</a>
                                     </li>
                                     <li>
                                         <a href="javascript:handKill()">kill</a>

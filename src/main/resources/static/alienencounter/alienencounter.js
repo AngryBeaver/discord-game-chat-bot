@@ -52,8 +52,8 @@ function joinGame() {
 
 function fillMission() {
     if (game.mission != undefined) {
-        var html = '<img height="315px" src="mission/' + game.mission + '-location.png"/>';
-        html += '<img height="315px" src="mission/' + game.mission + '-objective' + game.objective + '.png"/>';
+        var html = '<img src="mission/' + game.mission + '-location.png"/>';
+        html += '<img src="mission/' + game.mission + '-objective' + game.objective + '.png"/>';
         $('#missionInfo').html(html);
     }
 }
@@ -340,7 +340,7 @@ function getHtmlFromDeck(deck) {
     var html = '';
     deck.forEach(function (value) {
         html += '<a class="cardContainer" href="#">';
-        html += '<img height="315px" src="' + value + '">';
+        html += '<img src="' + value + '">';
         html += '</a>';
     });
     return html;
@@ -416,6 +416,7 @@ function typeWriteMessage(message) {
 $(function () {
     getHqInfo();
     getBarracksInfo();
+    getGameInfo();
 
     socket("event", parseEvents);
 
@@ -464,7 +465,7 @@ $(function () {
                 message = message + "<br/>";
             } else {
                 gameResult.imageIds.forEach(
-                    cardId => message += "<br/><img width='300' src='" + cardId + "' />");
+                    cardId => message += "<br/><img src='" + cardId + "' />");
             }
             showMessage(message);
         }
@@ -472,7 +473,7 @@ $(function () {
     }
 
     function eventStart(gameResult) {
-        let html = '<video autoplay id="vid" width="300">';
+        let html = '<video autoplay id="vid">';
         html += '<source src="startsequence.mp4" type="video/mp4">';
         html += '</video>';
         showMessage(html);
@@ -480,7 +481,7 @@ $(function () {
             typeWriteMessage(gameResult.text);
         }, 7000);
         setTimeout(function () {
-            html = '<img width="300" src="mission/' + gameResult.map.mission + '-location.png">';
+            html = '<img src="mission/' + gameResult.map.mission + '-location.png">';
             showMessage(html);
         }, 24000);
         setTimeout(function () {
@@ -490,7 +491,7 @@ $(function () {
             getHqInfo();
         }, 62000);
         setTimeout(function () {
-            html = '<img width="300" src="mission/' + gameResult.map.mission + '-objective1.png">';
+            html = '<img src="mission/' + gameResult.map.mission + '-objective1.png">';
             showMessage(html);
             getGameInfo();
         }, 79000);
