@@ -88,6 +88,9 @@ public class GameEngine {
     private Object[] getParamters(Method method, GameData gameData, String... optionals){
         return Arrays.asList(method.getParameters()).stream().map(
                 parameter->{
+                    if(parameter.getName().equals("gameData")) {
+                        return gameData;
+                    }
                     if(parameter.getName().equals("userId")) {
                         return gameData.getUserId();
                     }

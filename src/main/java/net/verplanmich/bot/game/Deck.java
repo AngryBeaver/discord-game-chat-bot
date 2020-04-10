@@ -44,28 +44,41 @@ public class Deck {
     }
 
     public String showDrawCard() {
-        return drawPile.get(drawPile.size() - 1);
-    }
-
-    public String showDiscardCard() {
-        return discardPile.get(discardPile.size() - 1);
+        return drawPile.get(0);
     }
 
     public String drawCard() {
         String cardId = showDrawCard();
-        drawPile.remove(drawPile.size() - 1);
+        drawPile.remove(0);
         return cardId;
     }
 
     public void toDrawPileTop(String cardId) {
         drawPile.add(0,cardId);
     }
+
     public void toDrawPileBottom(String cardId) {
         drawPile.add(cardId);
     }
 
+    public boolean fromDrawPile(String cardId){
+        boolean result = drawPile.contains(cardId);
+        drawPile.remove(cardId);
+        return result;
+    }
+
+    public String showDiscardCard() {
+        return discardPile.get(discardPile.size() - 1);
+    }
+
     public void discardCard(String cardId) {
         discardPile.add(cardId);
+    }
+
+    public boolean fromDiscardPile(String cardId){
+        boolean result = discardPile.contains(cardId);
+        discardPile.remove(cardId);
+        return result;
     }
 
     public void shuffleDiscard() {
@@ -78,7 +91,11 @@ public class Deck {
         return drawPile.isEmpty();
     }
 
-    public List<String> getAvailableCards() {
-        return new ArrayList<>(availableCards);
+    public List<String> getDrawPile() {
+        return new ArrayList<>(drawPile);
+    }
+
+    public List<String> getDiscardPile() {
+        return new ArrayList<>(discardPile);
     }
 }

@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -41,13 +38,18 @@ public class MyRestController {
         template.convertAndSend("/event/" + gameData.getGameId(), mapper.writeValueAsString(gameResult));
     }
 
+    @PostMapping("/games/{gameId}/sendToChat")
+    public GameResult gameChat(@PathVariable String gameId, @AuthenticationPrincipal OAuth2User principal, @RequestBody GameResult gameResult) throws JsonProcessingException {
+        GameData gameData =  getGameData(gameId,principal);
+        sendToChat(gameData, gameResult);
+        return new GameResult();
+    }
+
     private GameData getGameData(String gameId, OAuth2User principal){
         GameData gameData = new GameData();
         gameData.setGameId(gameId);
-        gameData.setUserId("super18");
-        gameData.setUserName("AngryBeaver");
-        //gameData.setUserId((String)principal.getAttributes().get("id"));
-        //gameData.setUserName((String)principal.getAttributes().get("username"));
+        gameData.setUserId((String)principal.getAttributes().get("id"));
+        gameData.setUserName((String)principal.getAttributes().get("username"));
         return gameData;
     }
 

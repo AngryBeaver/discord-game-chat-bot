@@ -5,6 +5,7 @@ import net.verplanmich.bot.game.Game;
 import net.verplanmich.bot.game.GameMethod;
 import net.verplanmich.bot.game.GameResult;
 import net.verplanmich.bot.game.zombicide.User;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.util.*;
 import java.util.stream.IntStream;
 
 @Component
+@Scope("prototype")
 public class Zombicide implements Game {
 
     static final String NAME = "zombicide";

@@ -98,22 +98,38 @@
     </div>
 </div>
 
+<div id="barracks" class="cardArea wrapper">
+    <a class="cardContainer glowBorder" data-toggle="collapse" href="#barracksDetails">
+        <div class="cardHolder">
+
+        </div>
+        <div class="header overlayd"><p class="glow">barracks</div>
+        <div class="footer overlayd">
+            <div class="row">
+                <div class="col">
+                    barracks
+                </div>
+            </div>
+        </div>
+    </a>
+</div>
+
+<div id="sergeant" class="cardArea wrapper">
+    <a class="cardContainer glowBorder" data-toggle="collapse" href="#headQuarterDetails">
+        <div class="cardHolder">
+
+        </div>
+        <div class="header overlayd"><p class="glow">sergeant</div>
+        <div class="footer overlayd">
+            <div class="row">
+                <div class="col">sergeant</div>
+            </div>
+        </div>
+    </a>
+</div>
+
 <div class="crew cardArea wrapper">
     <div class="row">
-        <div class="col singleDeck" id="sergeant">
-            <a class="cardContainer glowBorder" data-toggle="collapse" href="#headQuarterDetails">
-                <div class="cardHolder">
-
-                </div>
-                <div class="header overlayd"><p class="glow">sergeant</div>
-                <div class="footer overlayd">
-                    <div class="row">
-                        <div class="col">sergeant</div>
-                    </div>
-                </div>
-            </a>
-        </div>
-
         <div class="col">
             <div class="row glowBorder" id="hq">
                 <div class="col">
@@ -121,37 +137,24 @@
                         <div class="cardHolder">
 
                         </div>
-                        <div class="header overlayd"><p class="glow">head quarter</div>
+                        <div class="header overlayd"><p class="glow">headquarter</div>
                         <div class="footer overlayd">
                             <div class="row">
-                                <div class="col">head quarter</div>
+                                <div class="col">headquarter</div>
                             </div>
                         </div>
                     </a>
                 </div>
-                <div class="title"><p class="glow">Head Quarter</p></div>
+                <div class="title"><p class="glow">headquarter</p></div>
                 <div class="col">
                     <a class="cardContainer" data-toggle="collapse" href="#headQuarterDetails">
                         <div class="cardHolder">
 
                         </div>
-                        <div class="header overlayd"><p class="glow">head quarter</div>
+                        <div class="header overlayd"><p class="glow">headquarter</div>
                         <div class="footer overlayd">
                             <div class="row">
-                                <div class="col">head quarter</div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col">
-                    <a class="cardContainer" data-toggle="collapse" href="#headQuarterDetails">
-                        <div class="cardHolder">
-
-                        </div>
-                        <div class="header overlayd"><p class="glow">head quarter</div>
-                        <div class="footer overlayd">
-                            <div class="row">
-                                <div class="col">head quarter</div>
+                                <div class="col">headquarter</div>
                             </div>
                         </div>
                     </a>
@@ -161,10 +164,10 @@
                         <div class="cardHolder">
 
                         </div>
-                        <div class="header overlayd"><p class="glow">head quarter</div>
+                        <div class="header overlayd"><p class="glow">headquarter</div>
                         <div class="footer overlayd">
                             <div class="row">
-                                <div class="col">head quarter</div>
+                                <div class="col">headquarter</div>
                             </div>
                         </div>
                     </a>
@@ -174,31 +177,28 @@
                         <div class="cardHolder">
 
                         </div>
-                        <div class="header overlayd"><p class="glow">head quarter</div>
+                        <div class="header overlayd"><p class="glow">headquarter</div>
                         <div class="footer overlayd">
                             <div class="row">
-                                <div class="col">head quarter</div>
+                                <div class="col">headquarter</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col">
+                    <a class="cardContainer" data-toggle="collapse" href="#headQuarterDetails">
+                        <div class="cardHolder">
+
+                        </div>
+                        <div class="header overlayd"><p class="glow">headquarter</div>
+                        <div class="footer overlayd">
+                            <div class="row">
+                                <div class="col">headquarter</div>
                             </div>
                         </div>
                     </a>
                 </div>
             </div>
-        </div>
-
-        <div class="col singleDeck">
-            <a class="cardContainer glowBorder" data-toggle="collapse" href="#barracksDetails">
-                <div class="cardHolder">
-
-                </div>
-                <div class="header overlayd"><p class="glow">barracks</div>
-                <div class="footer overlayd">
-                    <div class="row">
-                        <div class="col">
-                            barracks
-                        </div>
-                    </div>
-                </div>
-            </a>
         </div>
     </div>
 </div>
@@ -210,13 +210,14 @@
         <button class="btn btn-primary" data-toggle="collapse" data-target="#gameDetails">
             Game
         </button>
+        <span id="userList"></span>
     </div>
 
     <div class="collapse area glowBorder collapseFooter" id="gameDetails" data-parent="#footer">
         <ul class="nav nav-pills mb-3" id="game-tab" role="tablist">
             <li class="nav-item">
                 <div class="nav-link disabled" role="tab">
-                    <img src="game.png">
+                    <a data-toggle="collapse" data-target="#gameDetails"><img src="game.png"></a>
                     alienencounter
                 </div>
             </li>
@@ -233,7 +234,13 @@
                         <ul class="list-unstyled components">
                             <p>Actions</p>
                             <li>
+                                <a href="javascript:joinGame()">join</a>
+                            </li>
+                            <li>
                                 <a href="javascript:startGame()">start Game</a>
+                            </li>
+                            <li>
+                                <a href="javascript:alienTurn()">alienTurn</a>
                             </li>
                         </ul>
                     </nav>
@@ -241,52 +248,7 @@
             </div>
             <div class="col">
                 <div id="missionInfo" class="tab-pane fade show active cards" role="tabpanel">
-                </div>
-            </div>
-        </div>
-        <a class="close" data-toggle="collapse" href="#selectUser" role="button">x</a>
-    </div>
-
-    <div class="collapse area glowBorder collapseFooter" id="sergeantDetails" data-parent="#footer">
-        <ul class="nav nav-pills mb-3" id="sergeant-tab" role="tablist">
-            <li class="nav-item">
-                <div class="nav-link disabled" role="tab">
-                    <img src="sergeant.png">
-                    sergeant
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#" role="tab">
-                </a>
-            </li>
-        </ul>
-        <div class="row">
-            <div class="col-sm-1">
-                <div class="wrapper">
-                    <nav>
-                        <ul class="list-unstyled components">
-                            <p>Actions</p>
-                            <li>
-                                <a href="javascript:doCardAction('toDiscard','#sergeantDetails')">recruit</a>
-                            </li>
-                            <li>
-                                <a href="javascript:doCardAction('toHand','#sergeantDetails')">use</a>
-                            </li>
-                            <li>
-                                <a href="javascript:doCardAction('remove','#sergeantDetails')">kill</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-            <div class="col">
-                <div id="sergeantDeck" class="tab-pane fade show active cards" role="tabpanel">
-                    <div class="area">
-                        <a class="cardContainer" href="#">
-                            <img height="315px" src="crew/captain-of-the-ship.png">
-                        </a>
-                    </div>
+                    all player need to join before anyone starts the game.
                 </div>
             </div>
         </div>
@@ -297,8 +259,8 @@
         <ul class="nav nav-pills mb-3" id="hq-tab" role="tablist">
             <li class="nav-item">
                 <div class="nav-link disabled" role="tab">
-                    <img src="hq.png">
-                    head quarter
+                    <a data-toggle="collapse" data-target="#headQuarterDetails"> <img src="hq.png"></a>
+                    headquarter
                 </div>
             </li>
 
@@ -314,16 +276,16 @@
                         <ul class="list-unstyled components">
                             <p>Actions</p>
                             <li>
-                                <a href="javascript:doCardAction('toDiscard','#headQuarterDeck')">recruit</a>
+                                <a href="javascript:doCardAction('hqToDiscard','#headQuarterDeck')">recruit</a>
                             </li>
                             <li>
-                                <a href="javascript:doCardAction('toHand','#headQuarterDeck')">use</a>
+                                <a href="javascript:doCardAction('hqToHand','#headQuarterDeck')">use</a>
                             </li>
                             <li>
-                                <a href="javascript:doCardAction('toBarracksDown','#headQuarterDeck')">backDown</a>
+                                <a href="javascript:doCardAction('hqToBarracksDown','#headQuarterDeck')">backDown</a>
                             </li>
                             <li>
-                                <a href="javascript:doCardAction('remove','#headQuarterDeck')">kill</a>
+                                <a href="javascript:doCardAction('hqKill','#headQuarterDeck')">kill</a>
                             </li>
                         </ul>
                     </nav>
@@ -333,7 +295,7 @@
                 <div id="headQuarterDeck" class="tab-pane fade show active cards" role="tabpanel">
                     <div class="area">
                         <a class="cardContainer" href="#">
-                            <img height="315px" src="crew/captain-of-the-ship.png">
+
                         </a>
                     </div>
                 </div>
@@ -347,7 +309,7 @@
 
             <li class="nav-item">
                 <div class="nav-link disabled" role="tab">
-                    <img src="barracks.png">
+                    <a data-toggle="collapse" data-target="#headQuarterDetails"><img src="barracks.png"></a>
                     barracks
                 </div>
             </li>
@@ -394,7 +356,7 @@
                 <div id="barracksDeck" class="tab-pane fade show active cards" role="tabpanel">
                     <div class="area">
                         <a class="cardContainer" href="#">
-                            <img height="315px" src="crew/captain-of-the-ship.png">
+
                         </a>
                     </div>
                 </div>
@@ -403,428 +365,132 @@
         <a class="close" data-toggle="collapse" href="#selectUser" role="button">x</a>
     </div>
 
-
     <div class="collapse area glowBorder collapseFooter" id="userDetails" data-parent="#footer">
-        <ul class="nav nav-pills mb-3" role="tablist">
+        <ul class="nav nav-pills" role="tablist">
             <li class="nav-item">
                 <div class="nav-link disabled" role="tab">
-                    <img src="chars/researcher-avatar.png">
-                    AngryBeaver
+                    Guest
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#char-info" role="tab"
-                   aria-controls="pills-profile" aria-selected="false">info</a>
+                <a class="nav-link" data-toggle="tab" href="#userInfo" role="tab">info</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#char-hand" role="tab"
-                   aria-controls="pills-home" aria-selected="true">hand</a>
+                <a class="nav-link active" data-toggle="tab" href="#userHand" role="tab">hand</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#pills-cards" role="tab"
-                   aria-controls="pills-home" aria-selected="true">discard pile</a>
+                <a class="nav-link" data-toggle="tab" href="#userDiscardPile" role="tab">discard pile</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#pills-cards" role="tab"
-                   aria-controls="pills-home" aria-selected="true">draw pile</a>
+                <a class="nav-link" data-toggle="tab" href="#userDrawPile" role="tab">draw pile</a>
             </li>
         </ul>
-        <div class="row">
-            <div class="col-sm-1">
-                <div class="wrapper">
-                    <nav>
-                        <ul class="list-unstyled components">
-                            <p>Actions</p>
-                            <li>
-                                <a href="javascript:doPlayerAction('invasion')">invasion</a>
-                            </li>
-                            <li>
-                                <a href="javascript:doPlayerAction('draw')">draw</a>
-                            </li>
-                            <li>
-                                <a href="javascript:doPlayerAction('wound')">wound</a>
-                            </li>
-                            <li>
-                                <a href="javascript:doPlayerAction('end turn')">end turn</a>
-                            </li>
-                            <li>
-                                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="true"
-                                   class="dropdown-toggle">manage cards</a>
-                                <ul class="list-unstyled collapse" id="pageSubmenu">
+        <div class="tab-content">
+            <div class="tab-pane fade" id="userInfo" role="tabpanel">
+                <div class="row cards">
+                    <div class="col-sm-1">
+                        <div class="wrapper">
+                            <nav>
+                                <ul class="list-unstyled components">
+                                    <p>Actions</p>
                                     <li>
-                                        <a href="javascript:doPlayerCardAction('toHand')">to hand</a>
+                                        <a href="javascript:doCardAction('heal','#userInfo')">heal</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:doPlayerCardAction('discard')">discard</a>
+                                        <a href="javascript:action('strike')">strike</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:doPlayerCardAction('toBarracksDown')">to barracks</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:doPlayerCardAction('remove')">kill</a>
+                                        <a href="javascript:action('endTurn')">endTurn</a>
                                     </li>
                                 </ul>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-            <div class="col">
-                <div class="tab-content">
-                    <div class="tab-pane fade" id="char-info" role="tabpanel">
-                        <div class="row cards">
-                            <div class="col" id="strikeDeck">
-                                <div class="cardContainer">
-                                    <img src="chars/researcher-char.png">
-                                </div>
-                                <div class="area">
-
-                                </div>
-                            </div>
+                            </nav>
                         </div>
                     </div>
-                    <div class="tab-pane fade show active" id="char-hand" role="tabpanel">
-                        <p class="cardContainer">
-                            <img height="315px" src="crew/captain-of-the-ship.png">
-                        </p>
-                        <p class="cardContainer ">
-                            <img height="315px" src="crew/captain-of-the-ship.png">
-                        </p>
-                        <p class="cardContainer ">
-                            <img height="315px" src="crew/captain-of-the-ship.png">
-                        </p>
-                        <p class="cardContainer ">
-                            <img height="315px" src="crew/captain-of-the-ship.png">
-                        </p>
-                        <p class="cardContainer ">
-                            <img height="315px" src="crew/captain-of-the-ship.png">
-                        </p>
-                        <p class="cardContainer ">
-                            <img height="315px" src="crew/captain-of-the-ship.png">
-                        </p>
-                        <p class="cardContainer ">
-                            <img height="315px" src="crew/captain-of-the-ship.png">
-                        </p>
+                    <div class="col">
+                        <div id="userChar" class="cardContainer">
+
+                        </div>
+
+                        <div id="strikeDeck" class="area">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade show" id="userHand" role="tabpanel">
+                <div class="row cards">
+                    <div class="col-sm-1">
+                        <div class="wrapper">
+                            <nav>
+                                <ul class="list-unstyled components">
+                                    <p>Actions</p>
+                                    <li>
+                                        <a href="javascript:action('draw')">draw</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:doCardAction('handShow','#userHand')">show</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:doCardAction('handToDiscard','#userHand')">discard</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:handKill()">kill</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="col area">
+
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade show" id="userDiscardPile" role="tabpanel">
+                <div class="row cards">
+                    <div class="col-sm-1">
+                        <div class="wrapper">
+                            <nav>
+                                <ul class="list-unstyled components">
+                                    <p>Actions</p>
+                                    <li>
+                                        <a href="javascript:discardKill()">kill</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="col area">
+
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade show" id="userDrawPile" role="tabpanel">
+                <div class="row cards">
+                    <div class="col-sm-1">
+                        <div class="wrapper">
+                            <nav>
+                                <ul class="list-unstyled components">
+                                    <p>Actions</p>
+                                    <li>
+                                        <a href="javascript:drawKill()">kill</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="col area">
+
                     </div>
                 </div>
             </div>
         </div>
-        <a class="close" data-toggle="collapse" href="#selectUser" role="button">x</a>
     </div>
+
 </div>
-<script type="application/javascript">
-    //TEST
-    var testBarrackDeck = ["crew/captain-of-the-ship.png", "crew/captain-of-the-ship.png", "crew/captain-of-the-ship.png"];
-    var testHQDeck = ["crew/first-aid.png", "crew/here-kitty-kitty.png", "crew/right.png", "crew/captain-of-the-ship.png", "crew/motion-detector.png"];
-    var testSergeant = ["crew/sergeant-green.png"];
-    var testStrikes = ["strike/flesh-wound.png"];
-    var testUser = {
-        "10": {"char": "priest", "name": "AngryBeaver"},
-        "11": {"char": "scout", "name": "Player2"},
-        "12": {"char": "scout", "name": "Player3"}
-    }
-    var game = {};
-
-    //FOOTER
-    var footer = $('#footer');
-    footer.on('shown.bs.collapse', '.collapseFooter', function (e) {
-        if (e.target.id.trim() == 'barracksDetails') {
-            openBarracks();
-        }
-        if (e.target.id.trim() == 'headQuarterDetails') {
-            openHQ();
-        }
-        if (e.target.id.trim() == 'userDetails') {
-            openUser();
-        }
-        if (e.target.id.trim() == 'selectUser') {
-            openSelection();
-        }
-        if (e.target.id.trim() == 'gameDetails') {
-            openGame();
-        }
-    });
-
-    //GAME
-    function startGame(){
-        action("start", "nostromo");
-    }
-
-    function fillMission() {
-        if(game.mission != undefined) {
-            var html = '<img height="315px" src="mission/' + game.mission + '-location.png"/>';
-            html += '<img height="315px" src="mission/' + game.mission + '-objective' + game.objective + '.png"/>';
-            $('#missionInfo').html(html);
-        }
-    }
-
-    function openGame() {
-        fillMission();
-    }
-
-    function getGameInfo(){
-        action("getGameInfo").then(gameResult=>{
-            game.mission=gameResult.map.mission;
-            game.objective=gameResult.map.objective;
-            fillMission();
-        })
-    }
-
-
-
-
-
-    //SELECTION
-    var fallback = false;
-    footer.on('hidden.bs.collapse', '.collapseFooter', function () {
-        console.log(fallback);
-        if (!fallback) {
-            footer.find('#selectUser').collapse('show');
-        }
-        fallback = false;
-        $('#barracksDeck .area').html("");
-    });
-    footer.on('show.bs.collapse', '.collapseFooter', function () {
-        fallback = true;
-        console.log("in");
-    });
-
-    function openSelection() {
-        //users.forEach(value =>);
-    }
-
-
-    //SERGEANT
-    function fillSergeant() {
-        $('#sergeant .cardContainer .cardHolder').html("");
-        Object.entries(testSergeant).forEach(([key, value]) => {
-            $('#sergeant .cardContainer .cardHolder:eq(' + key + ')').html('<img src="' + value + '"/>');
-        });
-    }
-
-
-    //HQ
-    function fillHQDetails() {
-        var html = getHtmlFromDeck(testSergeant);
-        html += getHtmlFromDeck(testHQDeck);
-        $('#headQuarterDeck .area').html(html);
-    }
-
-    function openHQ() {
-        fillHQDetails();
-        fillHQ();
-        fillSergeant();
-        activateSelectableCards();
-    }
-
-    function fillHQ() {
-        $('#hq .cardContainer .cardHolder').html("");
-        Object.entries(testHQDeck).forEach(([key, value]) => {
-            $('#hq .cardContainer .cardHolder:eq(' + key + ')').html('<img src="' + value + '"/>');
-        });
-    }
-
-
-    //BARRACKS
-    $('#playerDetails a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        if (e.target.id.trim() == 'info') {
-            fillInfo();
-        }
-    });
-
-
-    function fillBarracks(deck) {
-        var html = getHtmlFromDeck(deck);
-        $('#barracksDeck .area').html(html);
-    }
-
-    function showBarracks() {
-        $('#barracksDeck a.cardContainer').hide();
-        var visibility = $('#barracksDetails .nav-link.active').text().trim();
-        if (visibility == "all") {
-            $('#barracksDeck a.cardContainer').show();
-        }
-        if (visibility == "first") {
-            $('#barracksDeck a.cardContainer').first().show();
-        }
-        if (visibility == "second") {
-            $('#barracksDeck a.cardContainer:lt(2)').show();
-        }
-    }
-
-    function openBarracks() {
-        $('#barracksDetails .nav-link:eq(1)').tab('show');
-        fillBarracks(testBarrackDeck);
-        showBarracks();
-        activateSelectableCards();
-    }
-
-    //USER
-    $('#userDetails a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        showUser();
-    });
-
-
-    function fillStrikes() {
-        var html = getHtmlFromDeck(testStrikes);
-        $('#strikeDeck .area').html(html);
-    }
-
-    function fillUser(userId) {
-        var html = '<img src="chars/' + testUser[userId].char + '-avatar.png">';
-        html += testUser[userId].name;
-        $('#userDetails .nav-link.disabled').html(html);
-    }
-
-    function showUser() {
-        var userTab = $('#userDetails .nav-link.active').text().trim();
-        console.dir($('#userDetails').find('a.cardContainer.glowBorder'));
-        $('#userDetails').find('a.cardContainer.glowBorder').removeClass('glowBorder');
-        if (userTab == "info") {
-            //$('#barracksDeck a.cardContainer').show();
-        }
-        if (userTab == "hand") {
-            //$('#barracksDeck a.cardContainer').first().show();
-        }
-        if (userTab == "discard") {
-            //$('#barracksDeck a.cardContainer:lt(2)').show();
-        }
-        if (userTab == "draw") {
-            //$('#barracksDeck a.cardContainer:lt(2)').show();
-        }
-    }
-
-    function openUser() {
-        $('#userDetails .nav-link:eq(2)').tab('show');
-        fillStrikes();
-        fillUser(10);
-        activateSelectableCards();
-    }
-
-
-    //UTILITIES
-    function getHtmlFromDeck(deck) {
-        var html = '';
-        deck.forEach(function (value) {
-            html += '<a class="cardContainer" href="#">';
-            html += '<img height="315px" src="' + value + '">';
-            html += '</a>';
-        });
-        return html;
-    }
-
-    function activateSelectableCards() {
-        var selectCard = $('.cards .area a.cardContainer');
-        selectCard.on('click', function () {
-            console.log($(this).parent('.area'));
-            $(this).parent('.area').find('a.cardContainer.glowBorder').removeClass('glowBorder');
-            $(this).addClass('glowBorder');
-        });
-    }
-
-    function doCardAction(action, selector) {
-        var src = getCardSelection(selector);
-        if (src == undefined) {
-            alert("Select a Card");
-            return;
-        }
-        alert(action + " " + src);
-    }
-
-    function getCardSelection(selector) {
-        return $(selector).find('a.cardContainer.glowBorder img').attr('src');
-    }
-
-
-
-    //CHAT
-    function showMessage(message) {
-        if (message.content != "") {
-            $("#eventChannel .chat").append("<div>" + message + "</div>");
-            scrollChat();
-        }
-    }
-
-    function scrollChat(){
-        $("#eventChannel").animate({ scrollTop:  $('#eventChannel .chat').height() }, 1000);
-    }
-
-
-    function typeWriteMessage(message){
-        var i = 0;
-        let speed = 100;
-        typeWriter();
-
-        function typeWriter() {
-            if (i < message.length) {
-                $("#eventChannel .chat").append( message.charAt(i));
-                i++;
-                setTimeout(typeWriter, speed);
-            }else{
-                $("#eventChannel .chat").append("<br/>");
-                scrollChat();
-            }
-
-        }
-    }
-
-    //EVENT
-    $(function () {
-        socket("event",parseEvents);
-
-        let EVENT_START = "start";
-        let EVENT_REFRESH_HQ = "hq";
-        let EVENT_REFRESH_BARRACKS = "barracks";
-        let EVENT_REFRESH_USER_HAND = "hand";
-        let EVENT_REFRESH_USER_WOUND = "wound";
-        let EVENT_REFRESH_GAME = "game";
-        let EVENT_INFO = "info";
-
-        function parseEvents(gameResult) {
-            if(gameResult.events.includes(EVENT_START)){
-                eventStart(gameResult);
-            }
-            if(gameResult.events.includes(EVENT_REFRESH_GAME)){
-                getGameInfo();
-            }
-        }
-
-        function eventStart(gameResult){
-            let html = '<video autoplay id="vid" width="320">';
-            html += '<source src="startsequence.mp4" type="video/mp4">';
-            html += '</video>';
-            showMessage(html);
-            setTimeout(function(){
-                typeWriteMessage(gameResult.text);
-            }, 1000);
-            setTimeout(function(){
-                html = '<img width="315" src="mission/' +gameResult.map.mission + '-location.png">';
-                showMessage(html);
-            }, 7000);
-            setTimeout(function(){
-                html = '<img src="mission/' +gameResult.map.mission + '-objective1.png">';
-                showMessage(html);
-                $('#vid')[0].pause();
-            }, 24000);
-
-        }
-    });
-
-
-    //GENERIC REST
-    function action(command,option) {
-        return fetch("/games/" + gameId + "/"+command+"/"+option)
-            .then(function (response) {
-                return response.json().then(function (data) {
-                    if (response.status != 200) {
-                        throw Exception(data.message);
-                    }
-                    return data;
-                })
-            });
-    }
-
-
+<a class="close" data-toggle="collapse" href="#selectUser" role="button">x</a>
+</div>
+</div>
+<script type="application/javascript" src="alienencounter.js">
 </script>
 </body>
 </html>

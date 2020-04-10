@@ -4,74 +4,125 @@ import net.verplanmich.bot.game.Deck;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static net.verplanmich.bot.game.alienencounter.Alienencounter.NAME;
 
 public class User {
 
-    private static final String STARTER = "starter";
+    static final String STARTER = "starter";
+    static final String USER_NAME = "userName";
+    static final String USER_ID = "userId";
+    static final String USER_CHAR = "userChar";
 
     private final Deck deck;
     private final List<String> hand;
     private final List<String> strikes;
-    private final String charName;
+    private final Map<String, String> user = new HashMap();
 
-    public User(String charName) throws IOException {
-        List<String> starterCards = Deck.getFor(NAME, STARTER).getAvailableCards();
-        starterCards.add(charName+".png");
-        this.charName = charName;
+    public User(String userName, String userId, String userChar) throws IOException {
+        List<String> starterCards = Deck.getFor(NAME, STARTER).getDrawPile();
+        starterCards.add(userChar + ".png");
+        user.put(USER_NAME, userName);
+        user.put(USER_ID, userId);
+        user.put(USER_CHAR, userChar);
         hand = new ArrayList();
         strikes = new ArrayList();
         deck = new Deck(starterCards);
-        draw(5);
+        refreshHand();
     }
 
-    public List<String> getStrikes(){
+    public void strike(String cardId){
+        strikes.add(cardId);
+    }
+
+    public boolean heal(String cardId){
+        boolean result = strikes.contains(cardId);
+        if (result) {
+            strikes.remove(cardId);
+        }
+        return result;
+    }
+
+
+    public List<String> getStrikes() {
         return new ArrayList(strikes);
     }
 
-    public List<String> getHand(){
+    public List<String> getHand() {
         return new ArrayList(hand);
     }
 
-    public String getCharName(){
-        return charName;
+    public Map<String, String> getUserInfo() {
+        return user;
     }
 
-    public boolean discard(String cardId){
+    public List<String> getDrawPile() {
+        return deck.getDrawPile();
+    }
+
+    public List<String> getDiscardPile() {
+        return deck.getDiscardPile();
+    }
+
+    public boolean discard(String cardId) {
         boolean result = fromHand(cardId);
-        if(result){
+        if (result) {
             deck.discardCard(cardId);
         }
         return result;
     }
 
-    public boolean fromHand(String cardId){
+    public boolean fromHand(String cardId) {
         boolean result = hand.contains(cardId);
-        if(result){
+        if (result) {
             hand.remove(cardId);
         }
         return result;
     }
 
-    public void toDiscard(String cardId){
+    public boolean fromDiscard(String cardId) {
+        return deck.fromDiscardPile(cardId);
+    }
+
+    public boolean fromDraw(String cardId) {
+        return deck.fromDrawPile(cardId);
+    }
+
+    public void toDiscard(String cardId) {
         deck.discardCard(cardId);
     }
 
-    public void toHand(String cardId){
+    public void toHand(String cardId) {
         hand.add(cardId);
     }
 
-    public void toDraw(String cardId){
+    public void toDraw(String cardId) {
         deck.toDrawPileTop(cardId);
     }
 
-    public void draw(int amount){
-        if(amount > 0){
-            hand.add(deck.drawCard());
-            amount--;
-            draw(amount);
+    public void refreshHand() {
+        hand.forEach(cardId -> deck.discardCard(cardId));
+        draw();
+        draw();
+        draw();
+        draw();
+        draw();
+        draw();
+    }
+
+    public String draw() {
+        try {
+            String cardId = deck.drawCard();
+            hand.add(cardId);
+            return cardId;
+        } catch (Exception e) {
+            deck.shuffleDiscard();
+            String cardId = deck.drawCard();
+            hand.add(cardId);
+            return cardId;
         }
     }
 
