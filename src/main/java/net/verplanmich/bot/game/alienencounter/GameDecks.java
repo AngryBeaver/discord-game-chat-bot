@@ -35,9 +35,6 @@ public class GameDecks {
     private Deck sergeant;
     private Deck drone;
 
-    private List<String> theSos = Arrays.asList("event.png","event.png","egg.png","egg.png","egg.png","egg.png","hazard.png","game-objective1-sos.png","game-objective1-sos.png");
-
-
     public GameDecks() throws IOException {
         difficutly.put(1,new HashMap());
         difficutly.put(2,new HashMap());
@@ -60,7 +57,10 @@ public class GameDecks {
         difficutly.get(5).put(1,6);
         difficutly.get(5).put(2,7);
         missionCards.put(NOSTROMO,new ArrayList());
-        missionCards.get(NOSTROMO).add(theSos);
+        missionCards.get(NOSTROMO).add( Arrays.asList("event.png","event.png","egg.png","egg.png","egg.png","egg.png","hazard.png","game-objective1-sos.png","game-objective1-sos.png"));
+        missionCards.get(NOSTROMO).add( Arrays.asList("jonesy.png","event.png","event.png","objective2-sos.png","hazard.png","shedding-skin-xenomorph.png","shedding-skin-xenomorph.png","shedding-skin-xenomorph.png","skittering-xenomorph.png","skittering-xenomorph.png","skittering-xenomorph.png"));
+        missionCards.get(NOSTROMO).add( Arrays.asList("the-perfect-organism.png","event.png","event.png","hazard.png","xenomorph-lance-tail.png","xenomorph-lance-tail.png","xenomorph-lance-tail.png","twin-mouth-xenomorph.png","twin-mouth-xenomorph.png","twin-mouth-xenomorph.png","twin-mouth-xenomorph.png","ash.png","objective3-sos.png"));
+
 
         chars = Deck.getFor(NAME,CHARS);
         strikes = Deck.getFor(NAME,STRIKES);
@@ -76,11 +76,11 @@ public class GameDecks {
     }
 
 
-    private Deck getAliens(Mission mission,int players){
+    public Deck getAliens(Mission mission,int players){
         Deck result = new Deck();
         Deck droneShuffled = new Deck(drone.getDrawPile());
         for(int objective= 0; objective < 3; objective ++){
-            List<String> objectiveCards = missionCards.get(mission).get(objective);
+            List<String> objectiveCards = new ArrayList(missionCards.get(mission).get(objective));
             IntStream.range(0,difficutly.get(players).get(objective)).forEach(
                     i->objectiveCards.add(droneShuffled.drawCard())
             );

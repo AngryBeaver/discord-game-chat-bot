@@ -24,6 +24,9 @@ public class User {
 
     public User(String userName, String userId, String userChar) throws IOException {
         List<String> starterCards = Deck.getFor(NAME, STARTER).getDrawPile();
+        if(userChar.equals("security-chief")) {
+            starterCards.add(userChar + "1.png");
+        }
         starterCards.add(userChar + ".png");
         user.put(USER_NAME, userName);
         user.put(USER_ID, userId);

@@ -39,6 +39,9 @@ footer.on('shown.bs.collapse', '.collapseFooter', function (e) {
     if (e.target.id.trim() == 'gameDetails') {
         openGame();
     }
+    if (e.target.id.trim() == 'complexDetails') {
+        openComplex();
+    }
 });
 
 //GAME
@@ -101,6 +104,12 @@ function fillUserList() {
 function openSelection() {
 
 }
+
+//COMPLEX
+function openComplex(){
+    activateDragDrop('#complexDeck')
+}
+
 
 //SERGEANT
 function fillSergeant(){
@@ -411,6 +420,48 @@ function typeWriteMessage(message) {
 
     }
 }
+
+//DRAG&DROP
+function activateDragDrop(selector){
+    $(selector).find('a.cardContainer img').draggable( {
+        containment: selector +" .area",
+        stack: selector,
+        cursor: 'move',
+        zIndex: 50,
+        revert: true
+    } );
+
+    $(selector).find('a.cardContainer').droppable( {
+        accept: "a.cardContainer img",
+        activeClass: "glowBorder",
+        hoverClass: 'hovered',
+        drop: handleCardDrop
+    } );
+}
+
+function handleCardDrop( event, ui ) {
+    let area = $(this).parents(".area");
+    let from = area.find('.cardContainer').index( ui.draggable.parents(".cardContainer"));
+    let to = area.find('.cardContainer').index( $(this));
+    console.log(ui.draggable.parent());
+    console.log($(this));
+    console.log(to);
+    console.log(from);
+    console.log(area.find(".cardContainer:eq("+to+")"));
+    area.find(".cardContainer:eq("+from+") .cardHolder").append($(this).find(".cardHolder img"));
+    area.find(".cardContainer:eq("+to+") .cardHolder").append(ui.draggable[0])
+    //swapNodes(this,ui.draggable[0])
+
+
+}
+
+function swapNodes(a, b) {
+    var aparent = a.parentNode;
+    var asibling = a.nextSibling === b ? a : a.nextSibling;
+    b.parentNode.insertBefore(a, b);
+    aparent.insertBefore(b, asibling);
+}
+
 
 //EVENT
 $(function () {

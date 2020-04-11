@@ -82,11 +82,11 @@ div.darkall:before {
     padding-left: 0px;
 }
 
-.corridor {
+.complex {
     width: calc(100%/9*5);
     margin:5px;
 }
-#corridor {
+#complex {
     border-radius: 10px;
 }
 
@@ -293,7 +293,6 @@ nav {
 }
 
 .cards .area .cardContainer{
-    overflow-y: auto;
     width: calc(11vw);
 }
 
@@ -331,4 +330,27 @@ nav {
 
 #missionInfo img{
     height: 32vh;
+}
+
+#footer .cardContainer .footer {
+    z-index: 0;
+}
+
+#footer .cardContainer .header {
+    z-index: 0;
+    box-shadow: inset 0 0 100px rgba(10, 22, 255, 0.05), /* inner black */ inset 20px 0 80px rgba(10, 22, 255, 0.05), /* inner left magenta short */ inset -20px 0 80px rgba(24, 240, 255, 0.05), /* inner right cyan short */ inset 20px 0 300px rgba(10, 22, 255, 0.05), /* inner left magenta broad */ inset -20px 0 300px rgba(24, 240, 255, 0.05); /* inner right cyan broad */
+
+    background-color: rgba(0, 0, 0, 0.7);
+    height: 100%;
+    border-radius: 5px;
+}
+#footer .cardContainer {
+    overflow: visible;
+}
+
+#footer .cardContainer .cardHolder {
+    z-index: 1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
 }

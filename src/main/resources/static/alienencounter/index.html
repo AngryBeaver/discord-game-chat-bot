@@ -5,6 +5,10 @@
     <script src="http://code.jquery.com/jquery-3.4.1.min.js"
             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
             crossorigin="anonymous"></script>
+    <script
+            src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+            integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+            crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
             crossorigin="anonymous"></script>
@@ -22,12 +26,12 @@
     </div>
 </div>
 
-<div class="corridor cardArea wrapper">
+<div class="complex cardArea wrapper">
     <div class="row">
         <div class="col">
-            <div class="row glowBorder" id="corridor">
+            <div class="row glowBorder" id="complex">
                 <div class="col">
-                    <a class="cardContainer" data-toggle="collapse" href="#corridorDetails">
+                    <a class="cardContainer" data-toggle="collapse" href="#complexDetails">
                         <div class="cardHolder">
 
                         </div>
@@ -39,9 +43,9 @@
                         </div>
                     </a>
                 </div>
-                <div class="title"><p class="glow">corridor</p></div>
+                <div class="title"><p class="glow">complex</p></div>
                 <div class="col">
-                    <a class="cardContainer" data-toggle="collapse" href="#corridorDetails">
+                    <a class="cardContainer" data-toggle="collapse" href="#complexDetails">
                         <div class="cardHolder">
 
                         </div>
@@ -54,7 +58,7 @@
                     </a>
                 </div>
                 <div class="col">
-                    <a class="cardContainer" data-toggle="collapse" href="#corridorDetails">
+                    <a class="cardContainer" data-toggle="collapse" href="#complexDetails">
                         <div class="cardHolder">
 
                         </div>
@@ -67,7 +71,7 @@
                     </a>
                 </div>
                 <div class="col">
-                    <a class="cardContainer" data-toggle="collapse" href="#headQuarterDetails">
+                    <a class="cardContainer" data-toggle="collapse" href="#complexDetails">
                         <div class="cardHolder">
 
                         </div>
@@ -80,7 +84,7 @@
                     </a>
                 </div>
                 <div class="col">
-                    <a class="cardContainer" data-toggle="collapse" href="#headQuarterDetails">
+                    <a class="cardContainer" data-toggle="collapse" href="#complexDetails">
                         <div class="cardHolder">
 
                         </div>
@@ -222,6 +226,91 @@
         </button>
         <span id="userList"></span>
     </div>
+
+
+    <div class="collapse area glowBorder collapseFooter" id="complexDetails" data-parent="#footer">
+        <ul class="nav nav-pills mb-3" id="complex-tab" role="tablist">
+            <li class="nav-item">
+                <div class="nav-link disabled" role="tab">
+                    <a data-toggle="collapse" data-target="#complexDetails" href="#"> <img src="complex.png"></a>
+                    complex
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#" role="tab">
+                </a>
+            </li>
+        </ul>
+        <div class="row">
+            <div class="col-sm-1">
+                <div class="wrapper">
+                    <nav>
+                        <ul class="list-unstyled components">
+                            <p>Actions</p>
+                            <li>
+                                <a href="javascript:doComplexAction('complexAdd','#complexDeck')">addAlien</a>
+                            </li>
+                            <li>
+                                <a href="javascript:doComplexAction('complexScan','#complexDeck')">scan</a>
+                            </li>
+                            <li>
+                                <a href="javascript:doComplexAction('complexToCombat','#complexDeck')">toCombat</a>
+                            </li>
+                            <li>
+                                <a href="javascript:doComplexAction('complexKill','#complexDeck')">kill</a>
+                            </li>
+                            <li>
+                                <a href="javascript:doComplexAction('complexToHand','#complexDeck')">toHand</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="col">
+                <div id="complexDeck" class="tab-pane fade show active cards" role="tabpanel">
+                    <div class="area">
+                        <a class="cardContainer" href="#">
+                            <div class="cardHolder">
+
+                            </div>
+                            <div class="header overlayd"><p class="glow">airlock</p></div>
+                        </a>
+
+                        <a class="cardContainer" href="#">
+                            <div class="cardHolder">
+                                <img src="alien/ambushed-medic.png"/>
+                            </div>
+                            <div class="header overlayd"><p class="glow">med-lab</p></div>
+                        </a>
+
+                        <a class="cardContainer" href="#">
+                            <div class="cardHolder">
+
+                            </div>
+                            <div class="header overlayd"><p class="glow">weapons locker</p></div>
+                        </a>
+
+                        <a class="cardContainer" href="#">
+                            <div class="cardHolder">
+
+                            </div>
+                            <div class="header overlayd"><p class="glow">power station</p></div>
+                        </a>
+
+                        <a class="cardContainer" href="#">
+                            <div class="cardHolder">
+                                <img src="alien/carmouflaged-xenomorph.png"/>
+                            </div>
+                            <div class="header overlayd"><p class="glow">ventilation shafts</p></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="close" data-toggle="collapse" href="#selectUser" role="button">x</a>
+    </div>
+
 
     <div class="collapse area glowBorder collapseFooter" id="gameDetails" data-parent="#footer">
         <ul class="nav nav-pills mb-3" id="game-tab" role="tablist">

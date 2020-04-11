@@ -56,7 +56,9 @@ public class Alienencounter implements Game {
     private Deck strikes;
     private Deck sergeant;
     private Deck barracksDeck;
+    private Deck hive;
     private String objective;
+    private List<String> complex;
 
     @Autowired
     public Alienencounter(GameDecks gameDecks){
@@ -101,8 +103,15 @@ public class Alienencounter implements Game {
         fillHq(3);
         fillHq(4);
         objective = "1";
+        hive = gameDecks.getAliens(this.mission,users.size());
+        complex = new ArrayList();
         return getGameInfo()
                 .addEvent(EVENT_START);
+    }
+
+    @GameMethod()
+    public GameResult complexAdd(){
+        return new GameResult();
     }
 
     @GameMethod()
