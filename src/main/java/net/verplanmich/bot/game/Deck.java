@@ -61,6 +61,10 @@ public class Deck {
         drawPile.add(cardId);
     }
 
+    public void toDrawPileBottom(List<String> cards) {
+        drawPile.addAll(cards);
+    }
+
     public boolean fromDrawPile(String cardId){
         boolean result = drawPile.contains(cardId);
         drawPile.remove(cardId);

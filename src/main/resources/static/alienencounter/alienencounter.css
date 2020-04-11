@@ -288,6 +288,7 @@ nav {
 .cards .area {
     overflow-y: auto;
     height: calc(11vw/300*420);
+    max-width: calc(11vw*6.8);
     margin-top:15px;
 }
 
