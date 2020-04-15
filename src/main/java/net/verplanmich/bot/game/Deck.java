@@ -13,10 +13,6 @@ public class Deck {
     private List<String> drawPile = new ArrayList();
     private List<String> discardPile = new ArrayList();
 
-    public Deck(){
-        this(new ArrayList());
-    }
-
     public Deck(List availableCards) {
         this.availableCards = availableCards;
         initialize();
@@ -37,10 +33,15 @@ public class Deck {
         }
     }
 
-    public void initialize() {
+    public Deck initialize() {
         discardPile = new ArrayList();
         drawPile = new ArrayList(availableCards);
+        return this;
+    }
+
+    public Deck shuffle(){
         Collections.shuffle(drawPile);
+        return this;
     }
 
     public String showDrawCard() {
@@ -59,10 +60,6 @@ public class Deck {
 
     public void toDrawPileBottom(String cardId) {
         drawPile.add(cardId);
-    }
-
-    public void toDrawPileBottom(List<String> cards) {
-        drawPile.addAll(cards);
     }
 
     public boolean fromDrawPile(String cardId){

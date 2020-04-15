@@ -21,10 +21,14 @@
     <link rel="stylesheet" href="alienencounter.css"/>
 </head>
 <body id="game">
-<div id="eventChannel" class="cardArea wrapper glowBorder">
+<div id="eventChannel" class="wrapper">
+    <div class="cardArea glowBorder">
     <div class="chat">
     </div>
+    </div>
+    <div class="console">#:<input></div>
 </div>
+
 
 <div class="complex cardArea wrapper">
     <div class="row">
@@ -88,7 +92,7 @@
                         <div class="cardHolder">
 
                         </div>
-                        <div class="header overlayd"><p class="glow">ventialtion shafts</div>
+                        <div class="header overlayd"><p class="glow">ventilation shafts</div>
                         <div class="footer overlayd">
                             <div class="row">
                                 <div class="col">scan 4</div>
@@ -229,7 +233,7 @@
 
 
     <div class="collapse area glowBorder collapseFooter" id="complexDetails" data-parent="#footer">
-        <ul class="nav nav-pills mb-3" id="complex-tab" role="tablist">
+        <ul class="nav nav-pills" id="complex-tab" role="tablist">
             <li class="nav-item">
                 <div class="nav-link disabled" role="tab">
                     <a data-toggle="collapse" data-target="#complexDetails" href="#"> <img src="complex.png"></a>
@@ -249,19 +253,24 @@
                         <ul class="list-unstyled components">
                             <p>Actions</p>
                             <li>
-                                <a href="javascript:doComplexAction('complexAdd','#complexDeck')">addAlien</a>
+                                <button class="btn btn-sm btn-primary" onclick="doComplexAction('complexAdd','#complexDeck')">
+                                    scan
+                                </button>
                             </li>
                             <li>
-                                <a href="javascript:doComplexAction('complexScan','#complexDeck')">scan</a>
+                                <button class="btn btn-sm btn-primary" onclick="doComplexAction('complexToCombat','#complexDeck')">
+                                    toCombat
+                                </button>
                             </li>
                             <li>
-                                <a href="javascript:doComplexAction('complexToCombat','#complexDeck')">toCombat</a>
+                                <button class="btn btn-sm btn-primary" onclick="doComplexAction('complexKill','#complexDeck')">
+                                    kill
+                                </button>
                             </li>
                             <li>
-                                <a href="javascript:doComplexAction('complexKill','#complexDeck')">kill</a>
-                            </li>
-                            <li>
-                                <a href="javascript:doComplexAction('complexToHand','#complexDeck')">toHand</a>
+                                <button class="btn btn-sm btn-primary" onclick="doComplexAction('complexToHand','#complexDeck')">
+                                    toHand
+                                </button>
                             </li>
                         </ul>
                     </nav>
@@ -274,14 +283,20 @@
                             <div class="cardHolder">
 
                             </div>
-                            <div class="header overlayd"><p class="glow">airlock</p></div>
+                            <div class="header overlayd"><p class="glow">hive</p></div>
+                        </a>
+                        <a class="cardContainer" href="#">
+                            <div class="cardHolder">
+
+                            </div>
+                            <div class="header overlayd"><p class="glow">ventilation shafts</p></div>
                         </a>
 
                         <a class="cardContainer" href="#">
                             <div class="cardHolder">
                                 <img src="alien/ambushed-medic.png"/>
                             </div>
-                            <div class="header overlayd"><p class="glow">med-lab</p></div>
+                            <div class="header overlayd"><p class="glow">power station</p></div>
                         </a>
 
                         <a class="cardContainer" href="#">
@@ -295,14 +310,20 @@
                             <div class="cardHolder">
 
                             </div>
-                            <div class="header overlayd"><p class="glow">power station</p></div>
+                            <div class="header overlayd"><p class="glow">med-lab</p></div>
                         </a>
 
                         <a class="cardContainer" href="#">
                             <div class="cardHolder">
                                 <img src="alien/carmouflaged-xenomorph.png"/>
                             </div>
-                            <div class="header overlayd"><p class="glow">ventilation shafts</p></div>
+                            <div class="header overlayd"><p class="glow">airlock</p></div>
+                        </a>
+                        <a class="cardContainer" href="#">
+                            <div class="cardHolder">
+                                <img src="alien/carmouflaged-xenomorph.png"/>
+                            </div>
+                            <div class="header overlayd"><p class="glow">combat</p></div>
                         </a>
                     </div>
                 </div>
@@ -313,7 +334,7 @@
 
 
     <div class="collapse area glowBorder collapseFooter" id="gameDetails" data-parent="#footer">
-        <ul class="nav nav-pills mb-3" id="game-tab" role="tablist">
+        <ul class="nav nav-pills " id="game-tab" role="tablist">
             <li class="nav-item">
                 <div class="nav-link disabled" role="tab">
                     <a data-toggle="collapse" data-target="#gameDetails" href="#"><img src="game.png"></a>
@@ -333,13 +354,25 @@
                         <ul class="list-unstyled components">
                             <p>Actions</p>
                             <li>
-                                <a href="javascript:joinGame()">join</a>
+                                <button class="btn btn-sm btn-primary" onclick="joinGame()">
+                                    join
+                                </button>
                             </li>
                             <li>
-                                <a href="javascript:startGame()">start Game</a>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        start
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="javascript:action('start','nostromo')">nostromo</a>
+                                        <a class="dropdown-item" href="javascript:action('start','sulaci')">sulaci</a>
+                                    </div>
+                                </div>
                             </li>
                             <li>
-                                <a href="javascript:alienTurn()">alienTurn</a>
+                                <button class="btn btn-sm btn-primary" onclick="action('setObjective',(game.objective-1+2))">
+                                    next
+                                </button>
                             </li>
                         </ul>
                     </nav>
@@ -355,7 +388,7 @@
     </div>
 
     <div class="collapse area glowBorder collapseFooter" id="headQuarterDetails" data-parent="#footer">
-        <ul class="nav nav-pills mb-3" id="hq-tab" role="tablist">
+        <ul class="nav nav-pills " id="hq-tab" role="tablist">
             <li class="nav-item">
                 <div class="nav-link disabled" role="tab">
                     <a data-toggle="collapse" data-target="#headQuarterDetails" href="#"> <img src="hq.png"></a>
@@ -375,16 +408,24 @@
                         <ul class="list-unstyled components">
                             <p>Actions</p>
                             <li>
-                                <a href="javascript:doHqAction('hqToDiscard','#headQuarterDeck')">recruit</a>
+                                <button class="btn btn-sm btn-primary" onclick="doHqAction('hqToDiscard','#headQuarterDeck')">
+                                    recruit
+                                </button>
                             </li>
                             <li>
-                                <a href="javascript:doHqAction('hqToHand','#headQuarterDeck')">use</a>
+                                <button class="btn btn-sm btn-primary" onclick="doHqAction('hqToHand','#headQuarterDeck')">
+                                    use
+                                </button>
                             </li>
                             <li>
-                                <a href="javascript:doHqAction('hqToBarracksDown','#headQuarterDeck')">backDown</a>
+                                <button class="btn btn-sm btn-primary" onclick="doHqAction('hqToBarracksBottom','#headQuarterDeck')">
+                                    backDown
+                                </button>
                             </li>
                             <li>
-                                <a href="javascript:doHqAction('hqKill','#headQuarterDeck')">kill</a>
+                                <button class="btn btn-sm btn-primary" onclick="doHqAction('hqToVoid','#headQuarterDeck')">
+                                    kill
+                                </button>
                             </li>
                         </ul>
                     </nav>
@@ -404,7 +445,7 @@
     </div>
 
     <div class="collapse area glowBorder collapseFooter" id="barracksDetails" data-parent="#footer">
-        <ul class="nav nav-pills mb-3" id="barracks-tab" role="tablist">
+        <ul class="nav nav-pills " id="barracks-tab" role="tablist">
 
             <li class="nav-item">
                 <div class="nav-link disabled" role="tab">
@@ -432,16 +473,24 @@
                         <ul class="list-unstyled components">
                             <p>Actions</p>
                             <li>
-                                <a href="javascript:doCardAction('barracksToDiscard','#barracksDeck')">recruit</a>
+                                <button class="btn btn-sm btn-primary" onclick="doCardAction('barracksToDiscard','#barracksDeck')">
+                                    recruit
+                                </button>
                             </li>
                             <li>
-                                <a href="javascript:doCardAction('barracksToHand','#barracksDeck')">use</a>
+                                <button class="btn btn-sm btn-primary" onclick="doCardAction('barracksToHand','#barracksDeck')">
+                                    use
+                                </button>
                             </li>
                             <li>
-                                <a href="javascript:doCardAction('barracksDown','#barracksDeck')">toBottom</a>
+                                <button class="btn btn-sm btn-primary" onclick="doCardAction('barracksToBarracksBottom','#barracksDeck')">
+                                    toBottom
+                                </button>
                             </li>
                             <li>
-                                <a href="javascript:doCardAction('barracksKill','#barracksDeck')">kill</a>
+                                <button class="btn btn-sm btn-primary" onclick="doCardAction('barracksToVoid','#barracksDeck')">
+                                    kill
+                                </button>
                             </li>
                         </ul>
                     </nav>
@@ -489,13 +538,24 @@
                                 <ul class="list-unstyled components">
                                     <p>Actions</p>
                                     <li>
-                                        <a href="javascript:doCardAction('heal','#userInfo')">heal</a>
+                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('heal','#userInfo')">
+                                            heal
+                                        </button>
                                     </li>
                                     <li>
-                                        <a href="javascript:action('strike')">strike</a>
+                                        <button class="btn btn-sm btn-primary" onclick="action('strike')">
+                                            strike
+                                        </button>
                                     </li>
                                     <li>
-                                        <a href="javascript:action('endTurn')">endTurn</a>
+                                        <button class="btn btn-sm btn-primary" onclick="action('toDiscard','chestbuster.png')">
+                                            chestbuster
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button class="btn btn-sm btn-primary" onclick="action('endTurn')">
+                                            endTurn
+                                        </button>
                                     </li>
                                 </ul>
                             </nav>
@@ -520,20 +580,24 @@
                                 <ul class="list-unstyled components">
                                     <p>Actions</p>
                                     <li>
-                                        <a href="javascript:action('draw')">draw</a>
+                                        <button class="btn btn-sm btn-primary" onclick="action('draw')">
+                                            draw
+                                        </button>
                                     </li>
                                     <li>
-                                        <a href="javascript:doCardAction('handShow','#userHand')">show</a>
+                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('handShow','#userHand')">
+                                            show
+                                        </button>
                                     </li>
                                     <li>
-                                        <a href="javascript:doCardAction('handToDiscard','#userHand')">discard</a>
+                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('handToDiscard','#userHand')">
+                                            discard
+                                        </button>
                                     </li>
                                     <li>
-                                        <a href="javascript:doCardAction('handToBarracksUp','#userHand')">to
-                                            barracks</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:handKill()">kill</a>
+                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('handToVoid','#userHand')">
+                                            kill
+                                        </button>
                                     </li>
                                 </ul>
                             </nav>
@@ -552,10 +616,14 @@
                                 <ul class="list-unstyled components">
                                     <p>Actions</p>
                                     <li>
-                                        <a href="javascript:doCardAction('discardToHand','#userDiscardPile')">use</a>
+                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('discardToHand','#userDiscardPile')">
+                                            use
+                                        </button>
                                     </li>
                                     <li>
-                                        <a href="javascript:discardKill()">kill</a>
+                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('discardToVoid','#userDiscardPile')">
+                                            kill
+                                        </button>
                                     </li>
                                 </ul>
                             </nav>
@@ -574,13 +642,19 @@
                                 <ul class="list-unstyled components">
                                     <p>Actions</p>
                                     <li>
-                                        <a href="javascript:doCardAction('drawToHand','#userDrawPile')">use</a>
+                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('drawToHand','#userDrawPile')">
+                                            use
+                                        </button>
                                     </li>
                                     <li>
-                                        <a href="javascript:doCardAction('drawToDiscard','#userDrawPile')">discard</a>
+                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('drawToDiscard','#userDrawPile')">
+                                            discard
+                                        </button>
                                     </li>
                                     <li>
-                                        <a href="javascript:drawKill()">kill</a>
+                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('drawToVoid','#userDrawPile')">
+                                            kill
+                                        </button>
                                     </li>
                                 </ul>
                             </nav>

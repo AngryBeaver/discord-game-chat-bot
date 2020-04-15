@@ -12,6 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -86,6 +87,7 @@ public class GameEngine {
     }
 
     private Object[] getParamters(Method method, GameData gameData, String... optionals){
+        AtomicInteger index = new AtomicInteger();
         return Arrays.asList(method.getParameters()).stream().map(
                 parameter->{
                     if(parameter.getName().equals("gameData")) {
@@ -95,7 +97,7 @@ public class GameEngine {
                         return gameData.getUserId();
                     }
                     try {
-                        return optionals[0];
+                        return optionals[index.getAndIncrement()];
                     }catch (Exception e){
                         LOG.error("", e);
                     }

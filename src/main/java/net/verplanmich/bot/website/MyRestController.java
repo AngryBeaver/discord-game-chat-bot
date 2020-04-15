@@ -17,6 +17,8 @@ import java.util.*;
 @RestController
 public class MyRestController {
 
+    public static final String EVENT_INFO = "info";
+
     @Autowired
     private GameEngine gameEngine;
 
@@ -38,11 +40,12 @@ public class MyRestController {
         template.convertAndSend("/event/" + gameData.getGameId(), mapper.writeValueAsString(gameResult));
     }
 
-    @PostMapping("/games/{gameId}/sendToChat")
-    public GameResult gameChat(@PathVariable String gameId, @AuthenticationPrincipal OAuth2User principal, @RequestBody GameResult gameResult) throws JsonProcessingException {
+    @RequestMapping("/games/{gameId}/sendToChat/{optional}")
+    public GameResult gameChat(@PathVariable String gameId, @AuthenticationPrincipal OAuth2User principal,@PathVariable Optional<String> optional) throws JsonProcessingException {
         GameData gameData =  getGameData(gameId,principal);
+        GameResult gameResult = new GameResult().setText(optional.get()).addEvent(EVENT_INFO);
         sendToChat(gameData, gameResult);
-        return new GameResult();
+        return gameResult;
     }
 
     private GameData getGameData(String gameId, OAuth2User principal){

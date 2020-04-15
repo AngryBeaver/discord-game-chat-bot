@@ -27,9 +27,9 @@ public class Zombicide implements Game {
     private DangerLevel dangerLevel = DangerLevel.BLUE;;
 
     public Zombicide() throws IOException {
-        gear = Deck.getFor(NAME, GEAR);
-        spawn = Deck.getFor(NAME, SPAWN);
-        chars = Deck.getFor(NAME, CHARS);
+        gear = Deck.getFor(NAME, GEAR).shuffle();
+        spawn = Deck.getFor(NAME, SPAWN).shuffle();
+        chars = Deck.getFor(NAME, CHARS).shuffle();
     }
 
     public String getName(){

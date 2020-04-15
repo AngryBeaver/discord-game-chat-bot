@@ -6,14 +6,12 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static net.verplanmich.bot.game.alienencounter.User.USER_CHAR;
 import static net.verplanmich.bot.game.alienencounter.User.USER_NAME;
+import static net.verplanmich.bot.website.MyRestController.EVENT_INFO;
 
 @Component
 @Scope("prototype")
@@ -24,6 +22,7 @@ public class Alienencounter implements Game {
     static final String DIRECTORY_MISSION = "mission";
     static final String DIRECTORY_CHAR = "char";
     static final String DIRECTORY_STRIKES = "strikes";
+    static final String DIRECTORY_HIVE = "hive";
 
     static final String EVENT_START = "start";
     static final String EVENT_REFRESH_HQ = "hq";
@@ -34,7 +33,12 @@ public class Alienencounter implements Game {
     static final String EVENT_REFRESH_USER_STRIKE = "strike";
     static final String EVENT_REFRESH_USER_DRAW = "draw";
     static final String EVENT_REFRESH_USER_DISCARD = "discard";
-    static final String EVENT_INFO = "info";
+
+    static final String EVENT_JOIN = "join";
+    static final String EVENT_REFRESH_HIVE = "hive";
+    static final String EVENT_REFRESH_COMPLEX = "complex";
+    static final String EVENT_REFRESH_ATTACHMENT = "attachment";
+    static final String EVENT_REFRESH_COMBAT = "combat";
 
 
     static final String MAP_KEY_USER_ID = "userId";
@@ -45,20 +49,23 @@ public class Alienencounter implements Game {
     static final String MAP_KEY_BARRACKS = "barracks";
     static final String MAP_KEY_USER_MAP = "userMap";
     static final String MAP_KEY_SERGEANT = "sergeant";
-
+    static final String MAP_KEY_HIVE_SIZE = "hiveSize";
+    static final String MAP_KEY_IS_REVEALED = "revealed";
 
     private GameDecks gameDecks;
 
     private Mission mission;
-    private List<String> headQuarter;
+    private List<String> hq;
     private Map<String, User> users = new HashMap();
     private Deck chars;
     private Deck strikes;
     private Deck sergeant;
-    private Deck barracksDeck;
+    private Deck barracks;
     private Deck hive;
     private String objective;
-    private List<String> complex;
+    private List<Location> complex;
+    private List<String> combat;
+    private boolean gameStarted = false;
 
     @Autowired
     public Alienencounter(GameDecks gameDecks){
@@ -71,9 +78,20 @@ public class Alienencounter implements Game {
         return NAME;
     }
 
-    public User getUser(String userId)  {
+    User getUser(String userId)  {
         return users.get(userId);
     }
+
+    Deck getHive(){ return hive;}
+    Deck getBarracks(){ return barracks;}
+    Deck getSergeant(){ return sergeant;}
+    Deck getStrikes(){ return strikes;}
+    Deck getChars(){ return chars;}
+    List<String> getHq() { return hq;}
+    List<Location> getComplex() {return complex;}
+    List<String> getCombat() {return combat;}
+
+
 
     @GameMethod()
     public GameResult join(GameData gameData) throws IOException {
@@ -84,7 +102,8 @@ public class Alienencounter implements Game {
                     .setText(gameData.getUserName() + " joined the game")
                     .addImageId("/"+NAME+"/"+DIRECTORY_CHAR+"/"+charName+"-char.png")
                     .addEvent(EVENT_INFO)
-                    .addEvent(EVENT_REFRESH_USER_INFO);
+                    .addEvent(EVENT_JOIN)
+                    .set(MAP_KEY_USER_ID,gameData.getUserId());
         }
         return new GameResult()
                 .setText(gameData.getUserName() + "is highly interested in this game");
@@ -92,125 +111,323 @@ public class Alienencounter implements Game {
 
     @GameMethod()
     public GameResult start(String mission) {
-        this.mission = Mission.valueOf(mission.toUpperCase());
-        barracksDeck = gameDecks.barracksFor(this.mission);
-        headQuarter = new ArrayList();
-        strikes = gameDecks.getStrikes();
-        sergeant = gameDecks.getSergeant();
-        fillHq(0);
-        fillHq(1);
-        fillHq(2);
-        fillHq(3);
-        fillHq(4);
-        objective = "1";
-        hive = gameDecks.getAliens(this.mission,users.size());
-        complex = new ArrayList();
+        if(!gameStarted) {
+            this.mission = Mission.valueOf(mission.toUpperCase());
+            barracks = gameDecks.barracksFor(this.mission);
+            hq = new ArrayList();
+            strikes = gameDecks.getStrikes();
+            sergeant = gameDecks.getSergeant();
+            fillHq(0);
+            fillHq(1);
+            fillHq(2);
+            fillHq(3);
+            fillHq(4);
+            objective = "1";
+            hive = gameDecks.getHive(this.mission, users.size());
+            complex = Arrays.asList(new Location(),new Location(), new Location(), new Location(), new Location());
+            gameStarted = true;
+            return getGameInfo()
+                    .addEvent(EVENT_START);
+        }
         return getGameInfo()
-                .addEvent(EVENT_START);
+                .setText("Game started already")
+                .addEvent(EVENT_INFO);
     }
 
     @GameMethod()
-    public GameResult complexAdd(){
-        return new GameResult();
-    }
-
-    @GameMethod()
-    public GameResult barracksToHand(String userId, String cardId) throws IOException {
-        if(barracksDeck.fromDrawPile(cardId)){
-            getUser(userId).toHand(cardId);
+    public GameResult setObjective(String objective){
+        try {
+            int i = Integer.valueOf(objective);
+            if(i >3){
+                objective = "1";
+            }
+        }catch(Exception e){
+            objective = "1";
         }
+        this.objective = objective;
         return new GameResult()
-                .setText("barracks to hand")
-                .addImageId("/"+NAME+"/"+DIRECTORY_CREW+"/"+cardId)
+                .setText("Objective: "+objective)
+                .set(MAP_KEY_OBJECTIVE,objective)
+                .addImageId("/"+NAME+"/"+DIRECTORY_MISSION+"/"+mission+"-objective"+objective+".png")
                 .addEvent(EVENT_INFO)
-                .addEvent(EVENT_REFRESH_BARRACKS)
-                .addEvent(EVENT_REFRESH_USER_HAND);
+                .addEvent(EVENT_REFRESH_GAME);
+    }
+
+    //USER
+    @GameMethod()
+    public GameResult toHand(String userId, String cardId){
+        return GameResultBuilder.fromCrewCardId(this,cardId)
+                .toHand(userId);
+    }
+    @GameMethod()
+    public GameResult toDiscard(String userId, String cardId){
+        return GameResultBuilder.fromCrewCardId(this,cardId)
+                .toDiscard(userId);
+    }
+    @GameMethod()
+    public GameResult toDraw(String userId, String cardId){
+        return GameResultBuilder.fromCrewCardId(this,cardId)
+                .toDraw(userId);
+    }
+    @GameMethod()
+    public GameResult toBarracksBottom(String cardId){
+        return GameResultBuilder.fromCrewCardId(this,cardId)
+                .toBarracksBottom();
+    }
+
+
+    //BARRACKS
+    @GameMethod()
+    public GameResult barracksToVoid(String cardId){
+        return GameResultBuilder.fromBarracks(this,cardId)
+                .toVoid();
     }
 
     @GameMethod()
-    public GameResult barracksToDiscard(String userId, String cardId) throws IOException {
-        if(barracksDeck.fromDrawPile(cardId)){
-            getUser(userId).toDiscard(cardId);
+    public GameResult barracksToHand(String userId, String cardId)  {
+        return GameResultBuilder.fromBarracks(this,cardId)
+                .toHand(userId);
+    }
+
+    @GameMethod()
+    public GameResult barracksToDiscard(String userId, String cardId) {
+        return GameResultBuilder.fromBarracks(this,cardId)
+                .toDiscard(userId);
+    }
+
+    @GameMethod()
+    public GameResult barracksToBarracksBottom(String cardId) {
+        return GameResultBuilder.fromBarracks(this,cardId)
+                .toBarracksBottom();
+    }
+
+
+    //HQ
+    @GameMethod()
+    public GameResult hqToDiscard(String userId, String position) {
+        return GameResultBuilder.fromHq(this,position)
+                .toDiscard(userId);
+    }
+
+    @GameMethod()
+    public GameResult hqToHand(String userId, String position) {
+        return GameResultBuilder.fromHq(this,position)
+                .toHand(userId);
+    }
+
+    @GameMethod()
+    public GameResult hqToDraw(String userId, String position) {
+        return GameResultBuilder.fromHq(this,position)
+                .toDraw(userId);
+    }
+
+    @GameMethod()
+    public GameResult hqToVoid(String position) {
+        return GameResultBuilder.fromHq(this,position)
+                .toVoid();
+    }
+
+    @GameMethod()
+    public GameResult hqToBarracksBottom(String userId, String position) {
+        return GameResultBuilder.fromHq(this,position)
+                .toBarracksBottom();
+    }
+
+    //HAND
+    @GameMethod()
+    public GameResult handShow(String userId, String cardId) {
+        return GameResultBuilder.showHand(this,userId,cardId)
+                .setText("shows");
+    }
+
+    @GameMethod()
+    public GameResult handToDraw(String userId, String cardId) {
+        return GameResultBuilder.fromHand(this,userId,cardId)
+                .toDraw(userId);
+    }
+
+    @GameMethod()
+    public GameResult handToDiscard(String userId, String cardId) {
+        return GameResultBuilder.fromHand(this,userId,cardId)
+                .toDiscard(userId);
+    }
+
+    @GameMethod()
+    public GameResult handToBarracksBottom(String userId, String cardId) {
+        return GameResultBuilder.fromHand(this, userId, cardId)
+                .toBarracksBottom();
+    }
+
+    @GameMethod()
+    public GameResult handToVoid(String userId, String cardId) {
+        return GameResultBuilder.fromHand(this, userId, cardId)
+                .toVoid();
+    }
+
+    //DISCARD
+    @GameMethod()
+    public GameResult discardToVoid(String userId, String cardId) {
+        return GameResultBuilder.fromDiscard(this, userId, cardId)
+                .toVoid();
+    }
+
+    @GameMethod()
+    public GameResult discardToHand(String userId, String cardId) {
+        return GameResultBuilder.fromDiscard(this, userId, cardId)
+                .toHand(userId);
+    }
+
+    @GameMethod()
+    public GameResult discardToDraw(String userId, String cardId) {
+        return GameResultBuilder.fromDiscard(this, userId, cardId)
+                .toDraw(userId);
+    }
+    @GameMethod()
+    public GameResult discardToBarracksBottom(String userId, String cardId) {
+        return GameResultBuilder.fromDiscard(this, userId, cardId)
+                .toBarracksBottom();
+    }
+
+    //Draw
+    @GameMethod()
+    public GameResult drawToVoid(String userId, String cardId){
+        return GameResultBuilder.fromDraw(this, userId, cardId)
+                .toVoid();
+    }
+
+    @GameMethod()
+    public GameResult drawToHand(String userId, String cardId) {
+        return GameResultBuilder.fromDraw(this, userId, cardId)
+                .toHand(userId);
+    }
+    @GameMethod()
+    public GameResult drawToDiscard(String userId, String cardId) {
+        return GameResultBuilder.fromDraw(this, userId, cardId)
+                .toDiscard(userId);
+    }
+    @GameMethod()
+    public GameResult drawToBarracksBottom(String userId, String cardId) {
+        return GameResultBuilder.fromDraw(this, userId, cardId)
+                .toBarracksBottom();
+    }
+
+
+    //HIVE
+    @GameMethod()
+    public GameResult hiveToVoid(){
+        return GameResultBuilder.fromHive(this)
+                .toVoid();
+    }
+
+    @GameMethod()
+    public GameResult hiveToComplex(String position){
+        return GameResultBuilder.fromHive(this)
+                .toComplex(position);
+    }
+
+    @GameMethod()
+    public GameResult hiveToCombat(){
+        return GameResultBuilder.fromHive(this)
+                .toCombat();
+    }
+
+    //COMPLEX
+    @GameMethod()
+    public GameResult complexToVoid(String position){
+        return GameResultBuilder.fromComplex(this, position)
+                .toVoid();
+    }
+
+    @GameMethod()
+    public GameResult complexToHive(String position){
+        return GameResultBuilder.fromComplex(this, position)
+                .toHiveTop();
+    }
+
+    @GameMethod()
+    public GameResult complexToAttachment(String from, String to){
+        GameResultBuilder gameResultBuilder = GameResultBuilder.fromComplex(this, from);
+        Location location =  gameResultBuilder.getLocationAt(from);
+        if(location.isHidden()){
+            return gameResultBuilder.toComplex(from).setText("unrevealed complex can not be attached");
         }
-        return new GameResult()
-                .setText("barracks to hand")
-                .addImageId("/"+NAME+"/"+DIRECTORY_CREW+"/"+cardId)
-                .addEvent(EVENT_INFO)
-                .addEvent(EVENT_REFRESH_BARRACKS)
-                .addEvent(EVENT_REFRESH_USER_DISCARD);
-    }
-
-    @GameMethod()
-    public GameResult barracksDown(String userId, String cardId) throws IOException {
-        if(barracksDeck.fromDrawPile(cardId)){
-            barracksDeck.toDrawPileBottom(cardId);
+        String  targetCardId = gameResultBuilder.getLocationAt(to).getAttachment();
+        if(targetCardId != null || !targetCardId.equals("")){
+            GameResultBuilder.fromHiveCardId(this,targetCardId,false)
+                    .toComplex(from);
         }
-        return new GameResult()
-                .setText("barracks to bottom")
-                .addImageId("/"+NAME+"/"+DIRECTORY_CREW+"/"+cardId)
-                .addEvent(EVENT_REFRESH_BARRACKS)
-                .addEvent(EVENT_INFO);
+        return gameResultBuilder.toAttachment(to);
     }
 
     @GameMethod()
-    public GameResult barracksKill(String userId, String cardId) throws IOException {
-        barracksDeck.fromDrawPile(cardId);
-        return new GameResult()
-                .setText("kills")
-                .addImageId("/"+NAME+"/"+DIRECTORY_CREW+"/"+cardId)
-                .addEvent(EVENT_INFO)
-                .addEvent(EVENT_REFRESH_BARRACKS);
+    public GameResult complexToComplex(String from, String to){
+        GameResultBuilder gameResultBuilder = GameResultBuilder.fromComplex(this,from);
+        Location location = gameResultBuilder.getLocationAt(to);
+        String  targetCardId = location.getGround();
+
+        if(targetCardId != null || !targetCardId.equals("")){
+            GameResultBuilder.fromHiveCardId(this,targetCardId,location.isHidden())
+                    .toComplex(from);
+        }
+        return gameResultBuilder.toComplex(to);
     }
-
-
     @GameMethod()
-    public GameResult hqToDiscard(String userId, String position) throws IOException {
-        GameResult gameResult = hqCardToUser(position);
-        getUser(userId).toDiscard((String)gameResult.get(MAP_KEY_CARD_ID));
-        return gameResult.setText("recruit")
-                .addEvent(EVENT_REFRESH_USER_DISCARD)
-                .addEvent(EVENT_INFO);
-    }
-
-    @GameMethod()
-    public GameResult hqToHand(String userId, String position) throws IOException {
-        GameResult gameResult = hqCardToUser(position);
-        getUser(userId).toHand((String)gameResult.get(MAP_KEY_CARD_ID));
-        return gameResult
-                .setText("hq to hand")
-                .addEvent(EVENT_INFO)
-                .addEvent(EVENT_REFRESH_USER_HAND);
+    public GameResult complexToCombat(String from){
+        GameResultBuilder gameResultBuilder = GameResultBuilder.fromComplex(this, from);
+        Location location = gameResultBuilder.getLocationAt(from);
+        if(location.isHidden()){
+            return gameResultBuilder.toComplex(from).setText("unrevealed complex can not enter combat");
+        }
+         return gameResultBuilder.toCombat();
     }
 
     @GameMethod()
-    public GameResult hqToDraw(String userId, String position) throws IOException {
-        GameResult gameResult = hqCardToUser(position);
-        getUser(userId).toDraw((String)gameResult.get(MAP_KEY_CARD_ID));
-        return gameResult
-                .setText("hq to draw")
-                .addEvent(EVENT_REFRESH_USER_DRAW)
-                .addEvent(EVENT_INFO);
+    public GameResult complexToDiscard(String userId, String from){
+        GameResultBuilder gameResultBuilder = GameResultBuilder.fromComplex(this, from);
+        String cardId = gameResultBuilder.getCardId();
+        if(gameDecks.isHiveCardAlsoCrewCard(cardId)){
+            return gameResultBuilder.toDiscard(userId);
+        }else{
+            return gameResultBuilder.toComplex(from).setText("Card is no crew member");
+        }
     }
 
     @GameMethod()
-    public GameResult hqKill(String position) throws IOException {
-        GameResult gameResult = getHqCardAt(position);
-        return gameResult
-                .setText("killed in hq")
-                .addEvent(EVENT_INFO);
+    public GameResult revealComplex(String from){
+        GameResultBuilder gameResultBuilder = GameResultBuilder.fromComplex(this, from);
+        Location location =  gameResultBuilder.getLocationAt(from);
+        location.setHidden(false);
+        String cardId = location.getGround();
+        //TODO do cardAction here e.g. facehugger, event, hazard etc...
+        return gameResultBuilder.toComplex(from)
+                .setText("reveal")
+                .addImageId("/"+NAME+"/"+DIRECTORY_HIVE+"/"+cardId);
     }
 
+
+    // COMBAT
     @GameMethod()
-    public GameResult hqToBarracksDown(String position) throws IOException {
-        GameResult gameResult = getHqCardAt(position);
-        String cardId =  (String) gameResult.get(MAP_KEY_CARD_ID);
-        barracksDeck.toDrawPileBottom(cardId);
-        return gameResult
-                .addEvent(EVENT_REFRESH_BARRACKS)
-                .setText("hq to barracks"+ cardId)
-                .addEvent(EVENT_INFO);
+    public GameResult combatToVoid(String cardId){
+        return GameResultBuilder.fromCombat(this, cardId)
+                .toVoid();
+    }
+    @GameMethod()
+    public GameResult combatToComplex(String cardId, String to){
+        GameResultBuilder gameResultBuilder = GameResultBuilder.fromCombat(this, cardId);
+        Location location =  gameResultBuilder.getLocationAt(to);
+        if(location.getGround() != null && !location.getGround().equals("")){
+            if(location.isHidden()){
+                return gameResultBuilder.toCombat().setText("unrevealed complex can not enter combat");
+            }else{
+                GameResultBuilder.fromComplex(this, to).toCombat();
+            }
+        }
+        return gameResultBuilder.toComplex(to);
     }
 
+
+
+    //USER
     @GameMethod()
     public GameResult heal(String userId, String cardId) throws IOException {
         User user = getUser(userId);
@@ -221,7 +438,8 @@ public class Alienencounter implements Game {
                 .addEvent(EVENT_INFO)
                 .addEvent(EVENT_REFRESH_USER_STRIKE)
                 .setText(user.getUserInfo().get(USER_NAME)+" heals")
-                .addImageId("/"+NAME+"/"+DIRECTORY_STRIKES+"/"+cardId);
+                .addImageId("/"+NAME+"/"+DIRECTORY_STRIKES+"/"+cardId)
+                .set(MAP_KEY_USER_ID,userId);
     }
 
     @GameMethod()
@@ -239,7 +457,8 @@ public class Alienencounter implements Game {
                 .addEvent(EVENT_INFO)
                 .addEvent(EVENT_REFRESH_USER_STRIKE)
                 .setText(user.getUserInfo().get(USER_NAME)+" gets")
-                .addImageId("/"+NAME+"/"+DIRECTORY_STRIKES+"/"+cardId);
+                .addImageId("/"+NAME+"/"+DIRECTORY_STRIKES+"/"+cardId)
+                .set(MAP_KEY_USER_ID,userId);
     }
 
     @GameMethod()
@@ -250,118 +469,9 @@ public class Alienencounter implements Game {
                 .addEvent(EVENT_INFO)
                 .addEvent(EVENT_REFRESH_USER_DISCARD)
                 .addEvent(EVENT_REFRESH_USER_HAND)
-                .setText(user.getUserInfo().get(USER_NAME)+" ends Turn" );
+                .setText(user.getUserInfo().get(USER_NAME)+" ends Turn" )
+                .set(MAP_KEY_USER_ID,userId);
     }
-
-    @GameMethod()
-    public GameResult handShow(String userId, String cardId) throws IOException {
-        validateHandCard(userId,cardId);
-        User user = getUser(userId);
-        return new GameResult()
-                .addEvent(EVENT_INFO)
-                .setText(user.getUserInfo().get(USER_NAME)+" shows")
-                .addImageId("/"+NAME+"/"+DIRECTORY_CREW+"/"+cardId);
-    }
-
-    @GameMethod()
-    public GameResult handToDiscard(String userId, String cardId) throws IOException {
-        validateHandCard(userId,cardId);
-        User user = getUser(userId);
-        user.discard(cardId);
-        return new GameResult()
-                .addEvent(EVENT_INFO)
-                .addEvent(EVENT_REFRESH_USER_HAND)
-                .addEvent(EVENT_REFRESH_USER_DISCARD)
-                .setText(user.getUserInfo().get(USER_NAME)+ " discards")
-                .addImageId("/"+NAME+"/"+DIRECTORY_CREW+"/"+cardId);
-    }
-
-    @GameMethod()
-    public GameResult handToBarracksUp(String userId, String cardId) throws IOException {
-        validateHandCard(userId,cardId);
-        User user = getUser(userId);
-        user.fromHand(cardId);
-        barracksDeck.toDrawPileTop(cardId);
-        return new GameResult()
-                .addEvent(EVENT_INFO)
-                .addEvent(EVENT_REFRESH_USER_HAND)
-                .addEvent(EVENT_REFRESH_BARRACKS)
-                .setText(user.getUserInfo().get(USER_NAME)+ " to barracks")
-                .addImageId("/"+NAME+"/"+DIRECTORY_CREW+"/"+cardId);
-    }
-
-    @GameMethod()
-    public GameResult handKill(String userId, String cardId) throws IOException {
-        validateHandCard(userId,cardId);
-        User user = getUser(userId);
-        user.fromHand(cardId);
-        return new GameResult()
-                .addEvent(EVENT_INFO)
-                .addEvent(EVENT_REFRESH_USER_HAND)
-                .setText(user.getUserInfo().get(USER_NAME)+" kills")
-                .addImageId("/"+NAME+"/"+DIRECTORY_CREW+"/"+cardId);
-    }
-
-    @GameMethod()
-    public GameResult discardKill(String userId, String cardId) throws IOException {
-        User user = getUser(userId);
-        user.fromDiscard(cardId);
-        return new GameResult()
-                .addEvent(EVENT_INFO)
-                .addEvent(EVENT_REFRESH_USER_DISCARD)
-                .setText(user.getUserInfo().get(USER_NAME)+" kills")
-                .addImageId("/"+NAME+"/"+DIRECTORY_CREW+"/"+cardId);
-    }
-
-    @GameMethod()
-    public GameResult discardToHand(String userId, String cardId) throws IOException {
-        User user = getUser(userId);
-        if(user.fromDiscard(cardId)) {
-            user.toHand(cardId);
-        }
-        return new GameResult()
-                .addEvent(EVENT_INFO)
-                .addEvent(EVENT_REFRESH_USER_DISCARD)
-                .addEvent(EVENT_REFRESH_USER_HAND)
-                .setText(user.getUserInfo().get(USER_NAME)+" reuses")
-                .addImageId("/"+NAME+"/"+DIRECTORY_CREW+"/"+cardId);
-    }
-
-    @GameMethod()
-    public GameResult drawKill(String userId, String cardId) throws IOException {
-        User user = getUser(userId);
-        user.fromDraw(cardId);
-        return new GameResult()
-                .addEvent(EVENT_INFO)
-                .addEvent(EVENT_REFRESH_USER_DRAW)
-                .setText(user.getUserInfo().get(USER_NAME)+" kills")
-                .addImageId("/"+NAME+"/"+DIRECTORY_CREW+"/"+cardId);
-    }
-
-    @GameMethod()
-    public GameResult drawToHand(String userId, String cardId) throws IOException {
-        User user = getUser(userId);
-        if(user.fromDraw(cardId)){
-            user.toHand(cardId);
-        }
-        return new GameResult()
-                .addEvent(EVENT_INFO)
-                .addEvent(EVENT_REFRESH_USER_DRAW)
-                .addEvent(EVENT_REFRESH_USER_HAND)
-                .setText(user.getUserInfo().get(USER_NAME)+" reuses")
-                .addImageId("/"+NAME+"/"+DIRECTORY_CREW+"/"+cardId);
-    }
-    @GameMethod()
-    public GameResult drawToDiscard(String userId, String cardId) throws IOException {
-        User user = getUser(userId);
-        if(user.fromDraw(cardId)) {
-            user.discard(cardId);
-        }
-        return new GameResult()
-                .setText(user.getUserInfo().get(USER_NAME)+" discards")
-                .addImageId("/"+NAME+"/"+DIRECTORY_CREW+"/"+cardId);
-    }
-
 
     @GameMethod()
     public GameResult draw(String userId) throws IOException {
@@ -370,14 +480,18 @@ public class Alienencounter implements Game {
         return new GameResult()
                 .addEvent(EVENT_INFO)
                 .addEvent(EVENT_REFRESH_USER_HAND)
+                .addEvent(EVENT_REFRESH_USER_DRAW)
                 .addImageId("/"+NAME+"/"+DIRECTORY_CREW+"/"+cardId)
-                .setText(user.getUserInfo().get(USER_NAME)+" draws 1 Card");
+                .setText(user.getUserInfo().get(USER_NAME)+" draws 1 Card")
+                .set(MAP_KEY_USER_ID,userId);
     }
 
+
+    //GET_INFORMATION
     @GameMethod()
     public GameResult getHq(String amount) {
         GameResult gameResult = new GameResult();
-        List<String> hq = headQuarter.stream()
+        List<String> hqList = hq.stream()
                 .map(cardId -> {
                     String card = "/" + NAME + "/" + DIRECTORY_CREW + "/" + cardId;
                     gameResult.addImageId(card);
@@ -391,20 +505,20 @@ public class Alienencounter implements Game {
         return gameResult
                 .setText("request headquarter")
                 .set(MAP_KEY_SERGEANT,sergeantList)
-                .set(MAP_KEY_HQ,hq);
+                .set(MAP_KEY_HQ,hqList);
     }
 
     @GameMethod()
     public GameResult getBarracks(String amount) {
         GameResult gameResult = new GameResult();
-        int limit = getLimit(amount, barracksDeck);
-        List<String> barracks = barracksDeck.getDrawPile().stream()
+        int limit = getLimit(amount, barracks);
+        List<String> barrackList = barracks.getDrawPile().stream()
                 .map(card -> "/" + NAME + "/" + DIRECTORY_CREW + "/" + card)
                 .collect(Collectors.toList());
-        barracks.stream().limit(limit)
+        barrackList.stream().limit(limit)
                 .forEach(card -> gameResult.addImageId(card));
         return gameResult
-                .set(MAP_KEY_BARRACKS,barracks)
+                .set(MAP_KEY_BARRACKS,barrackList)
                 .setText("request " + amount + " Barracks");
     }
 
@@ -462,13 +576,6 @@ public class Alienencounter implements Game {
                 .set(MAP_KEY_MISSION, mission.name().toLowerCase());
     }
 
-    private void validateHandCard(String userId, String cardId) throws IOException {
-        if(!getUser(userId).getHand().contains(cardId)){
-            throw new GameResultException(new GameResult()
-                    .setText("Card not found")
-                    .addEvent(EVENT_REFRESH_USER_HAND));
-        }
-    }
 
     private int getLimit(String amount, Deck deck) {
         if (amount.equals("all")) {
@@ -478,43 +585,16 @@ public class Alienencounter implements Game {
         }
     }
 
-    private GameResult getHqCardAt(String position){
-        String cardId;
-        if(position.equals("-1")){
-            cardId = sergeant.drawCard();
-        }else {
-            int pos = Integer.valueOf(position);
-            cardId = headQuarter.get(pos);
-            if(cardId == null) {
-                throw new GameResultException(new GameResult().setText("not found in hq"));
-            }
-            fillHq(pos);
-        }
-        if(cardId == null) {
-            throw new GameResultException(new GameResult().setText("not found in hq"));
-        }
-        return new GameResult()
-            .set(MAP_KEY_CARD_ID,cardId)
-            .addEvent(EVENT_REFRESH_HQ)
-            .addEvent(EVENT_REFRESH_BARRACKS)
-            .addImageId("/" + NAME + "/" + DIRECTORY_CREW + "/" + cardId);
-    }
 
-    private GameResult hqCardToUser(String position) {
-        GameResult gameResult = getHqCardAt(position);
-        String cardId = (String) gameResult.get(MAP_KEY_CARD_ID);
-        return gameResult.setText("recruit");
-    }
-
-    private void fillHq(int position){
+    void fillHq(int position){
         try{
             try{
-                headQuarter.set(position, barracksDeck.drawCard());
+                hq.set(position, barracks.drawCard());
             }catch(Exception e){
-                headQuarter.add(position,barracksDeck.drawCard());
+                hq.add(position,barracks.drawCard());
             }
         }catch(Exception e){
-            headQuarter.add(position,null);
+            hq.add(position,null);
         }
     }
 

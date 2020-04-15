@@ -33,7 +33,7 @@ public class User {
         user.put(USER_CHAR, userChar);
         hand = new ArrayList();
         strikes = new ArrayList();
-        deck = new Deck(starterCards);
+        deck = new Deck(starterCards).shuffle();
         refreshHand();
     }
 
@@ -70,13 +70,6 @@ public class User {
         return deck.getDiscardPile();
     }
 
-    public boolean discard(String cardId) {
-        boolean result = fromHand(cardId);
-        if (result) {
-            deck.discardCard(cardId);
-        }
-        return result;
-    }
 
     public boolean fromHand(String cardId) {
         boolean result = hand.contains(cardId);
@@ -108,6 +101,7 @@ public class User {
 
     public void refreshHand() {
         hand.forEach(cardId -> deck.discardCard(cardId));
+        hand.clear();
         draw();
         draw();
         draw();

@@ -2,6 +2,20 @@
 let MAP_KEY_USER_ID = "userId";
 let MAP_KEY_USER_MAP = "userMap";
 
+let EVENT_START = "start";
+let EVENT_REFRESH_HQ = "hq";
+let EVENT_REFRESH_BARRACKS = "barracks";
+let EVENT_REFRESH_USER_HAND = "hand";
+let EVENT_REFRESH_USER_STRIKES = "strike";
+let EVENT_REFRESH_USER_INFO = "user";
+let EVENT_REFRESH_GAME = "game";
+let EVENT_REFRESH_USER_DRAW = "draw";
+let EVENT_REFRESH_USER_DISCARD = "discard";
+let EVENT_REFRESH_ALIEN = "alien";
+let EVENT_INFO = "info";
+let EVENT_JOIN = "join";
+
+
 var testBarracks = ["crew/captain-of-the-ship.png", "crew/captain-of-the-ship.png", "crew/captain-of-the-ship.png"];
 var testHqCards = ["crew/first-aid.png", "crew/here-kitty-kitty.png", "crew/right.png", "crew/captain-of-the-ship.png", "crew/motion-detector.png"];
 var testSergeant = ["crew/sergeant-green.png"];
@@ -20,31 +34,46 @@ let userId = "guest";
 let selectedUserId;
 let strikes = {};
 let hand = {}
+let currentSelection = EVENT_INFO;
 
 //FOOTER
 var footer = $('#footer');
 footer.on('shown.bs.collapse', '.collapseFooter', function (e) {
     if (e.target.id.trim() == 'barracksDetails') {
+        currentSelection= EVENT_REFRESH_BARRACKS;
         openBarracks();
     }
     if (e.target.id.trim() == 'headQuarterDetails') {
+        currentSelection= EVENT_REFRESH_HQ;
         openHQ();
     }
     if (e.target.id.trim() == 'userDetails') {
+        currentSelection= EVENT_REFRESH_USER_INFO;
         openUser();
     }
     if (e.target.id.trim() == 'selectUser') {
+        currentSelection = EVENT_INFO;
         openSelection();
     }
     if (e.target.id.trim() == 'gameDetails') {
+        currentSelection = EVENT_REFRESH_GAME;
         openGame();
     }
     if (e.target.id.trim() == 'complexDetails') {
+        currentSelection = EVENT_REFRESH_ALIEN;
         openComplex();
     }
 });
 
 //GAME
+function getGameInfo() {
+    action("getGameInfo").then(gameResult => {
+        game.mission = gameResult.map.mission;
+        game.objective = gameResult.map.objective;
+        fillMission();
+    })
+}
+
 function startGame() {
     action("start", "nostromo");
 }
@@ -62,15 +91,7 @@ function fillMission() {
 }
 
 function openGame() {
-    fillMission();
-}
-
-function getGameInfo() {
-    action("getGameInfo").then(gameResult => {
-        game.mission = gameResult.map.mission;
-        game.objective = gameResult.map.objective;
-        fillMission();
-    })
+    getGameInfo();
 }
 
 
@@ -164,7 +185,7 @@ function getBarracksInfo() {
 
 function openBarracks() {
     $('#barracksDetails .nav-link:eq(1)').tab('show');
-    fillBarrackDetails();
+    getBarracksInfo();
 }
 
 function fillBarracks() {
@@ -301,15 +322,19 @@ function showUser() {
     var userTab = $('#userDetails .nav-link.active').text().trim();
     $('#userDetails').find('a.cardContainer.glowBorder').removeClass('glowBorder');
     if (userTab == "info") {
-
+        currentSelection= EVENT_REFRESH_USER_INFO;
+        getUserInfo();
     }
     if (userTab == "hand") {
-
+        currentSelection= EVENT_REFRESH_USER_HAND;
+        getUserHand();
     }
     if (userTab == "discard pile") {
+        currentSelection= EVENT_REFRESH_USER_DISCARD;
         getUserDiscard();
     }
     if (userTab == "draw pile") {
+        currentSelection= EVENT_REFRESH_USER_DRAW;
         getUserDraw();
     }
 }
@@ -323,24 +348,10 @@ function showUserNavi(){
 
 function openUser() {
     $('#userDetails .nav-link:eq(1)').tab('show');
-    fillUserInfo();
-    getUserStrikes();
-    getUserHand();
+    getUserInfo();
     showUserNavi();
 }
 
-//USER ACTION
-function discardKill(){
-    doCardAction("discardKill",'#userDiscardPile').then(gameResult=>getUserDiscard());
-}
-
-function drawKill(){
-    doCardAction("drawKill",'#userDrawPile').then(gameResult=>getUserDraw());
-}
-
-function handKill(){
-    doCardAction("handKill",'#userHand');
-}
 
 
 
@@ -450,17 +461,9 @@ function handleCardDrop( event, ui ) {
     console.log(area.find(".cardContainer:eq("+to+")"));
     area.find(".cardContainer:eq("+from+") .cardHolder").append($(this).find(".cardHolder img"));
     area.find(".cardContainer:eq("+to+") .cardHolder").append(ui.draggable[0])
-    //swapNodes(this,ui.draggable[0])
-
 
 }
 
-function swapNodes(a, b) {
-    var aparent = a.parentNode;
-    var asibling = a.nextSibling === b ? a : a.nextSibling;
-    b.parentNode.insertBefore(a, b);
-    aparent.insertBefore(b, asibling);
-}
 
 
 //EVENT
@@ -471,43 +474,37 @@ $(function () {
 
     socket("event", parseEvents);
 
-    let EVENT_START = "start";
-    let EVENT_REFRESH_HQ = "hq";
-    let EVENT_REFRESH_BARRACKS = "barracks";
-    let EVENT_REFRESH_USER_HAND = "hand";
-    let EVENT_REFRESH_USER_STRIKES = "strike";
-    let EVENT_REFRESH_USER_INFO = "user";
-    let EVENT_REFRESH_GAME = "game";
-    let EVENT_REFRESH_USER_DRAW = "draw";
-    let EVENT_REFRESH_USER_DISCARD = "discard";
-    let EVENT_INFO = "info";
+
 
     function parseEvents(gameResult) {
         if (gameResult.events.includes(EVENT_START)) {
             eventStart(gameResult);
         }
-        if (gameResult.events.includes(EVENT_REFRESH_GAME)) {
+        if(gameResult.events.includes(EVENT_JOIN)) {
+            getUserInfo();
+        }
+        if (gameResult.events.includes(EVENT_REFRESH_GAME) && currentSelection == EVENT_REFRESH_GAME ) {
             getGameInfo();
         }
         if (gameResult.events.includes(EVENT_REFRESH_HQ)) {
             getHqInfo();
         }
-        if (gameResult.events.includes(EVENT_REFRESH_BARRACKS)) {
+        if (gameResult.events.includes(EVENT_REFRESH_BARRACKS) && currentSelection == EVENT_REFRESH_BARRACKS ) {
             getBarracksInfo();
         }
-        if (gameResult.events.includes(EVENT_REFRESH_USER_INFO)) {
+        if (gameResult.events.includes(EVENT_REFRESH_USER_INFO) && currentSelection == EVENT_REFRESH_USER_INFO && gameResult.map.userId == selectedUserId) {
             getUserInfo();
         }
-        if (gameResult.events.includes(EVENT_REFRESH_USER_HAND)) {
+        if (gameResult.events.includes(EVENT_REFRESH_USER_HAND) && currentSelection == EVENT_REFRESH_USER_HAND && gameResult.map.userId == selectedUserId) {
             getUserHand();
         }
-        if (gameResult.events.includes(EVENT_REFRESH_USER_DRAW)) {
+        if (gameResult.events.includes(EVENT_REFRESH_USER_DRAW) &&currentSelection == EVENT_REFRESH_USER_DRAW && gameResult.map.userId == selectedUserId) {
             getUserDraw();
         }
-        if (gameResult.events.includes(EVENT_REFRESH_USER_DISCARD)) {
+        if (gameResult.events.includes(EVENT_REFRESH_USER_DISCARD) && currentSelection == EVENT_REFRESH_USER_DISCARD && gameResult.map.userId == selectedUserId) {
             getUserDiscard();
         }
-        if (gameResult.events.includes(EVENT_REFRESH_USER_STRIKES)) {
+        if (gameResult.events.includes(EVENT_REFRESH_USER_STRIKES)  && currentSelection == EVENT_REFRESH_USER_INFO && gameResult.map.userId == selectedUserId) {
             getUserStrikes();
         }
         if (gameResult.events.includes(EVENT_INFO)) {
@@ -525,7 +522,8 @@ $(function () {
 
     function eventStart(gameResult) {
         let html = '<video autoplay id="vid">';
-        html += '<source src="startsequence.mp4" type="video/mp4">';
+
+        html += '<source src="'+gameResult.map.mission+'.mp4" type="video/mp4">';
         html += '</video>';
         showMessage(html);
         setTimeout(function () {
@@ -534,20 +532,27 @@ $(function () {
         setTimeout(function () {
             html = '<img src="mission/' + gameResult.map.mission + '-location.png">';
             showMessage(html);
-        }, 24000);
+        }, 14000);
         setTimeout(function () {
             getBarracksInfo();
-        }, 46000);
+        }, 20000);
         setTimeout(function () {
             getHqInfo();
-        }, 62000);
+        }, 22000);
         setTimeout(function () {
             html = '<img src="mission/' + gameResult.map.mission + '-objective1.png">';
             showMessage(html);
             getGameInfo();
-        }, 79000);
-
+        }, 28000);
     }
+
+    $('.console input').keypress(function (e) {
+        if (e.which == 13) {
+            let value = $('.console input').val().match(/^(\S+)\s(.*)/).slice(1);
+            action(value[0],value[1]);
+            $('.console input').val("");
+        }
+    });
 });
 
 

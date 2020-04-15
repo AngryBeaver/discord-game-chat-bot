@@ -8,6 +8,7 @@ import java.util.*;
 import java.util.stream.IntStream;
 
 import static net.verplanmich.bot.game.alienencounter.Mission.NOSTROMO;
+import static net.verplanmich.bot.game.alienencounter.Mission.SULACI;
 
 @Service
 public class GameDecks {
@@ -27,8 +28,10 @@ public class GameDecks {
     static final String DRONE = "drone";
 
     private HashMap<Mission, List<Deck>> crews = new HashMap();
-    private HashMap<Mission, List<List<String>>> missionCards = new HashMap();
+    private HashMap<Mission, List<List<String>>> objectiveCards = new HashMap();
     private HashMap<Integer,HashMap<Integer,Integer>> difficutly = new HashMap();
+
+    private List<String> hiveAndCrew = Arrays.asList("jonesy.png");
 
     private Deck chars;
     private Deck strikes;
@@ -56,11 +59,14 @@ public class GameDecks {
         difficutly.get(5).put(0,4);
         difficutly.get(5).put(1,6);
         difficutly.get(5).put(2,7);
-        missionCards.put(NOSTROMO,new ArrayList());
-        missionCards.get(NOSTROMO).add( Arrays.asList("event.png","event.png","egg.png","egg.png","egg.png","egg.png","hazard.png","game-objective1-sos.png","game-objective1-sos.png"));
-        missionCards.get(NOSTROMO).add( Arrays.asList("jonesy.png","event.png","event.png","objective2-sos.png","hazard.png","shedding-skin-xenomorph.png","shedding-skin-xenomorph.png","shedding-skin-xenomorph.png","skittering-xenomorph.png","skittering-xenomorph.png","skittering-xenomorph.png"));
-        missionCards.get(NOSTROMO).add( Arrays.asList("the-perfect-organism.png","event.png","event.png","hazard.png","xenomorph-lance-tail.png","xenomorph-lance-tail.png","xenomorph-lance-tail.png","twin-mouth-xenomorph.png","twin-mouth-xenomorph.png","twin-mouth-xenomorph.png","twin-mouth-xenomorph.png","ash.png","objective3-sos.png"));
-
+        objectiveCards.put(NOSTROMO,new ArrayList());
+        objectiveCards.get(NOSTROMO).add( Arrays.asList("event.png","event.png","egg.png","egg.png","egg.png","egg.png","hazard.png","game-objective1-sos.png","game-objective1-sos.png"));
+        objectiveCards.get(NOSTROMO).add( Arrays.asList("jonesy.png","event.png","event.png","objective2-sos.png","hazard.png","shedding-skin-xenomorph.png","shedding-skin-xenomorph.png","shedding-skin-xenomorph.png","skittering-xenomorph.png","skittering-xenomorph.png","skittering-xenomorph.png"));
+        objectiveCards.get(NOSTROMO).add( Arrays.asList("the-perfect-organism.png","event.png","event.png","hazard.png","xenomorph-lance-tail.png","xenomorph-lance-tail.png","xenomorph-lance-tail.png","twin-mouth-xenomorph.png","twin-mouth-xenomorph.png","twin-mouth-xenomorph.png","twin-mouth-xenomorph.png","ash.png","objective3-sos.png"));
+        objectiveCards.put(SULACI, new ArrayList<>());
+        objectiveCards.get(SULACI).add( Arrays.asList("xenomorph-swarmer.png","xenomorph-swarmer.png","xenomorph-swarmer.png","hazard.png","event","event","colonist-host.png","colonist-host.png","colonist-host.png"));
+        objectiveCards.get(SULACI).add( Arrays.asList("hazard.png","event.png","event.png","acid-blood-xenomorph.png","acid-blood-xenomorph.png","acid-blood-xenomorph.png","facehugger.png","facehugger.png","newt.png","sentry-guns.png","sentry-guns.png"));
+        objectiveCards.get(SULACI).add( Arrays.asList("hazard.png","event.png","event.png","howling-xenomorph.png","howling-xenomorph.png","howling-xenomorph.png","howling-xenomorph.png","xenomorph-snatcher.png","xenomorph-snatcher.png","xenomorph-snatcher.png","xenomorph-snatcher.png","carter-burke.png","the-queen.png"));
 
         chars = Deck.getFor(NAME,CHARS);
         strikes = Deck.getFor(NAME,STRIKES);
@@ -73,21 +79,29 @@ public class GameDecks {
         crews.get(NOSTROMO).add(Deck.getFor(NAME, WARRANT_OFFICER_RIPLEY));
         crews.get(NOSTROMO).add(Deck.getFor(NAME, NAVIGATOR_LAMBERT));
         crews.get(NOSTROMO).add(Deck.getFor(NAME, CAPTAIN_DALLAS));
+        crews.put(SULACI,new ArrayList());
+        crews.get(SULACI).add(new Deck(Arrays.asList("shes-here-as-a-consultant.png","shes-here-as-a-consultant.png","shes-here-as-a-consultant.png","shes-here-as-a-consultant.png","shes-here-as-a-consultant.png","power-loader.png","i-will-never-leave-you.png","i-will-never-leave-you.png","i-will-never-leave-you.png","i-will-never-leave-you.png","i-will-never-leave-you.png","ripley-enraged.png","ripley-enraged.png","ripley-enraged.png")));
+        crews.get(SULACI).add(new Deck(Arrays.asList("stay-frosty.png","stay-frosty.png","stay-frosty.png","stay-frosty.png","stay-frosty.png","close-encounters.png","close-encounters.png","close-encounters.png","close-encounters.png","close-encounters.png","lets-go-marines.png","weapon-training.png","weapon-training.png","weapon-training.png")));
+        crews.get(SULACI).add(new Deck(Arrays.asList("split-in-two.png","knife-games.png","knife-games.png","knife-games.png","critical-analysis.png","critical-analysis.png","critical-analysis.png","critical-analysis.png","critical-analysis.png","get-him-to-medical.png","get-him-to-medical.png","get-him-to-medical.png","get-him-to-medical.png","get-him-to-medical.png")));
+        crews.get(SULACI).add(new Deck(Arrays.asList("they-are-all-around-us.png","they-are-all-around-us.png","they-are-all-around-us.png","they-are-all-around-us.png","they-are-all-around-us.png","this-aint-happening-man.png","body-armor.png","body-armor.png","body-armor.png","you-want-some-of-this.png","you-want-some-of-this.png","you-want-some-of-this.png","you-want-some-of-this.png","you-want-some-of-this.png")));
+        crews.get(SULACI).add(new Deck(Arrays.asList("wont-give-up.png","wont-give-up.png","wont-give-up.png","by-the-numbers.png","by-the-numbers.png","by-the-numbers.png","by-the-numbers.png","by-the-numbers.png","fall-back.png","fall-back.png","fall-back.png","fall-back.png","fall-back.png","always-were-an-a-hole.png")));
+        crews.get(SULACI).add(new Deck(Arrays.asList("head-mounted-sight.png","head-mounted-sight.png","head-mounted-sight.png","head-mounted-sight.png","head-mounted-sight.png","m56-smartgun.png","m56-smartgun.png","m56-smartgun.png","smartgunners.png","smartgunners.png","smartgunners.png","smartgunners.png","smartgunners.png","they-aint-paying-us-enough.png")));
     }
 
 
-    public Deck getAliens(Mission mission,int players){
-        Deck result = new Deck();
-        Deck droneShuffled = new Deck(drone.getDrawPile());
+
+    public Deck getHive(Mission mission, int players){
+        List<String> hiveCards = new ArrayList();
+        Deck droneShuffled = new Deck(drone.getDrawPile()).shuffle();
         for(int objective= 0; objective < 3; objective ++){
-            List<String> objectiveCards = new ArrayList(missionCards.get(mission).get(objective));
+            List<String> cards = new ArrayList(objectiveCards.get(mission).get(objective));
             IntStream.range(0,difficutly.get(players).get(objective)).forEach(
-                    i->objectiveCards.add(droneShuffled.drawCard())
+                    i->cards.add(droneShuffled.drawCard())
             );
-            Collections.shuffle(objectiveCards);
-            result.toDrawPileBottom(objectiveCards);
+            Collections.shuffle(cards);
+            hiveCards.addAll(cards);
         }
-        return result;
+        return new Deck(hiveCards);
     }
 
     public Deck barracksFor(Mission mission){
@@ -98,19 +112,23 @@ public class GameDecks {
         nostromoCrew.stream().limit(4).forEach(
             d-> barrackCards.addAll(d.getDrawPile())
         );
-        return new Deck(barrackCards);
+        return new Deck(barrackCards).shuffle();
+    }
+
+    public boolean isHiveCardAlsoCrewCard(String cardId) {
+        return hiveAndCrew.contains(cardId);
     }
 
     public Deck getSergeant(){
-        return new Deck(sergeant.getDrawPile());
+        return new Deck(sergeant.getDrawPile()).shuffle();
     }
 
     public Deck getChars(){
-        return new Deck(chars.getDrawPile());
+        return new Deck(chars.getDrawPile()).shuffle();
     }
 
     public Deck getStrikes(){
-        return new Deck(strikes.getDrawPile());
+        return new Deck(strikes.getDrawPile()).shuffle();
     }
 
 }

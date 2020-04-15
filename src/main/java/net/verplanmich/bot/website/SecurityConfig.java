@@ -2,6 +2,7 @@ package net.verplanmich.bot.website;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.RequestEntity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,15 +17,19 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequestEnti
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+import java.util.concurrent.TimeUnit;
+
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .headers().cacheControl().disable().and()
                 .oauth2Login()
                 .tokenEndpoint().accessTokenResponseClient(accessTokenResponseClient())
                 .and()
                 .userInfoEndpoint().userService(userService());
+
     }
 
     @Bean
