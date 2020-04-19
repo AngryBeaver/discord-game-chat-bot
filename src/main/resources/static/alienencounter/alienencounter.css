@@ -294,6 +294,7 @@ nav {
 }
 
 .cards .area .cardContainer{
+    float:left;
     width: calc(11vw);
     height: calc(11vw/300*420);
 }

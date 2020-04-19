@@ -31,7 +31,7 @@ public class GameDecks {
     private HashMap<Mission, List<List<String>>> objectiveCards = new HashMap();
     private HashMap<Integer,HashMap<Integer,Integer>> difficutly = new HashMap();
 
-    private List<String> hiveAndCrew = Arrays.asList("jonesy.png");
+    private List<String> hiveAndCrew = Arrays.asList("jonesy.png","newt.png");
 
     private Deck chars;
     private Deck strikes;

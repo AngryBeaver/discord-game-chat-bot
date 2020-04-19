@@ -40,15 +40,15 @@ let currentSelection = EVENT_INFO;
 var footer = $('#footer');
 footer.on('shown.bs.collapse', '.collapseFooter', function (e) {
     if (e.target.id.trim() == 'barracksDetails') {
-        currentSelection= EVENT_REFRESH_BARRACKS;
+        currentSelection = EVENT_REFRESH_BARRACKS;
         openBarracks();
     }
     if (e.target.id.trim() == 'headQuarterDetails') {
-        currentSelection= EVENT_REFRESH_HQ;
+        currentSelection = EVENT_REFRESH_HQ;
         openHQ();
     }
     if (e.target.id.trim() == 'userDetails') {
-        currentSelection= EVENT_REFRESH_USER_INFO;
+        currentSelection = EVENT_REFRESH_USER_INFO;
         openUser();
     }
     if (e.target.id.trim() == 'selectUser') {
@@ -127,16 +127,19 @@ function openSelection() {
 }
 
 //COMPLEX
-function openComplex(){
+function openComplex() {
     activateDragDrop('#complexDeck')
 }
 
 
 //SERGEANT
-function fillSergeant(){
+function fillSergeant() {
     $('#sergeant .cardContainer .cardHolder').html("");
     sergeant.forEach(function (value) {
-        let html ='<img src="' + value + '"/>';
+        let html = "";
+        if(value != "") {
+            html = '<img src="' + value + '"/>';
+        }
         $('#sergeant .cardContainer .cardHolder').html(html);
     });
 }
@@ -166,7 +169,11 @@ function openHQ() {
 function fillHq() {
     $('#hq .cardContainer .cardHolder').html("");
     Object.entries(hqCards).forEach(([key, value]) => {
-        $('#hq .cardContainer .cardHolder:eq(' + key + ')').html('<img src="' + value + '"/>');
+        let html = "";
+        if(value != "") {
+            html = '<img src="' + value + '"/>';
+        }
+        $('#hq .cardContainer .cardHolder:eq(' + key + ')').html(html);
     });
 }
 
@@ -255,14 +262,14 @@ function getUserHand() {  //load on open or event "hand"
     })
 }
 
-function getUserDiscard() {  //load on open or event "hand"
+function getUserDiscard() {  //load on open or event "discard"
     action("getUserDiscard", selectedUserId).then(gameResult => {
         hand[gameResult.map[MAP_KEY_USER_ID]] = gameResult.imageIds;
         fillUserDiscard();
     })
 }
 
-function getUserDraw() {  //load on open or event "hand"
+function getUserDraw() {  //load on open or event "draw"
     action("getUserDraw", selectedUserId).then(gameResult => {
         hand[gameResult.map[MAP_KEY_USER_ID]] = gameResult.imageIds;
         fillUserDraw();
@@ -322,37 +329,36 @@ function showUser() {
     var userTab = $('#userDetails .nav-link.active').text().trim();
     $('#userDetails').find('a.cardContainer.glowBorder').removeClass('glowBorder');
     if (userTab == "info") {
-        currentSelection= EVENT_REFRESH_USER_INFO;
+        currentSelection = EVENT_REFRESH_USER_INFO;
         getUserInfo();
+        getUserStrikes();
     }
     if (userTab == "hand") {
-        currentSelection= EVENT_REFRESH_USER_HAND;
+        currentSelection = EVENT_REFRESH_USER_HAND;
         getUserHand();
     }
     if (userTab == "discard pile") {
-        currentSelection= EVENT_REFRESH_USER_DISCARD;
+        currentSelection = EVENT_REFRESH_USER_DISCARD;
         getUserDiscard();
     }
     if (userTab == "draw pile") {
-        currentSelection= EVENT_REFRESH_USER_DRAW;
+        currentSelection = EVENT_REFRESH_USER_DRAW;
         getUserDraw();
     }
 }
 
-function showUserNavi(){
+function showUserNavi() {
     $('#userDetails .col-sm-1').hide();
- if(selectedUserId == userId){
-     $('#userDetails .col-sm-1').show();
- }
+    if (selectedUserId == userId) {
+        $('#userDetails .col-sm-1').show();
+    }
 }
 
 function openUser() {
     $('#userDetails .nav-link:eq(1)').tab('show');
-    getUserInfo();
+    showUser();
     showUserNavi();
 }
-
-
 
 
 //UTILITIES
@@ -360,7 +366,9 @@ function getHtmlFromDeck(deck) {
     var html = '';
     deck.forEach(function (value) {
         html += '<a class="cardContainer" href="#">';
-        html += '<img src="' + value + '">';
+        if (value != "") {
+            html += '<img src="' + value + '">';
+        }
         html += '</a>';
     });
     return html;
@@ -379,7 +387,7 @@ function doHqAction(activity, selector) {
     if (position == undefined) {
         throw "Select a Card";
     }
-    return action(activity,position-1);
+    return action(activity, position - 1);
 }
 
 function doCardAction(activity, selector) {
@@ -387,17 +395,17 @@ function doCardAction(activity, selector) {
     if (cardId == undefined) {
         throw "Select a Card";
     }
-    return action(activity,cardId);
+    return action(activity, cardId);
 }
 
 function getCardPosition(selector) {
-    let selection = $(selector).find('a.cardContainer.glowBorder img');
-    return $(selector).find('a.cardContainer img').index(selection);
+    let selection = $(selector).find('a.cardContainer.glowBorder');
+    return $(selector).find('a.cardContainer').index(selection);
 }
 
 function getCardSelection(selector) {
     let parts = $(selector).find('a.cardContainer.glowBorder img').attr('src').split("/");
-    return parts[parts.length-1]
+    return parts[parts.length - 1]
 }
 
 
@@ -410,7 +418,7 @@ function showMessage(message) {
 }
 
 function scrollChat() {
-    $("#eventChannel").animate({scrollTop: $('#eventChannel .chat').height()}, 1000);
+    $("#eventChannel .cardArea").animate({scrollTop: $('#eventChannel .chat').height()}, 1000);
 }
 
 
@@ -433,37 +441,36 @@ function typeWriteMessage(message) {
 }
 
 //DRAG&DROP
-function activateDragDrop(selector){
-    $(selector).find('a.cardContainer img').draggable( {
-        containment: selector +" .area",
+function activateDragDrop(selector) {
+    $(selector).find('a.cardContainer img').draggable({
+        containment: selector + " .area",
         stack: selector,
         cursor: 'move',
         zIndex: 50,
         revert: true
-    } );
+    });
 
-    $(selector).find('a.cardContainer').droppable( {
+    $(selector).find('a.cardContainer').droppable({
         accept: "a.cardContainer img",
         activeClass: "glowBorder",
         hoverClass: 'hovered',
         drop: handleCardDrop
-    } );
+    });
 }
 
-function handleCardDrop( event, ui ) {
+function handleCardDrop(event, ui) {
     let area = $(this).parents(".area");
-    let from = area.find('.cardContainer').index( ui.draggable.parents(".cardContainer"));
-    let to = area.find('.cardContainer').index( $(this));
+    let from = area.find('.cardContainer').index(ui.draggable.parents(".cardContainer"));
+    let to = area.find('.cardContainer').index($(this));
     console.log(ui.draggable.parent());
     console.log($(this));
     console.log(to);
     console.log(from);
-    console.log(area.find(".cardContainer:eq("+to+")"));
-    area.find(".cardContainer:eq("+from+") .cardHolder").append($(this).find(".cardHolder img"));
-    area.find(".cardContainer:eq("+to+") .cardHolder").append(ui.draggable[0])
+    console.log(area.find(".cardContainer:eq(" + to + ")"));
+    area.find(".cardContainer:eq(" + from + ") .cardHolder").append($(this).find(".cardHolder img"));
+    area.find(".cardContainer:eq(" + to + ") .cardHolder").append(ui.draggable[0])
 
 }
-
 
 
 //EVENT
@@ -475,21 +482,20 @@ $(function () {
     socket("event", parseEvents);
 
 
-
     function parseEvents(gameResult) {
         if (gameResult.events.includes(EVENT_START)) {
             eventStart(gameResult);
         }
-        if(gameResult.events.includes(EVENT_JOIN)) {
+        if (gameResult.events.includes(EVENT_JOIN)) {
             getUserInfo();
         }
-        if (gameResult.events.includes(EVENT_REFRESH_GAME) && currentSelection == EVENT_REFRESH_GAME ) {
+        if (gameResult.events.includes(EVENT_REFRESH_GAME) && currentSelection == EVENT_REFRESH_GAME) {
             getGameInfo();
         }
         if (gameResult.events.includes(EVENT_REFRESH_HQ)) {
             getHqInfo();
         }
-        if (gameResult.events.includes(EVENT_REFRESH_BARRACKS) && currentSelection == EVENT_REFRESH_BARRACKS ) {
+        if (gameResult.events.includes(EVENT_REFRESH_BARRACKS) && currentSelection == EVENT_REFRESH_BARRACKS) {
             getBarracksInfo();
         }
         if (gameResult.events.includes(EVENT_REFRESH_USER_INFO) && currentSelection == EVENT_REFRESH_USER_INFO && gameResult.map.userId == selectedUserId) {
@@ -498,13 +504,13 @@ $(function () {
         if (gameResult.events.includes(EVENT_REFRESH_USER_HAND) && currentSelection == EVENT_REFRESH_USER_HAND && gameResult.map.userId == selectedUserId) {
             getUserHand();
         }
-        if (gameResult.events.includes(EVENT_REFRESH_USER_DRAW) &&currentSelection == EVENT_REFRESH_USER_DRAW && gameResult.map.userId == selectedUserId) {
+        if (gameResult.events.includes(EVENT_REFRESH_USER_DRAW) && currentSelection == EVENT_REFRESH_USER_DRAW && gameResult.map.userId == selectedUserId) {
             getUserDraw();
         }
         if (gameResult.events.includes(EVENT_REFRESH_USER_DISCARD) && currentSelection == EVENT_REFRESH_USER_DISCARD && gameResult.map.userId == selectedUserId) {
             getUserDiscard();
         }
-        if (gameResult.events.includes(EVENT_REFRESH_USER_STRIKES)  && currentSelection == EVENT_REFRESH_USER_INFO && gameResult.map.userId == selectedUserId) {
+        if (gameResult.events.includes(EVENT_REFRESH_USER_STRIKES) && currentSelection == EVENT_REFRESH_USER_INFO && gameResult.map.userId == selectedUserId) {
             getUserStrikes();
         }
         if (gameResult.events.includes(EVENT_INFO)) {
@@ -523,7 +529,7 @@ $(function () {
     function eventStart(gameResult) {
         let html = '<video autoplay id="vid">';
 
-        html += '<source src="'+gameResult.map.mission+'.mp4" type="video/mp4">';
+        html += '<source src="' + gameResult.map.mission + '.mp4" type="video/mp4">';
         html += '</video>';
         showMessage(html);
         setTimeout(function () {
@@ -549,7 +555,7 @@ $(function () {
     $('.console input').keypress(function (e) {
         if (e.which == 13) {
             let value = $('.console input').val().match(/^(\S+)\s(.*)/).slice(1);
-            action(value[0],value[1]);
+            action(value[0], value[1]);
             $('.console input').val("");
         }
     });

@@ -6,6 +6,7 @@ import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.RequestEntity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
@@ -21,10 +22,15 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/**/*.png","/**/*.jpg");
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .headers().cacheControl().disable().and()
                 .oauth2Login()
                 .tokenEndpoint().accessTokenResponseClient(accessTokenResponseClient())
                 .and()

@@ -175,7 +175,6 @@ public class Alienencounter implements Game {
                 .toBarracksBottom();
     }
 
-
     //BARRACKS
     @GameMethod()
     public GameResult barracksToVoid(String cardId){
@@ -200,7 +199,6 @@ public class Alienencounter implements Game {
         return GameResultBuilder.fromBarracks(this,cardId)
                 .toBarracksBottom();
     }
-
 
     //HQ
     @GameMethod()
@@ -310,7 +308,6 @@ public class Alienencounter implements Game {
         return GameResultBuilder.fromDraw(this, userId, cardId)
                 .toBarracksBottom();
     }
-
 
     //HIVE
     @GameMethod()
@@ -493,15 +490,20 @@ public class Alienencounter implements Game {
         GameResult gameResult = new GameResult();
         List<String> hqList = hq.stream()
                 .map(cardId -> {
-                    String card = "/" + NAME + "/" + DIRECTORY_CREW + "/" + cardId;
+                    String card = "";
+                    if(!cardId.equals("")){
+                        card = "/" + NAME + "/" + DIRECTORY_CREW + "/" + cardId;
+                    }
                     gameResult.addImageId(card);
                     return card;
                 })
                 .collect(Collectors.toList());
         ArrayList<String> sergeantList = new ArrayList();
+        String cardId = "";
         if(!sergeant.isEmpty()){
-            sergeantList.add("/"+NAME+"/"+DIRECTORY_CREW+"/"+sergeant.showDrawCard());
+            cardId = "/"+NAME+"/"+DIRECTORY_CREW+"/"+sergeant.showDrawCard();
         }
+        sergeantList.add(cardId);
         return gameResult
                 .setText("request headquarter")
                 .set(MAP_KEY_SERGEANT,sergeantList)
@@ -594,7 +596,7 @@ public class Alienencounter implements Game {
                 hq.add(position,barracks.drawCard());
             }
         }catch(Exception e){
-            hq.add(position,null);
+            hq.set(position,"");
         }
     }
 

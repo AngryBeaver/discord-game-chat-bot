@@ -166,7 +166,7 @@ public final class GameResultBuilder {
         ae.getCombat().add(getCardId());
         return gameResult
                 .addEvent(EVENT_REFRESH_COMBAT)
-                .setText(from+" to Attachment");
+                .setText(from+" to Combat");
     }
 
     //FROM
@@ -194,7 +194,7 @@ public final class GameResultBuilder {
         }else {
             int pos = Integer.valueOf(position);
             cardId = ae.getHq().get(pos);
-            if(cardId == null) {
+            if(cardId.equals("")) {
                 throw new GameResultException(new GameResult().setText("not found in hq"));
             }
             ae.fillHq(pos);
