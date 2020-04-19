@@ -72,8 +72,13 @@ public final class GameResultBuilder {
     }
 
     public static GameResultBuilder fromCombat(Alienencounter alienencounter,String cardId){
-        return new GameResultBuilder(alienencounter,"attachment")
+        return new GameResultBuilder(alienencounter,"combat")
                 .fromCombat(cardId);
+    }
+
+    public static GameResultBuilder fromOperations(Alienencounter alienencounter,String cardId){
+        return new GameResultBuilder(alienencounter,"operations")
+                .fromOperations(cardId);
     }
 
 
@@ -167,6 +172,13 @@ public final class GameResultBuilder {
         return gameResult
                 .addEvent(EVENT_REFRESH_COMBAT)
                 .setText(from+" to Combat");
+    }
+
+    public GameResult toOperations(){
+        ae.getOperations().add(getCardId());
+        return gameResult
+                .addEvent(EVENT_REFRESH_OPERATIONS)
+                .setText(from+" to Operations");
     }
 
     //FROM
@@ -277,6 +289,15 @@ public final class GameResultBuilder {
         }
         gameResult.addEvent(EVENT_REFRESH_COMBAT);
         return fromHiveCardId(cardId,true);
+    }
+
+    private GameResultBuilder fromOperations(String cardId){
+        if(!ae.getOperations().remove(cardId)){
+            throw new GameResultException(new GameResult()
+                    .setText("Card not found"));
+        }
+        gameResult.addEvent(EVENT_REFRESH_OPERATIONS);
+        return fromCrewCardId(cardId);
     }
 
     public Location getLocationAt(String position){

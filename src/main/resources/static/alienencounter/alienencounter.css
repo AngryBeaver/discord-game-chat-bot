@@ -24,11 +24,14 @@ div.darkall:before {
 }
 
 .collapseFooter{
-    height:38vh;
+    height:44vh;
 }
 
-#selectUser.collapseFooter{
-    height:100%
+#selectUser {
+    position: absolute;
+    bottom:0px;
+    margin-left: 12vw;
+    padding:5px;
 }
 
 .collapseFooter.area {

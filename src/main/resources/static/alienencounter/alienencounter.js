@@ -12,6 +12,7 @@ let EVENT_REFRESH_GAME = "game";
 let EVENT_REFRESH_USER_DRAW = "draw";
 let EVENT_REFRESH_USER_DISCARD = "discard";
 let EVENT_REFRESH_ALIEN = "alien";
+let EVENT_REFRESH_OPERATIONS = "operations";
 let EVENT_INFO = "info";
 let EVENT_JOIN = "join";
 
@@ -34,6 +35,7 @@ let userId = "guest";
 let selectedUserId;
 let strikes = {};
 let hand = {}
+let operations = [];
 let currentSelection = EVENT_INFO;
 
 //FOOTER
@@ -62,6 +64,10 @@ footer.on('shown.bs.collapse', '.collapseFooter', function (e) {
     if (e.target.id.trim() == 'complexDetails') {
         currentSelection = EVENT_REFRESH_ALIEN;
         openComplex();
+    }
+    if (e.target.id.trim() == 'operationsDetails') {
+        currentSelection = EVENT_REFRESH_OPERATIONS;
+        openOperations();
     }
 });
 
@@ -175,6 +181,24 @@ function fillHq() {
         }
         $('#hq .cardContainer .cardHolder:eq(' + key + ')').html(html);
     });
+}
+
+//OPERATIONS
+function getOperationsInfo() {
+    action("getOperationsInfo").then(gameResult => {
+        operations = gameResult.map.operations;
+        fillOperationDetails();
+    })
+}
+
+function fillOperationDetails() {
+    let html = getHtmlFromDeck(operations);
+    $('#operationsDeck .area').html(html);
+    activateSelectableCards();
+}
+
+function openOperations() {
+    getOperationsInfo();
 }
 
 //BARRACKS
@@ -512,6 +536,9 @@ $(function () {
         }
         if (gameResult.events.includes(EVENT_REFRESH_USER_STRIKES) && currentSelection == EVENT_REFRESH_USER_INFO && gameResult.map.userId == selectedUserId) {
             getUserStrikes();
+        }
+        if (gameResult.events.includes(EVENT_REFRESH_OPERATIONS) && currentSelection == EVENT_REFRESH_OPERATIONS) {
+            getOperationsInfo();
         }
         if (gameResult.events.includes(EVENT_INFO)) {
             let message = gameResult.text

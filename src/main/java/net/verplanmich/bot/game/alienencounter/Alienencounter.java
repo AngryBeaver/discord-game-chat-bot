@@ -33,6 +33,7 @@ public class Alienencounter implements Game {
     static final String EVENT_REFRESH_USER_STRIKE = "strike";
     static final String EVENT_REFRESH_USER_DRAW = "draw";
     static final String EVENT_REFRESH_USER_DISCARD = "discard";
+    static final String EVENT_REFRESH_OPERATIONS = "operations";
 
     static final String EVENT_JOIN = "join";
     static final String EVENT_REFRESH_HIVE = "hive";
@@ -51,6 +52,7 @@ public class Alienencounter implements Game {
     static final String MAP_KEY_SERGEANT = "sergeant";
     static final String MAP_KEY_HIVE_SIZE = "hiveSize";
     static final String MAP_KEY_IS_REVEALED = "revealed";
+    static final String MAP_KEY_OPERATIONS = "operations";
 
     private GameDecks gameDecks;
 
@@ -66,6 +68,7 @@ public class Alienencounter implements Game {
     private List<Location> complex;
     private List<String> combat;
     private boolean gameStarted = false;
+    private List<String> operations = new ArrayList<>();
 
     @Autowired
     public Alienencounter(GameDecks gameDecks){
@@ -90,6 +93,7 @@ public class Alienencounter implements Game {
     List<String> getHq() { return hq;}
     List<Location> getComplex() {return complex;}
     List<String> getCombat() {return combat;}
+    List<String> getOperations() {return operations;}
 
 
 
@@ -115,6 +119,7 @@ public class Alienencounter implements Game {
             this.mission = Mission.valueOf(mission.toUpperCase());
             barracks = gameDecks.barracksFor(this.mission);
             hq = new ArrayList();
+            operations = new ArrayList<>();
             strikes = gameDecks.getStrikes();
             sergeant = gameDecks.getSergeant();
             fillHq(0);
@@ -231,6 +236,12 @@ public class Alienencounter implements Game {
                 .toBarracksBottom();
     }
 
+    @GameMethod()
+    public GameResult hqToOperations(String userId, String position) {
+        return GameResultBuilder.fromHq(this, position)
+                .toOperations();
+    }
+
     //HAND
     @GameMethod()
     public GameResult handShow(String userId, String cardId) {
@@ -254,6 +265,12 @@ public class Alienencounter implements Game {
     public GameResult handToBarracksBottom(String userId, String cardId) {
         return GameResultBuilder.fromHand(this, userId, cardId)
                 .toBarracksBottom();
+    }
+
+    @GameMethod()
+    public GameResult handToOperations(String userId, String cardId) {
+        return GameResultBuilder.fromHand(this, userId, cardId)
+                .toOperations();
     }
 
     @GameMethod()
@@ -308,6 +325,25 @@ public class Alienencounter implements Game {
         return GameResultBuilder.fromDraw(this, userId, cardId)
                 .toBarracksBottom();
     }
+
+    //Operations
+    @GameMethod()
+    public GameResult operationsToVoid(String cardId){
+        return GameResultBuilder.fromOperations(this, cardId)
+                .toVoid();
+    }
+
+    @GameMethod()
+    public GameResult operationsToHand(String userId, String cardId) {
+        return GameResultBuilder.fromOperations(this, cardId)
+                .toHand(userId);
+    }
+    @GameMethod()
+    public GameResult operationsToDiscard(String userId, String cardId) {
+        return GameResultBuilder.fromOperations(this, cardId)
+                .toDiscard(userId);
+    }
+
 
     //HIVE
     @GameMethod()
@@ -522,6 +558,21 @@ public class Alienencounter implements Game {
         return gameResult
                 .set(MAP_KEY_BARRACKS,barrackList)
                 .setText("request " + amount + " Barracks");
+    }
+
+    @GameMethod()
+    public GameResult getOperationsInfo() {
+        GameResult gameResult = new GameResult();
+        List<String> operationsList = operations.stream()
+                .map(card -> {
+                    String cardId = "/" + NAME + "/" + DIRECTORY_CREW + "/" + card;
+                    gameResult.addImageId(cardId);
+                    return cardId;
+                } )
+                .collect(Collectors.toList());
+        return gameResult
+                .set(MAP_KEY_OPERATIONS,operationsList)
+                .setText("request Operations Info");
     }
 
     @GameMethod()

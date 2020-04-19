@@ -25,12 +25,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/**/*.png","/**/*.jpg");
+        //web.ignoring().antMatchers("/**/*.png","/**/*.jpg");
+        //urls with fromToOperation/cardId.png will no longer work this way...
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .headers().cacheControl().disable().and()
                 .oauth2Login()
                 .tokenEndpoint().accessTokenResponseClient(accessTokenResponseClient())
                 .and()
