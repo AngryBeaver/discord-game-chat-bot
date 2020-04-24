@@ -12,6 +12,16 @@ function socket(channel, handleMessage ) {
     });
 }
 
+function showGameResult(gameResult){
+    let message = gameResult.text
+    if (gameResult.imageIds == undefined) {
+        message = message + "<br/>";
+    } else {
+        gameResult.imageIds.forEach(
+            cardId => message += "<br/><img src='" + cardId + "' />");
+    }
+    showMessage(message);
+}
 
 function showMessage(message) {
     if(message.content != "") {
@@ -34,3 +44,56 @@ function getUrlParameter(sParam) {
         }
     }
 }
+
+//GENERIC REST
+function action(command, option) {
+    return fetch("/games/" + gameId + "/" + command + "/" + option)
+        .then(function (response) {
+            return response.json().then(function (data) {
+                if (response.status != 200) {
+                    throw Exception(data.message);
+                }
+                return data;
+            })
+        });
+}
+
+//CHAT
+function showMessage(message) {
+    if (message.content != "") {
+        $("#eventChannel .chat").append("<div>" + message + "</div>");
+        scrollChat();
+    }
+}
+
+function scrollChat() {
+    $("#eventChannel .cardArea").animate({scrollTop: $('#eventChannel .chat').height()}, 1000);
+}
+
+
+function typeWriteMessage(message) {
+    var i = 0;
+    let speed = 100;
+    typeWriter();
+
+    function typeWriter() {
+        if (i < message.length) {
+            $("#eventChannel .chat").append(message.charAt(i));
+            i++;
+            setTimeout(typeWriter, speed);
+        } else {
+            $("#eventChannel .chat").append("<br/>");
+            scrollChat();
+        }
+
+    }
+}
+$(function(){
+    $('.console input').keypress(function (e) {
+        if (e.which == 13) {
+            let value = $('.console input').val().match(/^(\S+)\s(.*)/).slice(1);
+            action(value[0], value[1]);
+            $('.console input').val("");
+        }
+    });
+});

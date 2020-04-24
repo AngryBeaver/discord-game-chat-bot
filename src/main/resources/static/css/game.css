@@ -1,0 +1,10 @@
+.cardArea {
+    position: relative;
+    height: calc(100%/10*3);
+    border-radius: 10px;
+    display: inline-block;
+    overflow: hidden;
+    margin: 2px;
+    padding: 5px;
+    color: white;
+}

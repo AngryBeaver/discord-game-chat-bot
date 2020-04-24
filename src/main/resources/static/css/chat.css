@@ -1,0 +1,68 @@
+#chat .chat{
+    width: 90vw
+}
+
+#chat .chat video{
+    width: 90vw;
+    margin-bottom: 5px;
+}
+
+#chat .chat img{
+    width: 90vw;
+    margin-bottom: 5px;
+}
+#chat .console {
+    width:90vw;
+}
+
+#chat .console input{
+    width:86vw;
+}
+
+#game .chat{
+    width: 14vw
+}
+
+#game .chat video{
+    width: 14vw;
+    margin-bottom: 5px;
+}
+
+#game .chat img{
+    width: 14vw;
+    margin-bottom: 5px;
+}
+#game .console {
+    width:14vw;
+}
+
+#game .console input{
+    width:13vw;
+}
+
+#eventChannel .console {
+    position:absolute;
+    bottom:2px;
+    background-color:black;
+    color:white;
+}
+
+#eventChannel .console input{
+    background-color:transparent;
+    padding-left:5px;
+    border:0px;
+    color:white;
+}
+#eventChannel {
+    height: 100%;
+    float: left;
+    background-color: rgba(0, 0, 0, 0.8);
+    overflow: hidden;
+    position: relative;
+    margin-left:7px;
+    padding-top:7px;
+    padding-bottom:40px;
+}
+#eventChannel .cardArea{
+    height: 100%;
+}

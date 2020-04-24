@@ -153,7 +153,7 @@ public class Alienencounter implements Game {
         return new GameResult()
                 .setText("Objective: "+objective)
                 .set(MAP_KEY_OBJECTIVE,objective)
-                .addImageId("/"+NAME+"/"+DIRECTORY_MISSION+"/"+mission+"-objective"+objective+".png")
+                .addImageId("/"+NAME+"/"+DIRECTORY_MISSION+"/"+mission.toString().toLowerCase()+"-objective"+objective+".png")
                 .addEvent(EVENT_INFO)
                 .addEvent(EVENT_REFRESH_GAME);
     }
@@ -301,6 +301,11 @@ public class Alienencounter implements Game {
     public GameResult discardToBarracksBottom(String userId, String cardId) {
         return GameResultBuilder.fromDiscard(this, userId, cardId)
                 .toBarracksBottom();
+    }
+    @GameMethod()
+    public GameResult discardToOperations(String userId, String cardId) {
+        return GameResultBuilder.fromDiscard(this, userId, cardId)
+                .toOperations();
     }
 
     //Draw

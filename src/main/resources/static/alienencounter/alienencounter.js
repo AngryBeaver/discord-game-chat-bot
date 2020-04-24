@@ -433,36 +433,6 @@ function getCardSelection(selector) {
 }
 
 
-//CHAT
-function showMessage(message) {
-    if (message.content != "") {
-        $("#eventChannel .chat").append("<div>" + message + "</div>");
-        scrollChat();
-    }
-}
-
-function scrollChat() {
-    $("#eventChannel .cardArea").animate({scrollTop: $('#eventChannel .chat').height()}, 1000);
-}
-
-
-function typeWriteMessage(message) {
-    var i = 0;
-    let speed = 100;
-    typeWriter();
-
-    function typeWriter() {
-        if (i < message.length) {
-            $("#eventChannel .chat").append(message.charAt(i));
-            i++;
-            setTimeout(typeWriter, speed);
-        } else {
-            $("#eventChannel .chat").append("<br/>");
-            scrollChat();
-        }
-
-    }
-}
 
 //DRAG&DROP
 function activateDragDrop(selector) {
@@ -541,16 +511,8 @@ $(function () {
             getOperationsInfo();
         }
         if (gameResult.events.includes(EVENT_INFO)) {
-            let message = gameResult.text
-            if (gameResult.imageIds == undefined) {
-                message = message + "<br/>";
-            } else {
-                gameResult.imageIds.forEach(
-                    cardId => message += "<br/><img src='" + cardId + "' />");
-            }
-            showMessage(message);
+            showGameResult(gameResult);
         }
-
     }
 
     function eventStart(gameResult) {
@@ -586,19 +548,9 @@ $(function () {
             $('.console input').val("");
         }
     });
+
 });
 
 
-//GENERIC REST
-function action(command, option) {
-    return fetch("/games/" + gameId + "/" + command + "/" + option)
-        .then(function (response) {
-            return response.json().then(function (data) {
-                if (response.status != 200) {
-                    throw Exception(data.message);
-                }
-                return data;
-            })
-        });
-}
+
 
