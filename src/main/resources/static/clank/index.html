@@ -25,502 +25,414 @@
 <body id="game">
 <div id="eventChannel" class="wrapper">
     <div class="cardArea glowBorder">
-    <div class="chat">
-    </div>
+        <div class="chat">
+        </div>
     </div>
     <div class="console">#:<input></div>
 </div>
 
 
-<div id="footer" >
-    <div class="collapse area collapseFooter" id="complexDetails" data-parent="#footer">
-        <ul class="nav nav-pills" id="complex-tab" role="tablist">
-            <li class="nav-item">
-                <div class="nav-link disabled" role="tab">
-                    <a data-toggle="collapse" data-target="#complexDetails" href="#"> <img src="complex.png"></a>
-                    complex
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#" role="tab">
-                </a>
-            </li>
-        </ul>
-        <div class="row">
-            <div class="col-sm-1">
-                <div class="wrapper">
-                    <nav>
-                        <ul class="list-unstyled components">
-                            <p>Actions</p>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doComplexAction('complexAdd','#complexDeck')">
-                                    scan
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doComplexAction('complexToCombat','#complexDeck')">
-                                    toCombat
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doComplexAction('complexKill','#complexDeck')">
-                                    kill
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doComplexAction('complexToHand','#complexDeck')">
-                                    toHand
-                                </button>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-            <div class="col">
-                <div id="complexDeck" class="tab-pane fade show active cards" role="tabpanel">
-                    <div class="area">
-                        <a class="cardContainer" href="#">
-                            <div class="cardHolder">
-
+<div id="footer">
+    <div class="collapse" id="gameDetails" data-parent="#footer">
+        <div class="collapseFooter area glowBorder">
+            <ul class="nav nav-pills " id="game-tab" role="tablist">
+                <li class="nav-item">
+                    <div class="nav-link disabled" role="tab">
+                        <a data-toggle="collapse" data-target="#gameDetails" href="#"><img class="fix-icon"
+                                                                                           src="game.png"></a>
+                        clank!
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#gameInfo" role="tab">info</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#dungeon" role="tab">dungeon</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#activePlayer" role="tab">player</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="gameInfo" role="tabpanel">
+                    <div class="row cards">
+                        <div class="col-sm-1">
+                            <div class="wrapper">
+                                <nav>
+                                    <ul class="list-unstyled components">
+                                        <p>Actions</p>
+                                        <li>
+                                            <button class="btn btn-sm btn-primary" onclick="action('join')">
+                                                join
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
+                                                        id="gameSelection" data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">
+                                                    start
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="gameSelection">
+                                                    <a class="dropdown-item"
+                                                       href="javascript:action('start','base')">base</a>
+                                                    <a class="dropdown-item" href="javascript:action('start','sunken')">sunken</a>
+                                                    <a class="dropdown-item"
+                                                       href="javascript:action('start','mummy')">mummy</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-sm btn-primary"
+                                                    onclick="doCardAction('addItem','#market')">
+                                                getItem
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-sm btn-primary" onclick="action('getMinorSecret')">
+                                                getMinor
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-sm btn-primary" onclick="action('getMajorSecret')">
+                                                getMajor
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
+                                                        id="dropdownMenuButton" data-toggle="dropdown"
+                                                        aria-haspopup="true"
+                                                        aria-expanded="false">
+                                                    dragonAttack
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <a class="dropdown-item"
+                                                       href="javascript:action('dragonAttack',3)">3</a>
+                                                    <a class="dropdown-item"
+                                                       href="javascript:action('dragonAttack',4)">4</a>
+                                                    <a class="dropdown-item"
+                                                       href="javascript:action('dragonAttack',5)">5</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-sm btn-primary" onclick="action('endTurn')">
+                                                endTurn
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </nav>
                             </div>
-                            <div class="header overlayd"><p class="glow">hive</p></div>
-                        </a>
-                        <a class="cardContainer" href="#">
-                            <div class="cardHolder">
-
+                        </div>
+                        <div class="col cards row">
+                            <div id="clankArea" class=" area area-3 col">
+                                clankArea
+                                <span></span>
                             </div>
-                            <div class="header overlayd"><p class="glow">ventilation shafts</p></div>
-                        </a>
-
-                        <a class="cardContainer" href="#">
-                            <div class="cardHolder">
-                                <img src="alien/ambushed-medic.png"/>
+                            <div id="market" class="area area-3 col">
+                                <a class="cardContainer sm-icon" href="#">
+                                    <img src="items/crown-8.png"/>
+                                </a>
+                                <a class="cardContainer sm-icon" href="#">
+                                    <img src="items/crown-9.png"/>
+                                </a>
+                                <a class="cardContainer sm-icon" href="#">
+                                    <img src="items/crown-10.png"/>
+                                </a>
+                                <a class="cardContainer sm-icon" href="#">
+                                    <img src="items/backpack.png"/>
+                                </a>
+                                <a class="cardContainer sm-icon" href="#">
+                                    <img src="items/key.png"/>
+                                </a>
+                                <a class="cardContainer sm-icon" href="#">
+                                    <img src="items/scuba.png"/>
+                                </a>
+                                <a class="cardContainer sm-icon" href="#">
+                                    <img src="items/monkey-idol1.png"/>
+                                </a>
+                                <a class="cardContainer sm-icon" href="#">
+                                    <img src="items/monkey-idol2.png"/>
+                                </a>
+                                <a class="cardContainer sm-icon" href="#">
+                                    <img src="items/monkey-idol3.png"/>
+                                </a>
+                                <a class="cardContainer sm-icon" href="#">
+                                    <img src="items/artifact-5.png"/>
+                                </a>
+                                <a class="cardContainer sm-icon" href="#">
+                                    <img src="items/artifact-7.png"/>
+                                </a>
+                                <a class="cardContainer sm-icon" href="#">
+                                    <img src="items/artifact-10.png"/>
+                                </a>
+                                <a class="cardContainer sm-icon" href="#">
+                                    <img src="items/artifact-15.png"/>
+                                </a>
+                                <a class="cardContainer sm-icon" href="#">
+                                    <img src="items/artifact-20.png"/>
+                                </a>
+                                <a class="cardContainer sm-icon" href="#">
+                                    <img src="items/artifact-25.png"/>
+                                </a>
+                                <a class="cardContainer sm-icon" href="#">
+                                    <img src="items/artifact-30.png"/>
+                                </a>
                             </div>
-                            <div class="header overlayd"><p class="glow">power station</p></div>
-                        </a>
-
-                        <a class="cardContainer" href="#">
-                            <div class="cardHolder">
-
-                            </div>
-                            <div class="header overlayd"><p class="glow">weapons locker</p></div>
-                        </a>
-
-                        <a class="cardContainer" href="#">
-                            <div class="cardHolder">
-
-                            </div>
-                            <div class="header overlayd"><p class="glow">med-lab</p></div>
-                        </a>
-
-                        <a class="cardContainer" href="#">
-                            <div class="cardHolder">
-                                <img src="alien/carmouflaged-xenomorph.png"/>
-                            </div>
-                            <div class="header overlayd"><p class="glow">airlock</p></div>
-                        </a>
-                        <a class="cardContainer" href="#">
-                            <div class="cardHolder">
-                                <img src="alien/carmouflaged-xenomorph.png"/>
-                            </div>
-                            <div class="header overlayd"><p class="glow">combat</p></div>
-                        </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
+                <div class="tab-pane fade" id="dungeon" role="tabpanel">
+                    <div class="row cards">
+                        <div class="col-sm-1">
+                            <div class="wrapper">
+                                <nav>
+                                    <ul class="list-unstyled components">
+                                        <p>Actions</p>
+                                        <li>
+                                            <button class="btn btn-sm btn-primary"
+                                                    onclick="doCardAction('dungeonToDiscard','#dungeonsDeck')">
+                                                buy
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="col cards">
+                            <div id="dungeonsDeck" class="cards">
+                                <div class="area">
+                                    <a class="cardContainer" href="#">
 
-
-    <div class="collapse area glowBorder collapseFooter" id="gameDetails" data-parent="#footer">
-        <ul class="nav nav-pills " id="game-tab" role="tablist">
-            <li class="nav-item">
-                <div class="nav-link disabled" role="tab">
-                    <a data-toggle="collapse" data-target="#gameDetails" href="#"><img src="game.png"></a>
-                    alienencounter
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#" role="tab">
-                </a>
-            </li>
-        </ul>
-        <div class="row">
-            <div class="col-sm-1">
-                <div class="wrapper">
-                    <nav>
-                        <ul class="list-unstyled components">
-                            <p>Actions</p>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="joinGame()">
-                                    join
-                                </button>
-                            </li>
-                            <li>
-                                <div class="dropdown">
-                                    <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        start
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="javascript:action('start','nostromo')">nostromo</a>
-                                        <a class="dropdown-item" href="javascript:action('start','sulaci')">sulaci</a>
+                <div class="tab-pane fade " id="activePlayer" role="tabpanel">
+                    <div class="row cards">
+                        <div class="col-sm-1">
+                            <div class="wrapper">
+                                <nav>
+                                    <ul class="list-unstyled components">
+                                        <p>Actions</p>
+                                        <li>
+                                            <button class="btn btn-sm btn-primary" onclick="action('drawToPlay')">
+                                                draw
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-sm btn-primary"
+                                                    onclick="doCardAction('playToDiscard','#playArea')">
+                                                discard
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
+                                                        id="actCoins" data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">
+                                                    coins
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="actCoins">
+                                                    <a class="dropdown-item"
+                                                       href="javascript:action('adjustCoins','1')">+1</a>
+                                                    <a class="dropdown-item"
+                                                       href="javascript:action('adjustCoins','5')">+5</a>
+                                                    <a class="dropdown-item"
+                                                       href="javascript:action('adjustCoins','-1')">-1</a>
+                                                    <a class="dropdown-item"
+                                                       href="javascript:action('adjustCoins','-5')">-5</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
+                                                        id="actHealth" data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">
+                                                    health
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="actHealth">
+                                                    <a class="dropdown-item"
+                                                       href="javascript:action('damage','1')">damage</a>
+                                                    <a class="dropdown-item"
+                                                       href="javascript:action('heal','1')">heal</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-sm btn-primary"
+                                                    onclick="doCardAction('removeItem','#activeUserData')">
+                                                useItem
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
+                                                        id="actClank" data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">
+                                                    clank
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="actClank">
+                                                    <a class="dropdown-item"
+                                                       href="javascript:action('adjustClank','1')">+1</a>
+                                                    <a class="dropdown-item"
+                                                       href="javascript:action('adjustClank','-1')">-1</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="col cards row">
+                            <div id="activeUserData" class="col area area-1">
+                                <div><img class="fix-icon" src="char/' + user.userChar + '-avatar.png">
+                                    <span>Name</span>
+                                </div>
+                                <div>
+                                    <img class="fix-icon" src="treasure.png">
+                                    <span>0</span>
+                                </div>
+                                <div style="display:flex">
+                                    <img class="fix-icon" src="health.png">
+                                    <div class="progress healthbar glowBorder">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
+                                             role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
+                                             style="width:75%">75%
+                                        </div>
                                     </div>
                                 </div>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="action('setObjective',(game.objective-1+2))">
-                                    next
-                                </button>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-            <div class="col">
-                <div id="missionInfo" class="tab-pane fade show active cards" role="tabpanel">
-                    all player need to join before anyone starts the game.
+                                <div>
+                                    items
+                                </div>
+                                <div>
+                                    clankCubes
+                                </div>
+                            </div>
+                            <div id="playArea" class="col area area-5">
+                                <a class="cardContainer" href="#">
+
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="collapse area glowBorder collapseFooter" id="headQuarterDetails" data-parent="#footer">
-        <ul class="nav nav-pills " id="hq-tab" role="tablist">
-            <li class="nav-item">
-                <div class="nav-link disabled" role="tab">
-                    <a data-toggle="collapse" data-target="#headQuarterDetails" href="#"> <img src="hq.png"></a>
-                    headquarter
+    <div class="collapse" id="userDetails" data-parent="#footer">
+        <div class="collapseFooter area glowBorder">
+            <ul class="nav nav-pills" role="tablist">
+                <li class="nav-item">
+                    <div class="nav-link disabled">
+                        Guest
+                    </div>
+                </li>
+            </ul>
+            <div class="row cards" id="userInfo">
+                <div class="col-sm-1">
+                    <div class="wrapper">
+                        <nav>
+                            <ul class="list-unstyled components">
+                                <p>Actions</p>
+                                <li>
+                                    <button class="btn btn-sm btn-primary" onclick="action('drawToPlay')">
+                                        draw
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="btn btn-sm btn-primary"
+                                            onclick="doCardAction('playToDiscard','#playArea')">
+                                        discard
+                                    </button>
+                                </li>
+                                <li>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="coins"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            coins
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="coins">
+                                            <a class="dropdown-item" href="javascript:action('adjustCoins','1')">+1</a>
+                                            <a class="dropdown-item" href="javascript:action('adjustCoins','5')">+5</a>
+                                            <a class="dropdown-item" href="javascript:action('adjustCoins','-1')">-1</a>
+                                            <a class="dropdown-item" href="javascript:action('adjustCoins','-5')">-5</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="health"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            health
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="health">
+                                            <a class="dropdown-item" href="javascript:action('damage','1')">damage</a>
+                                            <a class="dropdown-item" href="javascript:action('heal','1')">heal</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <button class="btn btn-sm btn-primary"
+                                            onclick="doCardAction('removeItem','#activeUserData')">
+                                        useItem
+                                    </button>
+                                </li>
+                                <li>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="clank"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            clank
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="clank">
+                                            <a class="dropdown-item" href="javascript:action('adjustClank','1')">+1</a>
+                                            <a class="dropdown-item" href="javascript:action('adjustClank','-1')">-1</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <button class="btn btn-sm btn-primary" onclick="action('endTurn')">
+                                        endTurn
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#" role="tab">
-                </a>
-            </li>
-        </ul>
-        <div class="row">
-            <div class="col-sm-1">
-                <div class="wrapper">
-                    <nav>
-                        <ul class="list-unstyled components">
-                            <p>Actions</p>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doHqAction('hqToDiscard','#headQuarterDeck')">
-                                    toDiscard
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doHqAction('hqToHand','#headQuarterDeck')">
-                                    toHand
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doHqAction('hqToBarracksBottom','#headQuarterDeck')">
-                                    toBarracksDown
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doHqAction('hqToOperations','#headQuarterDeck')">
-                                    toOperations
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doHqAction('hqToVoid','#headQuarterDeck')">
-                                    kill
-                                </button>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-            <div class="col">
-                <div id="headQuarterDeck" class="tab-pane fade show active cards" role="tabpanel">
-                    <div class="area">
+                <div class="col cards row">
+                    <div id="userData" class="col area area-1">
+                        <div><img class="fix-icon" src="char/' + user.userChar + '-avatar.png">
+                            <span>Name</span>
+                        </div>
+                        <div>
+                            <img class="fix-icon" src="treasure.png">
+                            <span>0</span>
+                        </div>
+                        <div style="display:flex">
+                            <img class="fix-icon" src="health.png">
+                            <div class="progress healthbar glowBorder">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
+                                     role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
+                                     style="width:75%">75%
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            items
+                        </div>
+                        <div>
+                            clankCubes
+                        </div>
+                    </div>
+                    <div id="handArea" class="col area area-5">
                         <a class="cardContainer" href="#">
 
                         </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="collapse area glowBorder collapseFooter" id="barracksDetails" data-parent="#footer">
-        <ul class="nav nav-pills " id="barracks-tab" role="tablist">
-
-            <li class="nav-item">
-                <div class="nav-link disabled" role="tab">
-                    <a data-toggle="collapse" data-target="#barracksDetails" href="#"><img src="barracks.png"></a>
-                    barracks
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#" role="tab">
-                    first</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#" role="tab">
-                    second</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#" role="tab">all</a>
-            </li>
-        </ul>
-        <div class="row">
-            <div class="col-sm-1">
-                <div class="wrapper">
-                    <nav>
-                        <ul class="list-unstyled components">
-                            <p>Actions</p>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doCardAction('barracksToDiscard','#barracksDeck')">
-                                    toDiscard
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doCardAction('barracksToHand','#barracksDeck')">
-                                    toHand
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doCardAction('barracksToBarracksBottom','#barracksDeck')">
-                                    toBottom
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doCardAction('barracksToVoid','#barracksDeck')">
-                                    kill
-                                </button>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-            <div class="col">
-                <div id="barracksDeck" class="tab-pane fade show active cards" role="tabpanel">
-                    <div class="area">
-                        <a class="cardContainer" href="#">
-
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="collapse area glowBorder collapseFooter" id="operationsDetails" data-parent="#footer">
-        <ul class="nav nav-pills " id="opperations-tab" role="tablist">
-
-            <li class="nav-item">
-                <div class="nav-link disabled" role="tab">
-                    <a data-toggle="collapse" data-target="#operationsDetails" href="#"><img src="operations.png"></a>
-                    operations
-                </div>
-            </li>
-        </ul>
-        <div class="row">
-            <div class="col-sm-1">
-                <div class="wrapper">
-                    <nav>
-                        <ul class="list-unstyled components">
-                            <p>Actions</p>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doCardAction('operationsToDiscard','#operationsDeck')">
-                                    toDiscard
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doCardAction('operationsToHand','#operationsDeck')">
-                                    toHand
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doCardAction('operationsToVoid','#operationsDeck')">
-                                    kill
-                                </button>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-            <div class="col">
-                <div id="operationsDeck" class="tab-pane fade show active cards" role="tabpanel">
-                    <div class="area">
-                        <a class="cardContainer" href="#">
-
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="collapse area glowBorder collapseFooter" id="userDetails" data-parent="#footer">
-        <ul class="nav nav-pills" role="tablist">
-            <li class="nav-item">
-                <div class="nav-link disabled" role="tab">
-                    Guest
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#userInfo" role="tab">info</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#userHand" role="tab">hand</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#userDiscardPile" role="tab">discard pile</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#userDrawPile" role="tab">draw pile</a>
-            </li>
-        </ul>
-        <div class="tab-content">
-            <div class="tab-pane fade" id="userInfo" role="tabpanel">
-                <div class="row cards">
-                    <div class="col-sm-1">
-                        <div class="wrapper">
-                            <nav>
-                                <ul class="list-unstyled components">
-                                    <p>Actions</p>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('heal','#userInfo')">
-                                            heal
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="action('strike')">
-                                            strike
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="action('toDiscard','chestbuster.png')">
-                                            chestbuster
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="action('endTurn')">
-                                            endTurn
-                                        </button>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                    <div class="col area">
-                        <div id="userChar" class="cardContainer">
-
-                        </div>
-
-                        <div id="strikeDeck" class="area">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane fade show" id="userHand" role="tabpanel">
-                <div class="row cards">
-                    <div class="col-sm-1">
-                        <div class="wrapper">
-                            <nav>
-                                <ul class="list-unstyled components">
-                                    <p>Actions</p>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="action('draw')">
-                                            draw
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('handShow','#userHand')">
-                                            show
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('handToDiscard','#userHand')">
-                                            toDiscard
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('handToOperations','#userHand')">
-                                            toOperations
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('handToVoid','#userHand')">
-                                            kill
-                                        </button>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                    <div class="col area">
-
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane fade show" id="userDiscardPile" role="tabpanel">
-                <div class="row cards">
-                    <div class="col-sm-1">
-                        <div class="wrapper">
-                            <nav>
-                                <ul class="list-unstyled components">
-                                    <p>Actions</p>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('discardToHand','#userDiscardPile')">
-                                            toHand
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('discardToOperations','#userDiscardPile')">
-                                            toOperations
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('discardToVoid','#userDiscardPile')">
-                                            kill
-                                        </button>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                    <div class="col area">
-
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane fade show" id="userDrawPile" role="tabpanel">
-                <div class="row cards">
-                    <div class="col-sm-1">
-                        <div class="wrapper">
-                            <nav>
-                                <ul class="list-unstyled components">
-                                    <p>Actions</p>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('drawToHand','#userDrawPile')">
-                                            toHand
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('drawToDiscard','#userDrawPile')">
-                                            toDiscard
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('drawToVoid','#userDrawPile')">
-                                            kill
-                                        </button>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                    <div class="col area">
-
                     </div>
                 </div>
             </div>
@@ -531,15 +443,6 @@
             Game
         </button>
         <span id="userList"></span>
-        <button class="btn btn-primary" data-toggle="collapse" data-target="#headQuarterDetails">
-            Hq
-        </button>
-        <button class="btn btn-primary" data-toggle="collapse" data-target="#barracksDetails">
-            Barracks
-        </button>
-        <button class="btn btn-primary" data-toggle="collapse" data-target="#operationsDetails">
-            Operations
-        </button>
     </div>
 </div>
 

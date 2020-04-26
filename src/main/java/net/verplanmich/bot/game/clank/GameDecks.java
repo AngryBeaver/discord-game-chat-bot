@@ -23,6 +23,7 @@ public class GameDecks {
     private static final String EXPLORER = "explorer";
     private static final String SECRET_TOME = "secret-tome";
     private static final String MERCENARY = "mercenary";
+    private static final String GOLD_FISH = "goldfish";
 
     private List<String> baseGame = Arrays.asList("cave-troll","watcher","watcher","watcher","animated-door","animated-door","orc-grunt","orc-grunt","orc-grunt","belcher","belcher","kobold","kobold","kobold","overlord","overlord","ogre","ogre","crystal-golem","crystal-golem",
             "coin-purse","coin-purse","ladder","ladder","shrine","shrine","shrine","dragon-shrine","dragon-shrine","treasure-hunter","treasure-hunter","swagger","swagger","teleporter","teleporter",
@@ -31,7 +32,7 @@ public class GameDecks {
             "elven-boots","elven-cloak","scepter-of-the-ape-lord","wand-of-wind","elven-dagger","flying-carpet","boots-of-swiftness","treasure-map","the-vault",
             "singing-sword","dragons-eye","diamond","ruby","ruby","emerald","emerald","sapphire","sapphire","sapphire","wizard","monkeybot-3000","tunnel-guide","the-duke","rebel-miner","apothecary","rebel-captain",
             "kobold-merchant","mister-whiskers","the-mountain-king","dwarven-peddler","the-queen-of-hearts","gem-collector","rebel-soldier","invoker-of-the-ancients");
-    private List<String> underWater = Arrays.asList("ancient-invocation","black-pearl","silver-pearl","white-pearl","white-pearl","medic","pickpocket","rebel-scholar","rebel-brawler","alchemist",
+    private List<String> sunken = Arrays.asList("ancient-invocation","black-pearl","silver-pearl","white-pearl","white-pearl","medic","pickpocket","rebel-scholar","rebel-brawler","alchemist",
             "elven-ranger","pipe-organ","boomerang","fishing-pole","climbing-gear","burglars-boot","aspiration","short-cut","grand-plan","deep-dive","merling","merling",
             "mermaid","mermaid","shrine-of-the-mermaid","shrine-of-the-mermaid","sorcerer","eye-in-the-water","eye-in-the-water","saurian","saurian","crystal-fish","crystal-fish");
 
@@ -45,12 +46,13 @@ public class GameDecks {
     private List<User> clanks;
     private List<User> clankArea;
     private Deck gameDeck;
-    private Map<String,Integer> baseMarket = new HashMap();
-    private List<String> skillMarket = new ArrayList();
+    private Map<String,Integer> reserve = new HashMap();
+    private List<String> dungeonRow = new ArrayList();
+    User black;
 
     public GameDecks(){
         this.clanks = new ArrayList();
-        User black = new User("blank", "0","black");
+        black = new User("blank", "0","black");
         IntStream.range(1,24).forEach(i->
                 clanks.add(black)
         );
@@ -59,21 +61,27 @@ public class GameDecks {
         this.clankArea = new ArrayList();
     }
 
-    public void initializeBaseGame(){
-        this.gameDeck = new Deck(new ArrayList(baseGame)).shuffle();
-        baseMarket.put(GOBLIN,100);
-        baseMarket.put(EXPLORER,14);
-        baseMarket.put(SECRET_TOME,9);
-        baseMarket.put(MERCENARY,14);
-        refillSkillMarket(GOBLIN);
-        refillSkillMarket(EXPLORER);
-        refillSkillMarket(SECRET_TOME);
-        refillSkillMarket(MERCENARY);
-        refillSkillMarket(null);
-        refillSkillMarket(null);
-        refillSkillMarket(null);
-        refillSkillMarket(null);
-        refillSkillMarket(null);
+    public void initializeBaseGame(String extension){
+        List<String> gameCards = new ArrayList(baseGame);
+        if(extension.toLowerCase().equals("sunken")){
+            gameCards.addAll(new ArrayList(sunken));
+            reserve.put(GOLD_FISH,100);
+            refillDungeonRow(GOLD_FISH);
+        }
+        this.gameDeck = new Deck(gameCards).shuffle();
+        reserve.put(GOBLIN,100);
+        reserve.put(EXPLORER,14);
+        reserve.put(SECRET_TOME,9);
+        reserve.put(MERCENARY,14);
+        refillDungeonRow(GOBLIN);
+        refillDungeonRow(EXPLORER);
+        refillDungeonRow(SECRET_TOME);
+        refillDungeonRow(MERCENARY);
+        refillDungeonRow(null);
+        refillDungeonRow(null);
+        refillDungeonRow(null);
+        refillDungeonRow(null);
+        refillDungeonRow(null);
     }
 
     List<String> dragonAttack(int limit){
@@ -84,7 +92,7 @@ public class GameDecks {
         clanks.stream().limit(limit).forEach(
             user-> {
                 user.damage(1);
-                result.add(user.getColor());
+                result.add(user.getChar());
             }
         );
         clanks = clanks.stream().skip(limit).collect(Collectors.toList());
@@ -108,11 +116,11 @@ public class GameDecks {
     }
 
     List<String> getClankArea(){
-        return clankArea.stream().map(u->u.getColor()).collect(Collectors.toList());
+        return clankArea.stream().map(u->u.getChar()).collect(Collectors.toList());
     }
 
-    public List<String> getSkillMarket(){
-        return skillMarket;
+    public List<String> getDungeonRow(){
+        return dungeonRow;
     }
 
     public boolean itemToUser(String itemId,User user){
@@ -123,22 +131,22 @@ public class GameDecks {
         return result;
     }
 
-    public boolean skillMarketToUser(String cardId,User user){
-        boolean result = skillMarket.remove(cardId);
+    public boolean dungeonToDiscard(String cardId,User user){
+        boolean result = dungeonRow.remove(cardId);
         if(result){
             user.deck.discardCard(cardId);
-            refillSkillMarket(cardId);
+            refillDungeonRow(cardId);
         }
         return result;
     }
 
-    private void refillSkillMarket(String cardId){
-        Integer count = baseMarket.get(cardId);
+    private void refillDungeonRow(String cardId){
+        Integer count = reserve.get(cardId);
         if (count != null && count > 0){
-            baseMarket.put(cardId, count--);
-            skillMarket.add(cardId);
+            reserve.put(cardId, count--);
+            dungeonRow.add(cardId);
         }else{
-            skillMarket.add(gameDeck.drawCard());
+            dungeonRow.add(gameDeck.drawCard());
         }
     }
 

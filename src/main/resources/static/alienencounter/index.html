@@ -25,8 +25,8 @@
 <body id="game">
 <div id="eventChannel" class="wrapper">
     <div class="cardArea glowBorder">
-    <div class="chat">
-    </div>
+        <div class="chat">
+        </div>
     </div>
     <div class="console">#:<input></div>
 </div>
@@ -224,515 +224,565 @@
     </div>
 </div>
 
-<div id="footer" >
-    <div class="collapse area collapseFooter" id="complexDetails" data-parent="#footer">
-        <ul class="nav nav-pills" id="complex-tab" role="tablist">
-            <li class="nav-item">
-                <div class="nav-link disabled" role="tab">
-                    <a data-toggle="collapse" data-target="#complexDetails" href="#"> <img src="complex.png"></a>
-                    complex
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#" role="tab">
-                </a>
-            </li>
-        </ul>
-        <div class="row">
-            <div class="col-sm-1">
-                <div class="wrapper">
-                    <nav>
-                        <ul class="list-unstyled components">
-                            <p>Actions</p>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doComplexAction('complexAdd','#complexDeck')">
-                                    scan
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doComplexAction('complexToCombat','#complexDeck')">
-                                    toCombat
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doComplexAction('complexKill','#complexDeck')">
-                                    kill
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doComplexAction('complexToHand','#complexDeck')">
-                                    toHand
-                                </button>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-            <div class="col">
-                <div id="complexDeck" class="tab-pane fade show active cards" role="tabpanel">
-                    <div class="area">
-                        <a class="cardContainer" href="#">
-                            <div class="cardHolder">
-
-                            </div>
-                            <div class="header overlayd"><p class="glow">hive</p></div>
-                        </a>
-                        <a class="cardContainer" href="#">
-                            <div class="cardHolder">
-
-                            </div>
-                            <div class="header overlayd"><p class="glow">ventilation shafts</p></div>
-                        </a>
-
-                        <a class="cardContainer" href="#">
-                            <div class="cardHolder">
-                                <img src="alien/ambushed-medic.png"/>
-                            </div>
-                            <div class="header overlayd"><p class="glow">power station</p></div>
-                        </a>
-
-                        <a class="cardContainer" href="#">
-                            <div class="cardHolder">
-
-                            </div>
-                            <div class="header overlayd"><p class="glow">weapons locker</p></div>
-                        </a>
-
-                        <a class="cardContainer" href="#">
-                            <div class="cardHolder">
-
-                            </div>
-                            <div class="header overlayd"><p class="glow">med-lab</p></div>
-                        </a>
-
-                        <a class="cardContainer" href="#">
-                            <div class="cardHolder">
-                                <img src="alien/carmouflaged-xenomorph.png"/>
-                            </div>
-                            <div class="header overlayd"><p class="glow">airlock</p></div>
-                        </a>
-                        <a class="cardContainer" href="#">
-                            <div class="cardHolder">
-                                <img src="alien/carmouflaged-xenomorph.png"/>
-                            </div>
-                            <div class="header overlayd"><p class="glow">combat</p></div>
-                        </a>
+<div id="footer">
+    <div class="collapse" id="complexDetails" data-parent="#footer">
+        <div class="area glowBorder collapseFooter">
+            <ul class="nav nav-pills" id="complex-tab" role="tablist">
+                <li class="nav-item">
+                    <div class="nav-link disabled" role="tab">
+                        <a data-toggle="collapse" data-target="#complexDetails" href="#"> <img class="fix-icon"
+                                                                                               src="complex.png"></a>
+                        complex
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                </li>
 
-
-    <div class="collapse area glowBorder collapseFooter" id="gameDetails" data-parent="#footer">
-        <ul class="nav nav-pills " id="game-tab" role="tablist">
-            <li class="nav-item">
-                <div class="nav-link disabled" role="tab">
-                    <a data-toggle="collapse" data-target="#gameDetails" href="#"><img src="game.png"></a>
-                    alienencounter
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#" role="tab">
-                </a>
-            </li>
-        </ul>
-        <div class="row">
-            <div class="col-sm-1">
-                <div class="wrapper">
-                    <nav>
-                        <ul class="list-unstyled components">
-                            <p>Actions</p>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="joinGame()">
-                                    join
-                                </button>
-                            </li>
-                            <li>
-                                <div class="dropdown">
-                                    <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        start
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#" role="tab">
+                    </a>
+                </li>
+            </ul>
+            <div class="row">
+                <div class="col-sm-1">
+                    <div class="wrapper">
+                        <nav>
+                            <ul class="list-unstyled components">
+                                <p>Actions</p>
+                                <li>
+                                    <button class="btn btn-sm btn-primary"
+                                            onclick="doComplexAction('complexAdd','#complexDeck')">
+                                        scan
                                     </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="javascript:action('start','nostromo')">nostromo</a>
-                                        <a class="dropdown-item" href="javascript:action('start','sulaci')">sulaci</a>
-                                    </div>
+                                </li>
+                                <li>
+                                    <button class="btn btn-sm btn-primary"
+                                            onclick="doComplexAction('complexToCombat','#complexDeck')">
+                                        toCombat
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="btn btn-sm btn-primary"
+                                            onclick="doComplexAction('complexKill','#complexDeck')">
+                                        kill
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="btn btn-sm btn-primary"
+                                            onclick="doComplexAction('complexToHand','#complexDeck')">
+                                        toHand
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col">
+                    <div id="complexDeck" class="tab-pane fade show active cards" role="tabpanel">
+                        <div class="area">
+                            <a class="cardContainer" href="#">
+                                <div class="cardHolder">
+
                                 </div>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="action('setObjective',(game.objective-1+2))">
-                                    next
-                                </button>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-            <div class="col">
-                <div id="missionInfo" class="tab-pane fade show active cards" role="tabpanel">
-                    all player need to join before anyone starts the game.
-                </div>
-            </div>
-        </div>
-    </div>
+                                <div class="header overlayd"><p class="glow">hive</p></div>
+                            </a>
+                            <a class="cardContainer" href="#">
+                                <div class="cardHolder">
 
-    <div class="collapse area glowBorder collapseFooter" id="headQuarterDetails" data-parent="#footer">
-        <ul class="nav nav-pills " id="hq-tab" role="tablist">
-            <li class="nav-item">
-                <div class="nav-link disabled" role="tab">
-                    <a data-toggle="collapse" data-target="#headQuarterDetails" href="#"> <img src="hq.png"></a>
-                    headquarter
-                </div>
-            </li>
+                                </div>
+                                <div class="header overlayd"><p class="glow">ventilation shafts</p></div>
+                            </a>
 
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#" role="tab">
-                </a>
-            </li>
-        </ul>
-        <div class="row">
-            <div class="col-sm-1">
-                <div class="wrapper">
-                    <nav>
-                        <ul class="list-unstyled components">
-                            <p>Actions</p>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doHqAction('hqToDiscard','#headQuarterDeck')">
-                                    toDiscard
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doHqAction('hqToHand','#headQuarterDeck')">
-                                    toHand
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doHqAction('hqToBarracksBottom','#headQuarterDeck')">
-                                    toBarracksDown
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doHqAction('hqToOperations','#headQuarterDeck')">
-                                    toOperations
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doHqAction('hqToVoid','#headQuarterDeck')">
-                                    kill
-                                </button>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-            <div class="col">
-                <div id="headQuarterDeck" class="tab-pane fade show active cards" role="tabpanel">
-                    <div class="area">
-                        <a class="cardContainer" href="#">
+                            <a class="cardContainer" href="#">
+                                <div class="cardHolder">
+                                    <img src="alien/ambushed-medic.png"/>
+                                </div>
+                                <div class="header overlayd"><p class="glow">power station</p></div>
+                            </a>
 
-                        </a>
+                            <a class="cardContainer" href="#">
+                                <div class="cardHolder">
+
+                                </div>
+                                <div class="header overlayd"><p class="glow">weapons locker</p></div>
+                            </a>
+
+                            <a class="cardContainer" href="#">
+                                <div class="cardHolder">
+
+                                </div>
+                                <div class="header overlayd"><p class="glow">med-lab</p></div>
+                            </a>
+
+                            <a class="cardContainer" href="#">
+                                <div class="cardHolder">
+                                    <img src="alien/carmouflaged-xenomorph.png"/>
+                                </div>
+                                <div class="header overlayd"><p class="glow">airlock</p></div>
+                            </a>
+                            <a class="cardContainer" href="#">
+                                <div class="cardHolder">
+                                    <img src="alien/carmouflaged-xenomorph.png"/>
+                                </div>
+                                <div class="header overlayd"><p class="glow">combat</p></div>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="collapse area glowBorder collapseFooter" id="barracksDetails" data-parent="#footer">
-        <ul class="nav nav-pills " id="barracks-tab" role="tablist">
 
-            <li class="nav-item">
-                <div class="nav-link disabled" role="tab">
-                    <a data-toggle="collapse" data-target="#barracksDetails" href="#"><img src="barracks.png"></a>
-                    barracks
+    <div class="collapse" id="gameDetails" data-parent="#footer">
+        <div class="area glowBorder collapseFooter">
+            <ul class="nav nav-pills " id="game-tab" role="tablist">
+                <li class="nav-item">
+                    <div class="nav-link disabled" role="tab">
+                        <a data-toggle="collapse" data-target="#gameDetails" href="#"><img class="fix-icon"
+                                                                                           src="game.png"></a>
+                        alienencounter
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#" role="tab">
+                    </a>
+                </li>
+            </ul>
+            <div class="row">
+                <div class="col-sm-1">
+                    <div class="wrapper">
+                        <nav>
+                            <ul class="list-unstyled components">
+                                <p>Actions</p>
+                                <li>
+                                    <button class="btn btn-sm btn-primary" onclick="joinGame()">
+                                        join
+                                    </button>
+                                </li>
+                                <li>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
+                                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                            start
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item"
+                                               href="javascript:action('start','nostromo')">nostromo</a>
+                                            <a class="dropdown-item"
+                                               href="javascript:action('start','sulaci')">sulaci</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <button class="btn btn-sm btn-primary"
+                                            onclick="action('setObjective',(game.objective-1+2))">
+                                        next
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#" role="tab">
-                    first</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#" role="tab">
-                    second</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#" role="tab">all</a>
-            </li>
-        </ul>
-        <div class="row">
-            <div class="col-sm-1">
-                <div class="wrapper">
-                    <nav>
-                        <ul class="list-unstyled components">
-                            <p>Actions</p>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doCardAction('barracksToDiscard','#barracksDeck')">
-                                    toDiscard
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doCardAction('barracksToHand','#barracksDeck')">
-                                    toHand
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doCardAction('barracksToBarracksBottom','#barracksDeck')">
-                                    toBottom
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doCardAction('barracksToVoid','#barracksDeck')">
-                                    kill
-                                </button>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-            <div class="col">
-                <div id="barracksDeck" class="tab-pane fade show active cards" role="tabpanel">
-                    <div class="area">
-                        <a class="cardContainer" href="#">
-
-                        </a>
+                <div class="col">
+                    <div id="missionInfo" class="tab-pane fade show active cards" role="tabpanel">
+                        all player need to join before anyone starts the game.
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="collapse area glowBorder collapseFooter" id="operationsDetails" data-parent="#footer">
-        <ul class="nav nav-pills " id="opperations-tab" role="tablist">
+    <div class="collapse" id="headQuarterDetails" data-parent="#footer">
+        <div class="area glowBorder collapseFooter">
+            <ul class="nav nav-pills " id="hq-tab" role="tablist">
+                <li class="nav-item">
+                    <div class="nav-link disabled" role="tab">
+                        <a data-toggle="collapse" data-target="#headQuarterDetails" href="#"> <img class="fix-icon"
+                                                                                                   src="hq.png"></a>
+                        headquarter
+                    </div>
+                </li>
 
-            <li class="nav-item">
-                <div class="nav-link disabled" role="tab">
-                    <a data-toggle="collapse" data-target="#operationsDetails" href="#"><img src="operations.png"></a>
-                    operations
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#" role="tab">
+                    </a>
+                </li>
+            </ul>
+            <div class="row">
+                <div class="col-sm-1">
+                    <div class="wrapper">
+                        <nav>
+                            <ul class="list-unstyled components">
+                                <p>Actions</p>
+                                <li>
+                                    <button class="btn btn-sm btn-primary"
+                                            onclick="doHqAction('hqToDiscard','#headQuarterDeck')">
+                                        toDiscard
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="btn btn-sm btn-primary"
+                                            onclick="doHqAction('hqToHand','#headQuarterDeck')">
+                                        toHand
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="btn btn-sm btn-primary"
+                                            onclick="doHqAction('hqToBarracksBottom','#headQuarterDeck')">
+                                        toBarracksDown
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="btn btn-sm btn-primary"
+                                            onclick="doHqAction('hqToOperations','#headQuarterDeck')">
+                                        toOperations
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="btn btn-sm btn-primary"
+                                            onclick="doHqAction('hqToVoid','#headQuarterDeck')">
+                                        kill
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
-            </li>
-        </ul>
-        <div class="row">
-            <div class="col-sm-1">
-                <div class="wrapper">
-                    <nav>
-                        <ul class="list-unstyled components">
-                            <p>Actions</p>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doCardAction('operationsToDiscard','#operationsDeck')">
-                                    toDiscard
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doCardAction('operationsToHand','#operationsDeck')">
-                                    toHand
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-sm btn-primary" onclick="doCardAction('operationsToVoid','#operationsDeck')">
-                                    kill
-                                </button>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-            <div class="col">
-                <div id="operationsDeck" class="tab-pane fade show active cards" role="tabpanel">
-                    <div class="area">
-                        <a class="cardContainer" href="#">
+                <div class="col">
+                    <div id="headQuarterDeck" class="tab-pane fade show active cards" role="tabpanel">
+                        <div class="area">
+                            <a class="cardContainer" href="#">
 
-                        </a>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="collapse area glowBorder collapseFooter" id="userDetails" data-parent="#footer">
-        <ul class="nav nav-pills" role="tablist">
-            <li class="nav-item">
-                <div class="nav-link disabled" role="tab">
-                    Guest
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#userInfo" role="tab">info</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#userHand" role="tab">hand</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#userDiscardPile" role="tab">discard pile</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#userDrawPile" role="tab">draw pile</a>
-            </li>
-        </ul>
-        <div class="tab-content">
-            <div class="tab-pane fade" id="userInfo" role="tabpanel">
-                <div class="row cards">
-                    <div class="col-sm-1">
-                        <div class="wrapper">
-                            <nav>
-                                <ul class="list-unstyled components">
-                                    <p>Actions</p>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('heal','#userInfo')">
-                                            heal
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="action('strike')">
-                                            strike
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="action('toDiscard','chestbuster.png')">
-                                            chestbuster
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="action('endTurn')">
-                                            endTurn
-                                        </button>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
+    <div class="collapse" id="barracksDetails" data-parent="#footer">
+        <div class="area glowBorder collapseFooter">
+            <ul class="nav nav-pills " id="barracks-tab" role="tablist">
+
+                <li class="nav-item">
+                    <div class="nav-link disabled" role="tab">
+                        <a data-toggle="collapse" data-target="#barracksDetails" href="#"><img class="fix-icon"
+                                                                                               src="barracks.png"></a>
+                        barracks
                     </div>
-                    <div class="col area">
-                        <div id="userChar" class="cardContainer">
+                </li>
 
-                        </div>
-
-                        <div id="strikeDeck" class="area">
-
-                        </div>
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#" role="tab">
+                        first</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#" role="tab">
+                        second</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#" role="tab">all</a>
+                </li>
+            </ul>
+            <div class="row">
+                <div class="col-sm-1">
+                    <div class="wrapper">
+                        <nav>
+                            <ul class="list-unstyled components">
+                                <p>Actions</p>
+                                <li>
+                                    <button class="btn btn-sm btn-primary"
+                                            onclick="doCardAction('barracksToDiscard','#barracksDeck')">
+                                        toDiscard
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="btn btn-sm btn-primary"
+                                            onclick="doCardAction('barracksToHand','#barracksDeck')">
+                                        toHand
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="btn btn-sm btn-primary"
+                                            onclick="doCardAction('barracksToBarracksBottom','#barracksDeck')">
+                                        toBottom
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="btn btn-sm btn-primary"
+                                            onclick="doCardAction('barracksToVoid','#barracksDeck')">
+                                        kill
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
-            </div>
-            <div class="tab-pane fade show" id="userHand" role="tabpanel">
-                <div class="row cards">
-                    <div class="col-sm-1">
-                        <div class="wrapper">
-                            <nav>
-                                <ul class="list-unstyled components">
-                                    <p>Actions</p>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="action('draw')">
-                                            draw
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('handShow','#userHand')">
-                                            show
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('handToDiscard','#userHand')">
-                                            toDiscard
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('handToOperations','#userHand')">
-                                            toOperations
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('handToVoid','#userHand')">
-                                            kill
-                                        </button>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                    <div class="col area">
+                <div class="col">
+                    <div id="barracksDeck" class="tab-pane fade show active cards" role="tabpanel">
+                        <div class="area">
+                            <a class="cardContainer" href="#">
 
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane fade show" id="userDiscardPile" role="tabpanel">
-                <div class="row cards">
-                    <div class="col-sm-1">
-                        <div class="wrapper">
-                            <nav>
-                                <ul class="list-unstyled components">
-                                    <p>Actions</p>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('discardToHand','#userDiscardPile')">
-                                            toHand
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('discardToOperations','#userDiscardPile')">
-                                            toOperations
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('discardToVoid','#userDiscardPile')">
-                                            kill
-                                        </button>
-                                    </li>
-                                </ul>
-                            </nav>
+                            </a>
                         </div>
-                    </div>
-                    <div class="col area">
-
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane fade show" id="userDrawPile" role="tabpanel">
-                <div class="row cards">
-                    <div class="col-sm-1">
-                        <div class="wrapper">
-                            <nav>
-                                <ul class="list-unstyled components">
-                                    <p>Actions</p>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('drawToHand','#userDrawPile')">
-                                            toHand
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('drawToDiscard','#userDrawPile')">
-                                            toDiscard
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-sm btn-primary" onclick="doCardAction('drawToVoid','#userDrawPile')">
-                                            kill
-                                        </button>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                    <div class="col area">
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div id="selectUser">
-        <button class="btn btn-primary" data-toggle="collapse" data-target="#gameDetails">
-            Game
-        </button>
-        <span id="userList"></span>
-        <button class="btn btn-primary" data-toggle="collapse" data-target="#headQuarterDetails">
-            Hq
-        </button>
-        <button class="btn btn-primary" data-toggle="collapse" data-target="#barracksDetails">
-            Barracks
-        </button>
-        <button class="btn btn-primary" data-toggle="collapse" data-target="#operationsDetails">
-            Operations
-        </button>
+
+    <div class="collapse" id="operationsDetails" data-parent="#footer">
+        <div class="area glowBorder collapseFooter">
+            <ul class="nav nav-pills " id="opperations-tab" role="tablist">
+
+                <li class="nav-item">
+                    <div class="nav-link disabled" role="tab">
+                        <a data-toggle="collapse" data-target="#operationsDetails" href="#"><img class="fix-icon"
+                                                                                                 src="operations.png"></a>
+                        operations
+                    </div>
+                </li>
+            </ul>
+            <div class="row">
+                <div class="col-sm-1">
+                    <div class="wrapper">
+                        <nav>
+                            <ul class="list-unstyled components">
+                                <p>Actions</p>
+                                <li>
+                                    <button class="btn btn-sm btn-primary"
+                                            onclick="doCardAction('operationsToDiscard','#operationsDeck')">
+                                        toDiscard
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="btn btn-sm btn-primary"
+                                            onclick="doCardAction('operationsToHand','#operationsDeck')">
+                                        toHand
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="btn btn-sm btn-primary"
+                                            onclick="doCardAction('operationsToVoid','#operationsDeck')">
+                                        kill
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col">
+                    <div id="operationsDeck" class="tab-pane fade show active cards" role="tabpanel">
+                        <div class="area">
+                            <a class="cardContainer" href="#">
+
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <div class="collapse" id="userDetails" data-parent="#footer">
+        <div class="area glowBorder collapseFooter">
+            <ul class="nav nav-pills" role="tablist">
+                <li class="nav-item">
+                    <div class="nav-link disabled" role="tab">
+                        Guest
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#userInfo" role="tab">info</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#userHand" role="tab">hand</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#userDiscardPile" role="tab">discard pile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#userDrawPile" role="tab">draw pile</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade" id="userInfo" role="tabpanel">
+                    <div class="row cards">
+                        <div class="col-sm-1">
+                            <div class="wrapper">
+                                <nav>
+                                    <ul class="list-unstyled components">
+                                        <p>Actions</p>
+                                        <li>
+                                            <button class="btn btn-sm btn-primary"
+                                                    onclick="doCardAction('heal','#userInfo')">
+                                                heal
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-sm btn-primary" onclick="action('strike')">
+                                                strike
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-sm btn-primary"
+                                                    onclick="action('toDiscard','chestbuster.png')">
+                                                chestbuster
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-sm btn-primary" onclick="action('endTurn')">
+                                                endTurn
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="col area">
+                            <div id="userChar" class="cardContainer">
+
+                            </div>
+
+                            <div id="strikeDeck" class="area">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade show" id="userHand" role="tabpanel">
+                    <div class="row cards">
+                        <div class="col-sm-1">
+                            <div class="wrapper">
+                                <nav>
+                                    <ul class="list-unstyled components">
+                                        <p>Actions</p>
+                                        <li>
+                                            <button class="btn btn-sm btn-primary" onclick="action('draw')">
+                                                draw
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-sm btn-primary"
+                                                    onclick="doCardAction('handShow','#userHand')">
+                                                show
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-sm btn-primary"
+                                                    onclick="doCardAction('handToDiscard','#userHand')">
+                                                toDiscard
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-sm btn-primary"
+                                                    onclick="doCardAction('handToOperations','#userHand')">
+                                                toOperations
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-sm btn-primary"
+                                                    onclick="doCardAction('handToVoid','#userHand')">
+                                                kill
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="col area">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade show" id="userDiscardPile" role="tabpanel">
+                    <div class="row cards">
+                        <div class="col-sm-1">
+                            <div class="wrapper">
+                                <nav>
+                                    <ul class="list-unstyled components">
+                                        <p>Actions</p>
+                                        <li>
+                                            <button class="btn btn-sm btn-primary"
+                                                    onclick="doCardAction('discardToHand','#userDiscardPile')">
+                                                toHand
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-sm btn-primary"
+                                                    onclick="doCardAction('discardToOperations','#userDiscardPile')">
+                                                toOperations
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-sm btn-primary"
+                                                    onclick="doCardAction('discardToVoid','#userDiscardPile')">
+                                                kill
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="col area">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade show" id="userDrawPile" role="tabpanel">
+                    <div class="row cards">
+                        <div class="col-sm-1">
+                            <div class="wrapper">
+                                <nav>
+                                    <ul class="list-unstyled components">
+                                        <p>Actions</p>
+                                        <li>
+                                            <button class="btn btn-sm btn-primary"
+                                                    onclick="doCardAction('drawToHand','#userDrawPile')">
+                                                toHand
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-sm btn-primary"
+                                                    onclick="doCardAction('drawToDiscard','#userDrawPile')">
+                                                toDiscard
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="btn btn-sm btn-primary"
+                                                    onclick="doCardAction('drawToVoid','#userDrawPile')">
+                                                kill
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="col area">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="selectUser">
+    <button class="btn btn-primary" data-toggle="collapse" data-target="#gameDetails">
+        Game
+    </button>
+    <span id="userList"></span>
+    <button class="btn btn-primary" data-toggle="collapse" data-target="#headQuarterDetails">
+        Hq
+    </button>
+    <button class="btn btn-primary" data-toggle="collapse" data-target="#barracksDetails">
+        Barracks
+    </button>
+    <button class="btn btn-primary" data-toggle="collapse" data-target="#operationsDetails">
+        Operations
+    </button>
 </div>
 <script type="application/javascript" src="alienencounter.js">
 </script>

@@ -439,7 +439,7 @@ public class Alienencounter implements Game {
         //TODO do cardAction here e.g. facehugger, event, hazard etc...
         return gameResultBuilder.toComplex(from)
                 .setText("reveal")
-                .addImageId("/"+NAME+"/"+DIRECTORY_HIVE+"/"+cardId);
+                .addImageId("/"+NAME+"/"+DIRECTORY_HIVE+"/"+cardId+".png");
     }
 
 
@@ -476,7 +476,7 @@ public class Alienencounter implements Game {
                 .addEvent(EVENT_INFO)
                 .addEvent(EVENT_REFRESH_USER_STRIKE)
                 .setText(user.getUserInfo().get(USER_NAME)+" heals")
-                .addImageId("/"+NAME+"/"+DIRECTORY_STRIKES+"/"+cardId)
+                .addImageId("/"+NAME+"/"+DIRECTORY_STRIKES+"/"+cardId+".png")
                 .set(MAP_KEY_USER_ID,userId);
     }
 
@@ -495,7 +495,7 @@ public class Alienencounter implements Game {
                 .addEvent(EVENT_INFO)
                 .addEvent(EVENT_REFRESH_USER_STRIKE)
                 .setText(user.getUserInfo().get(USER_NAME)+" gets")
-                .addImageId("/"+NAME+"/"+DIRECTORY_STRIKES+"/"+cardId)
+                .addImageId("/"+NAME+"/"+DIRECTORY_STRIKES+"/"+cardId+".png")
                 .set(MAP_KEY_USER_ID,userId);
     }
 
@@ -519,7 +519,7 @@ public class Alienencounter implements Game {
                 .addEvent(EVENT_INFO)
                 .addEvent(EVENT_REFRESH_USER_HAND)
                 .addEvent(EVENT_REFRESH_USER_DRAW)
-                .addImageId("/"+NAME+"/"+DIRECTORY_CREW+"/"+cardId)
+                .addImageId("/"+NAME+"/"+DIRECTORY_CREW+"/"+cardId+".png")
                 .setText(user.getUserInfo().get(USER_NAME)+" draws 1 Card")
                 .set(MAP_KEY_USER_ID,userId);
     }
@@ -533,7 +533,7 @@ public class Alienencounter implements Game {
                 .map(cardId -> {
                     String card = "";
                     if(!cardId.equals("")){
-                        card = "/" + NAME + "/" + DIRECTORY_CREW + "/" + cardId;
+                        card = "/" + NAME + "/" + DIRECTORY_CREW + "/" + cardId+".png";
                     }
                     gameResult.addImageId(card);
                     return card;
@@ -542,7 +542,7 @@ public class Alienencounter implements Game {
         ArrayList<String> sergeantList = new ArrayList();
         String cardId = "";
         if(!sergeant.isEmpty()){
-            cardId = "/"+NAME+"/"+DIRECTORY_CREW+"/"+sergeant.showDrawCard();
+            cardId = "/"+NAME+"/"+DIRECTORY_CREW+"/"+sergeant.showDrawCard()+".png";
         }
         sergeantList.add(cardId);
         return gameResult
@@ -556,7 +556,7 @@ public class Alienencounter implements Game {
         GameResult gameResult = new GameResult();
         int limit = getLimit(amount, barracks);
         List<String> barrackList = barracks.getDrawPile().stream()
-                .map(card -> "/" + NAME + "/" + DIRECTORY_CREW + "/" + card)
+                .map(card -> "/" + NAME + "/" + DIRECTORY_CREW + "/" + card+".png")
                 .collect(Collectors.toList());
         barrackList.stream().limit(limit)
                 .forEach(card -> gameResult.addImageId(card));
@@ -570,7 +570,7 @@ public class Alienencounter implements Game {
         GameResult gameResult = new GameResult();
         List<String> operationsList = operations.stream()
                 .map(card -> {
-                    String cardId = "/" + NAME + "/" + DIRECTORY_CREW + "/" + card;
+                    String cardId = "/" + NAME + "/" + DIRECTORY_CREW + "/" + card+".png";
                     gameResult.addImageId(cardId);
                     return cardId;
                 } )
@@ -597,7 +597,7 @@ public class Alienencounter implements Game {
     public GameResult getUserStrikes(String targetUserId) {
         GameResult gameResult = new GameResult().setText("strikes");
         getUser(targetUserId).getStrikes().forEach(cardId->
-                gameResult.addImageId("/"+NAME+"/"+DIRECTORY_STRIKES+"/"+cardId));
+                gameResult.addImageId("/"+NAME+"/"+DIRECTORY_STRIKES+"/"+cardId+".png"));
         return gameResult.set(MAP_KEY_USER_ID,targetUserId);
     }
 
@@ -605,7 +605,7 @@ public class Alienencounter implements Game {
     public GameResult getUserHand(String targetUserId) {
         GameResult gameResult = new GameResult().setText("hand");
         getUser(targetUserId).getHand().forEach(cardId->
-                gameResult.addImageId("/"+NAME+"/"+DIRECTORY_CREW+"/"+cardId));
+                gameResult.addImageId("/"+NAME+"/"+DIRECTORY_CREW+"/"+cardId+".png"));
         return gameResult.set(MAP_KEY_USER_ID,targetUserId);
     }
 
@@ -613,7 +613,7 @@ public class Alienencounter implements Game {
     public GameResult getUserDiscard(String targetUserId) {
         GameResult gameResult = new GameResult().setText("discardPile");
         getUser(targetUserId).getDiscardPile().forEach(cardId->
-                gameResult.addImageId("/"+NAME+"/"+DIRECTORY_CREW+"/"+cardId));
+                gameResult.addImageId("/"+NAME+"/"+DIRECTORY_CREW+"/"+cardId+".png"));
         return gameResult.set(MAP_KEY_USER_ID,targetUserId);
     }
 
@@ -621,7 +621,7 @@ public class Alienencounter implements Game {
     public GameResult getUserDraw(String targetUserId) {
         GameResult gameResult = new GameResult().setText("drawPile");
         getUser(targetUserId).getDrawPile().forEach(cardId->
-                gameResult.addImageId("/"+NAME+"/"+DIRECTORY_CREW+"/"+cardId));
+                gameResult.addImageId("/"+NAME+"/"+DIRECTORY_CREW+"/"+cardId+".png"));
         return gameResult.set(MAP_KEY_USER_ID,targetUserId);
     }
 

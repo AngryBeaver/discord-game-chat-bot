@@ -184,7 +184,7 @@ public final class GameResultBuilder {
     //FROM
     private GameResultBuilder fromCrewCardId(String cardId){
         gameResult.set(MAP_KEY_CARD_ID,cardId)
-              .addImageId("/"+NAME+"/"+DIRECTORY_CREW+"/"+getCardId())
+              .addImageId("/"+NAME+"/"+DIRECTORY_CREW+"/"+getCardId()+".png")
               .addEvent(EVENT_INFO);
         return this;
     }

@@ -18,15 +18,16 @@ public class Clank implements Game {
 
     static final String DIRECTORY_ITEMS = "items";
     static final String DIRECTORY_IMAGES = "images";
+    static final String DIRECTORY_CHAR = "char";
 
     static final String EVENT_JOIN = "join";
-    static final String EVENT_START_GAME = "startGame";
+    static final String EVENT_START_GAME = "start";
     static final String EVENT_DRAGON_ATTACK = "dragonAttack";
     static final String EVENT_REFRESH_USER = "user";
-    static final String EVENT_REFRESH_CLANK_AREA = "clankArea";
+    static final String EVENT_REFRESH_GAME = "game";
     static final String EVENT_REFRESH_PLAY_AREA = "playArea";
     static final String EVENT_REFRESH_HAND = "hand";
-    static final String EVENT_REFRESH_SKILL_MARKET = "skillMarket";
+    static final String EVENT_REFRESH_DUNGEON = "dungeon";
     static final String EVENT_REFRESH_ITEMS = "items";
 
 
@@ -34,7 +35,9 @@ public class Clank implements Game {
     static final String MAP_KEY_CLANK_AREA = "clankArea";
     static final String MAP_KEY_PLAY_AREA = "playArea";
     static final String MAP_KEY_HAND = "hand";
-    static final String MAP_KEY_SKILL_MARKET = "skillMarket";
+    static final String MAP_KEY_DUNGEON = "dungeon";
+    static final String MAP_KEY_USER_MAP = "userMap";
+    static final String MAP_KEY_CURRENT_USER = "currentUser";
 
 
     private GameDecks gameDecks;
@@ -44,7 +47,7 @@ public class Clank implements Game {
 
     private ObjectMapper objectMapper = new ObjectMapper();
     private List<String> colors = new ArrayList(Arrays.asList("red","green","blue","yellow","orange","purple"));
-
+    private boolean gameStarted = false;
 
 
     @Override
@@ -76,12 +79,16 @@ public class Clank implements Game {
     }
 
     @GameMethod
-    public GameResult startGame() {
-        gameDecks.initializeBaseGame();
-        userOrder.stream().forEach(user->
-                user.initialize());
-        currentUserIndex = 0;
-        return startTurn(userOrder.get(currentUserIndex).getId()).addEvent(EVENT_START_GAME);
+    public GameResult start(String extension) {
+        if(!gameStarted) {
+            gameStarted = true;
+            gameDecks.initializeBaseGame(extension);
+            userOrder.stream().forEach(user ->
+                    user.initialize());
+            currentUserIndex = 0;
+            return startTurn(userOrder.get(currentUserIndex).getId()).addEvent(EVENT_START_GAME);
+        }
+        return new GameResult().setText("game is already started");
     }
 
     @GameMethod
@@ -96,7 +103,7 @@ public class Clank implements Game {
         return new GameResult()
                 .setText(user.getName() + " clanks "+amount)
                 .addEvent(EVENT_INFO)
-                .addEvent(EVENT_REFRESH_CLANK_AREA)
+                .addEvent(EVENT_REFRESH_GAME)
                 .addEvent(EVENT_REFRESH_USER)
                 .set(MAP_KEY_CLANK_AREA,gameDecks.getClankArea())
                 .set(MAP_KEY_USER,user.get());
@@ -121,6 +128,18 @@ public class Clank implements Game {
         user.heal(amount);
         return new GameResult()
                 .setText(user.getName() + " heal "+amount)
+                .addEvent(EVENT_INFO)
+                .addEvent(EVENT_REFRESH_USER)
+                .set(MAP_KEY_USER,user.get());
+    }
+
+    @GameMethod
+    public GameResult damage(String userId,String value){
+        int amount = Math.max(0,Integer.valueOf(value));
+        User user = users.get(userId);
+        user.damage(amount);
+        return new GameResult()
+                .setText(user.getName() + " damage "+amount)
                 .addEvent(EVENT_INFO)
                 .addEvent(EVENT_REFRESH_USER)
                 .set(MAP_KEY_USER,user.get());
@@ -236,11 +255,11 @@ public class Clank implements Game {
     @GameMethod
     public GameResult playToDiscard(String userId, String cardId){
         User user = users.get(userId);
-        if(user.playToDiscard(cardId)){
+        if(!user.playToDiscard(cardId)){
             throw new GameResultException(new GameResult().setText(user.getName() +"not in your playArea"));
         }
         return new GameResult()
-                .setText(user.getName() + " toPlay "+cardId)
+                .setText(user.getName() + " playToDiscard "+cardId)
                 .addImageId("/"+NAME+"/"+DIRECTORY_IMAGES+"/"+cardId+".png")
                 .addEvent(EVENT_INFO)
                 .addEvent(EVENT_REFRESH_HAND)
@@ -249,23 +268,33 @@ public class Clank implements Game {
     }
 
     @GameMethod
-    public GameResult skillMarketToUser(String userId, String cardId) {
+    public GameResult dungeonToDiscard(String userId, String cardId) {
         User user = users.get(userId);
-        gameDecks.skillMarketToUser(cardId,user);
+        gameDecks.dungeonToDiscard(cardId,user);
         return new GameResult()
-                .setText("skillMarkettoUser "+cardId)
+                .setText("dungeonToDiscard "+cardId)
                 .addImageId("/"+NAME+"/"+DIRECTORY_IMAGES+"/"+cardId+".png")
                 .addEvent(EVENT_INFO)
-                .addEvent(EVENT_REFRESH_SKILL_MARKET)
+                .addEvent(EVENT_REFRESH_DUNGEON)
                 .set(MAP_KEY_USER,user.get());
     }
 
     @GameMethod
-    public GameResult itemToHand(String userId, String itemId) {
+    public GameResult dungeonToVoid(String cardId) {
+        gameDecks.dungeonToDiscard(cardId,gameDecks.black);
+        return new GameResult()
+                .setText("dungeonToVoid "+cardId)
+                .addImageId("/"+NAME+"/"+DIRECTORY_IMAGES+"/"+cardId+".png")
+                .addEvent(EVENT_INFO)
+                .addEvent(EVENT_REFRESH_DUNGEON);
+    }
+
+    @GameMethod
+    public GameResult itemToUser(String userId, String itemId) {
         User user = users.get(userId);
         gameDecks.itemToUser(itemId,user);
         return new GameResult()
-                .setText("itemToHand "+itemId)
+                .setText("itemToUser "+itemId)
                 .addImageId("/"+NAME+"/"+DIRECTORY_ITEMS+"/"+itemId+".png")
                 .addEvent(EVENT_INFO)
                 .addEvent(EVENT_REFRESH_ITEMS)
@@ -306,8 +335,8 @@ public class Clank implements Game {
     }
 
     @GameMethod
-    public GameResult getPlayArea(String userId){
-        User user = users.get(userId);
+    public GameResult getPlayArea(String targetUserId){
+        User user = users.get(targetUserId);
         return new GameResult()
                 .addImageIds(user.getPlayArea().stream().map(cardId->"/"+NAME+"/"+DIRECTORY_IMAGES+"/"+cardId+".png").collect(Collectors.toList()))
                 .set(MAP_KEY_PLAY_AREA,user.getPlayArea())
@@ -325,38 +354,50 @@ public class Clank implements Game {
 
     @GameMethod
     public GameResult getUserInfo(String targetUserId) throws JsonProcessingException {
+        Map<String,UserEntity> userMap= new HashMap();
+        users.entrySet().forEach(entry->{
+            userMap.put(entry.getKey(),entry.getValue().get());
+        });
         User user = users.get(targetUserId);
         return new GameResult()
-                .setText(objectMapper.writeValueAsString(user.get()))
-                .set(MAP_KEY_USER,user.get());
+                .setText(user.getName())
+                .set(MAP_KEY_USER_MAP,userMap);
     }
 
     @GameMethod
-    public GameResult getSkillMarket() {
+    public GameResult getDungeon() {
         return new GameResult()
-                .setText("getSkillMarket")
-                .addImageIds(gameDecks.getSkillMarket().stream()
+                .setText("getDungeon")
+                .addImageIds(gameDecks.getDungeonRow().stream()
                         .map(cardId->"/"+NAME+"/"+DIRECTORY_IMAGES+"/"+cardId+".png")
                         .collect(Collectors.toList()))
-                .set(MAP_KEY_SKILL_MARKET,gameDecks.getSkillMarket());
+                .set(MAP_KEY_DUNGEON,gameDecks.getDungeonRow());
     }
 
     @GameMethod
-    public GameResult getClankArea(){
+    public GameResult getGame(){
+        String curerntUserId = "";
+        if(gameStarted){
+             curerntUserId = userOrder.get(currentUserIndex).getId();
+        }
         return new GameResult()
-                .setText("getClankArea: "+gameDecks.getClankArea())
+                .setText("getGame: "+gameDecks.getClankArea())
+                .set(MAP_KEY_CURRENT_USER,curerntUserId)
                 .set(MAP_KEY_CLANK_AREA,gameDecks.getClankArea());
     }
 
     @GameMethod
     private GameResult startTurn(String userId){
         User user = users.get(userId);
+        currentUserIndex = userOrder.indexOf(user);
         user.startTurn();
         return new GameResult()
                 .setText(user.getName() + " startTurn ")
-                .addImageIds(user.getPlayArea().stream().map(cardId->"/"+NAME+"/"+DIRECTORY_IMAGES+"/"+cardId+".png").collect(Collectors.toList()))
+                .addImageId("/"+NAME+"/"+DIRECTORY_CHAR+"/"+user.getChar()+"-avatar.png")
                 .addEvent(EVENT_INFO)
                 .addEvent(EVENT_REFRESH_PLAY_AREA)
+                .addEvent(EVENT_REFRESH_GAME)
+                .set(MAP_KEY_CURRENT_USER,userId)
                 .set(MAP_KEY_PLAY_AREA,user.getPlayArea())
                 .set(MAP_KEY_USER,user.get());
     }
@@ -367,22 +408,5 @@ public class Clank implements Game {
         int index = (userOrder.indexOf(user)+1) %userOrder.size();
         return userOrder.get(index).getId();
     }
-/*
-
-
-    public GameResult getMarketItems(){
-
-    }
-
-    public GameResult getCardMarket(){
-
-    }
-
-    public GameResult getPlayArea(){
-
-    }
-
-
-    */
 
 }

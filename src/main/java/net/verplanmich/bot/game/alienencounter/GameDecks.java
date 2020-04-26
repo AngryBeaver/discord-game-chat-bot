@@ -31,7 +31,7 @@ public class GameDecks {
     private HashMap<Mission, List<List<String>>> objectiveCards = new HashMap();
     private HashMap<Integer,HashMap<Integer,Integer>> difficutly = new HashMap();
 
-    private List<String> hiveAndCrew = Arrays.asList("jonesy.png","newt.png");
+    private List<String> hiveAndCrew = Arrays.asList("jonesy","newt");
 
     private Deck chars;
     private Deck strikes;
@@ -60,13 +60,13 @@ public class GameDecks {
         difficutly.get(5).put(1,6);
         difficutly.get(5).put(2,7);
         objectiveCards.put(NOSTROMO,new ArrayList());
-        objectiveCards.get(NOSTROMO).add( Arrays.asList("event.png","event.png","egg.png","egg.png","egg.png","egg.png","hazard.png","game-objective1-sos.png","game-objective1-sos.png"));
-        objectiveCards.get(NOSTROMO).add( Arrays.asList("jonesy.png","event.png","event.png","objective2-sos.png","hazard.png","shedding-skin-xenomorph.png","shedding-skin-xenomorph.png","shedding-skin-xenomorph.png","skittering-xenomorph.png","skittering-xenomorph.png","skittering-xenomorph.png"));
-        objectiveCards.get(NOSTROMO).add( Arrays.asList("the-perfect-organism.png","event.png","event.png","hazard.png","xenomorph-lance-tail.png","xenomorph-lance-tail.png","xenomorph-lance-tail.png","twin-mouth-xenomorph.png","twin-mouth-xenomorph.png","twin-mouth-xenomorph.png","twin-mouth-xenomorph.png","ash.png","objective3-sos.png"));
+        objectiveCards.get(NOSTROMO).add( Arrays.asList("event","event","egg","egg","egg","egg","hazard","game-objective1-sos","game-objective1-sos"));
+        objectiveCards.get(NOSTROMO).add( Arrays.asList("jonesy","event","event","objective2-sos","hazard","shedding-skin-xenomorph","shedding-skin-xenomorph","shedding-skin-xenomorph","skittering-xenomorph","skittering-xenomorph","skittering-xenomorph"));
+        objectiveCards.get(NOSTROMO).add( Arrays.asList("the-perfect-organism","event","event","hazard","xenomorph-lance-tail","xenomorph-lance-tail","xenomorph-lance-tail","twin-mouth-xenomorph","twin-mouth-xenomorph","twin-mouth-xenomorph","twin-mouth-xenomorph","ash","objective3-sos"));
         objectiveCards.put(SULACI, new ArrayList<>());
-        objectiveCards.get(SULACI).add( Arrays.asList("xenomorph-swarmer.png","xenomorph-swarmer.png","xenomorph-swarmer.png","hazard.png","event","event","colonist-host.png","colonist-host.png","colonist-host.png"));
-        objectiveCards.get(SULACI).add( Arrays.asList("hazard.png","event.png","event.png","acid-blood-xenomorph.png","acid-blood-xenomorph.png","acid-blood-xenomorph.png","facehugger.png","facehugger.png","newt.png","sentry-guns.png","sentry-guns.png"));
-        objectiveCards.get(SULACI).add( Arrays.asList("hazard.png","event.png","event.png","howling-xenomorph.png","howling-xenomorph.png","howling-xenomorph.png","howling-xenomorph.png","xenomorph-snatcher.png","xenomorph-snatcher.png","xenomorph-snatcher.png","xenomorph-snatcher.png","carter-burke.png","the-queen.png"));
+        objectiveCards.get(SULACI).add( Arrays.asList("xenomorph-swarmer","xenomorph-swarmer","xenomorph-swarmer","hazard","event","event","colonist-host","colonist-host","colonist-host"));
+        objectiveCards.get(SULACI).add( Arrays.asList("hazard","event","event","acid-blood-xenomorph","acid-blood-xenomorph","acid-blood-xenomorph","facehugger","facehugger","newt","sentry-guns","sentry-guns"));
+        objectiveCards.get(SULACI).add( Arrays.asList("hazard","event","event","howling-xenomorph","howling-xenomorph","howling-xenomorph","howling-xenomorph","xenomorph-snatcher","xenomorph-snatcher","xenomorph-snatcher","xenomorph-snatcher","carter-burke","the-queen"));
 
         chars = Deck.getFor(NAME,CHARS);
         strikes = Deck.getFor(NAME,STRIKES);
@@ -80,12 +80,12 @@ public class GameDecks {
         crews.get(NOSTROMO).add(Deck.getFor(NAME, NAVIGATOR_LAMBERT));
         crews.get(NOSTROMO).add(Deck.getFor(NAME, CAPTAIN_DALLAS));
         crews.put(SULACI,new ArrayList());
-        crews.get(SULACI).add(new Deck(Arrays.asList("shes-here-as-a-consultant.png","shes-here-as-a-consultant.png","shes-here-as-a-consultant.png","shes-here-as-a-consultant.png","shes-here-as-a-consultant.png","power-loader.png","i-will-never-leave-you.png","i-will-never-leave-you.png","i-will-never-leave-you.png","i-will-never-leave-you.png","i-will-never-leave-you.png","ripley-enraged.png","ripley-enraged.png","ripley-enraged.png")));
-        crews.get(SULACI).add(new Deck(Arrays.asList("stay-frosty.png","stay-frosty.png","stay-frosty.png","stay-frosty.png","stay-frosty.png","close-encounters.png","close-encounters.png","close-encounters.png","close-encounters.png","close-encounters.png","lets-go-marines.png","weapon-training.png","weapon-training.png","weapon-training.png")));
-        crews.get(SULACI).add(new Deck(Arrays.asList("split-in-two.png","knife-games.png","knife-games.png","knife-games.png","critical-analysis.png","critical-analysis.png","critical-analysis.png","critical-analysis.png","critical-analysis.png","get-him-to-medical.png","get-him-to-medical.png","get-him-to-medical.png","get-him-to-medical.png","get-him-to-medical.png")));
-        crews.get(SULACI).add(new Deck(Arrays.asList("they-are-all-around-us.png","they-are-all-around-us.png","they-are-all-around-us.png","they-are-all-around-us.png","they-are-all-around-us.png","this-aint-happening-man.png","body-armor.png","body-armor.png","body-armor.png","you-want-some-of-this.png","you-want-some-of-this.png","you-want-some-of-this.png","you-want-some-of-this.png","you-want-some-of-this.png")));
-        crews.get(SULACI).add(new Deck(Arrays.asList("wont-give-up.png","wont-give-up.png","wont-give-up.png","by-the-numbers.png","by-the-numbers.png","by-the-numbers.png","by-the-numbers.png","by-the-numbers.png","fall-back.png","fall-back.png","fall-back.png","fall-back.png","fall-back.png","always-were-an-a-hole.png")));
-        crews.get(SULACI).add(new Deck(Arrays.asList("head-mounted-sight.png","head-mounted-sight.png","head-mounted-sight.png","head-mounted-sight.png","head-mounted-sight.png","m56-smartgun.png","m56-smartgun.png","m56-smartgun.png","smartgunners.png","smartgunners.png","smartgunners.png","smartgunners.png","smartgunners.png","they-aint-paying-us-enough.png")));
+        crews.get(SULACI).add(new Deck(Arrays.asList("shes-here-as-a-consultant","shes-here-as-a-consultant","shes-here-as-a-consultant","shes-here-as-a-consultant","shes-here-as-a-consultant","power-loader","i-will-never-leave-you","i-will-never-leave-you","i-will-never-leave-you","i-will-never-leave-you","i-will-never-leave-you","ripley-enraged","ripley-enraged","ripley-enraged")));
+        crews.get(SULACI).add(new Deck(Arrays.asList("stay-frosty","stay-frosty","stay-frosty","stay-frosty","stay-frosty","close-encounters","close-encounters","close-encounters","close-encounters","close-encounters","lets-go-marines","weapon-training","weapon-training","weapon-training")));
+        crews.get(SULACI).add(new Deck(Arrays.asList("split-in-two","knife-games","knife-games","knife-games","critical-analysis","critical-analysis","critical-analysis","critical-analysis","critical-analysis","get-him-to-medical","get-him-to-medical","get-him-to-medical","get-him-to-medical","get-him-to-medical")));
+        crews.get(SULACI).add(new Deck(Arrays.asList("they-are-all-around-us","they-are-all-around-us","they-are-all-around-us","they-are-all-around-us","they-are-all-around-us","this-aint-happening-man","body-armor","body-armor","body-armor","you-want-some-of-this","you-want-some-of-this","you-want-some-of-this","you-want-some-of-this","you-want-some-of-this")));
+        crews.get(SULACI).add(new Deck(Arrays.asList("wont-give-up","wont-give-up","wont-give-up","by-the-numbers","by-the-numbers","by-the-numbers","by-the-numbers","by-the-numbers","fall-back","fall-back","fall-back","fall-back","fall-back","always-were-an-a-hole")));
+        crews.get(SULACI).add(new Deck(Arrays.asList("head-mounted-sight","head-mounted-sight","head-mounted-sight","head-mounted-sight","head-mounted-sight","m56-smartgun","m56-smartgun","m56-smartgun","smartgunners","smartgunners","smartgunners","smartgunners","smartgunners","they-aint-paying-us-enough")));
     }
 
 

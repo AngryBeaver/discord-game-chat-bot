@@ -6,16 +6,16 @@ import java.util.List;
 public class UserEntity {
     private final String userName;
     private final String userId;
-    private final String color;
+    private final String userChar;
     private int coins = 0;
     private int clankCubes = 30;
     private int damage = 0;
     private List<String> items = new ArrayList();
 
-    public UserEntity(String userName,String userId,String color) {
+    public UserEntity(String userName,String userId,String userChar) {
         this.userName = userName;
         this.userId = userId;
-        this.color = color;
+        this.userChar = userChar;
     }
 
     public String getUserName() {
@@ -26,8 +26,8 @@ public class UserEntity {
         return userId;
     }
 
-    public String getColor() {
-        return color;
+    public String getUserChar() {
+        return userChar;
     }
 
     public int getCoins() {

@@ -59,7 +59,7 @@
     background-color: rgba(0, 0, 0, 0.8);
     overflow: hidden;
     position: relative;
-    margin-left:7px;
+    padding-left:7px;
     padding-top:7px;
     padding-bottom:40px;
 }

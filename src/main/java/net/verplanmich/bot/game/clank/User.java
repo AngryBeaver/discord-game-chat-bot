@@ -12,11 +12,14 @@ public final class User {
 
     UserEntity userEntity;
     Deck deck;
-    List<String> hand;
-    List<String> playArea;
+    List<String> hand = new ArrayList();
+    List<String> playArea =  new ArrayList();
 
     public User(String userName, String userId,String color){
         userEntity = new UserEntity(userName,userId,color);
+        deck = new Deck(startCards).shuffle();
+        hand = new ArrayList();
+        playArea = new ArrayList();
     }
 
     public void initialize(){
@@ -31,8 +34,8 @@ public final class User {
     public String getName(){
         return userEntity.getUserName();
     }
-    public String getColor(){
-        return userEntity.getColor();
+    public String getChar(){
+        return userEntity.getUserChar();
     }
     public List<String> getPlayArea(){
         return playArea;

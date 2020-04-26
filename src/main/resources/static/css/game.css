@@ -8,3 +8,235 @@
     padding: 5px;
     color: white;
 }
+
+.cardContainer img {
+    height: 100%;
+    width:100%;
+}
+
+.cardContainer:hover .footer {
+    z-index: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.cardContainer:hover .header {
+    z-index: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    height: 100%;
+    border-radius: 5px;
+}
+
+.cardContainer {
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+    display: inline-block;
+    overflow: hidden;
+    background-size: cover;
+    position:relative;
+}
+
+.cards .area .cardContainer{
+    float:left;
+    width: calc(11vw);
+    height: calc(11vw/300*420);
+}
+
+.cards .area .cardContainer.sm-icon{
+    width: calc(5vw);
+    height: calc(5vw);
+}
+
+.cards .area .cardContainer.ssm-icon{
+    width: calc(3vw);
+    height: calc(3vw);
+}
+
+.cards {
+    overflow: hidden;
+    margin-top:10px;
+}
+
+.cards .area {
+    overflow-y: auto;
+    height: calc(11vw/300*435);
+    max-width: calc(11vw*6.8);
+    padding-top: 5px !important;
+}
+
+.cards .area-5 {
+    max-width: calc(11vw*5.666);
+}
+.cards .area-1 {
+    max-width: calc(11vw*1.133);
+}
+.cards .area-3 {
+    max-width: calc(11vw*3.4);
+}
+
+
+.singleDeck {
+    flex-grow: inherit;
+    margin-right: 10px;
+}
+
+#game .row {
+    margin-right: 0px;
+    margin-left: 0px;
+    height:100%;
+}
+
+.row .col {
+    padding: 0px;
+}
+
+.title {
+    position: absolute;
+    width: 100%;
+    z-index: -1;
+    top: 25%;
+}
+
+.title p {
+    font-size: 300%;
+    color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+nav {
+    padding-top:10px;
+}
+
+nav button {
+    margin: 5px;
+}
+
+.nav-link {
+    font-size: 150%;
+    height: 28px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+
+.fix-icon {
+    margin: 5px;
+    height: 50px;
+    border-radius: 5px;
+}
+
+.nav-link img {
+    margin-right: 15px;
+    margin-left:10px;
+    top:-10px;
+    position: relative;
+}
+
+.actionArea {
+    display: inline-block;
+}
+
+.overlayd {
+    position: absolute;
+    width: 100%;
+}
+
+.overlayd p {
+    color: rgba(0, 0, 0, 0.6);
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.header {
+    z-index: -1;
+    font-size: 150%;
+    top: 0px;
+    text-align: center;
+}
+
+.cardContainer .overlayd {
+    width: 100%;
+}
+
+.footer {
+    font-size: 150%;
+    color: black;
+    border-radius: 5px;
+    bottom: 0px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+
+div#footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding-left:15px;
+    margin-left:14vw;
+}
+
+#footer .cardContainer {
+    margin: 0px 5px 5px;
+}
+
+#footer .cardContainer .footer {
+    z-index: 0;
+}
+
+#footer .cardContainer .header {
+    z-index: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    height: 100%;
+    border-radius: 5px;
+}
+#footer .cardContainer {
+    overflow: visible;
+}
+
+#footer .cardContainer .cardHolder {
+    z-index: 1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.collapseFooter{
+    height:44vH;
+    max-height:44vH;
+}
+
+.collapseFooter.area {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.9);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    margin-left: 15px;
+    padding:5px;
+}
+.collapseFooter button:first-child{
+    margin-left:20px;
+}
+
+
+#selectUser {
+    position: absolute;
+    bottom:0px;
+    margin-left: 22vw;
+    padding:5px;
+}
+#userList button{
+    margin:5px;
+}

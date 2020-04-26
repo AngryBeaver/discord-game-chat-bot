@@ -1,6 +1,5 @@
 //TEST
 let MAP_KEY_USER_ID = "userId";
-let MAP_KEY_USER_MAP = "userMap";
 
 let EVENT_START = "start";
 let EVENT_REFRESH_HQ = "hq";
@@ -30,17 +29,13 @@ let barracks = []
 let hqCards = [];
 let sergeant = "";
 let game = {};
-let userMap = {};
-let userId = "guest";
-let selectedUserId;
 let strikes = {};
 let hand = {}
 let operations = [];
 let currentSelection = EVENT_INFO;
 
 //FOOTER
-var footer = $('#footer');
-footer.on('shown.bs.collapse', '.collapseFooter', function (e) {
+$('#footer .collapse').on('shown.bs.collapse', function (e) {
     if (e.target.id.trim() == 'barracksDetails') {
         currentSelection = EVENT_REFRESH_BARRACKS;
         openBarracks();
@@ -100,33 +95,6 @@ function openGame() {
     getGameInfo();
 }
 
-
-//SELECTION
-var fallback = false;
-footer.on('hidden.bs.collapse', '.collapseFooter', function () {
-    if (!fallback) {
-        footer.find('#selectUser').collapse('show');
-    }
-    fallback = false;
-    $('#barracksDeck .area').html("");
-});
-footer.on('show.bs.collapse', '.collapseFooter', function () {
-    fallback = true;
-});
-
-function fillUserList() {
-    let html = '<button onclick="selectUserId(\'' + userId + '\')" class="btn btn-primary" data-toggle="collapse" data-target="#userDetails">';
-    html += userMap[userId].userName;
-    html += '</button>';
-    Object.entries(userMap).forEach(([id, userInfo]) => {
-        if (id != userId) {
-            html += '<button onclick="selectUserId(\'' + id + '\')" class="btn btn-primary" data-toggle="collapse" data-target="#userDetails">';
-            html += userMap[id].userName;
-            html += '</button>';
-        }
-    });
-    $('#userList').html(html);
-}
 
 function openSelection() {
 
@@ -248,30 +216,7 @@ function showBarrackDetails() {
 }
 
 
-//MYSelf
-fetch("/user")
-    .then(function (response) {
-        response.json().then(function (data) {
-            console.log(data);
-            userId = data.id;
-            getUserInfo();
-        });
-    });
-
-//USER
-function selectUserId(id) {
-    selectedUserId = id;
-}
-
 //initial loading or event "join"
-function getUserInfo() {
-    action("getUserInfo", userId).then(gameResult => {
-        userMap = gameResult.map[MAP_KEY_USER_MAP];
-        fillUserList();
-        fillUserInfo();
-    })
-}
-
 function getUserStrikes() {  //load on open or event "strikes"
     action("getUserStrikes", selectedUserId).then(gameResult => {
         strikes[gameResult.map[MAP_KEY_USER_ID]] = gameResult.imageIds;
@@ -300,9 +245,7 @@ function getUserDraw() {  //load on open or event "draw"
     })
 }
 
-$('#userDetails a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-    showUser();
-});
+
 
 
 function fillStrikes() {
@@ -315,7 +258,7 @@ function fillStrikes() {
 
 function fillUserInfo() {
     if (selectedUserId != undefined) {
-        let html = '<a data-toggle="collapse" data-target="#userDetails" href="#" ><img src="char/' + userMap[selectedUserId].userChar + '-avatar.png"></a>';
+        let html = '<a data-toggle="collapse" data-target="#userDetails" href="#" ><img class="fix-icon" src="char/' + userMap[selectedUserId].userChar + '-avatar.png"></a>';
         html += userMap[selectedUserId].userName;
         $('#userDetails .nav-link.disabled').html(html);
 
@@ -348,6 +291,10 @@ function fillUserDraw() {
         activateSelectableCards();
     }
 }
+
+$('#userDetails a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    showUser();
+});
 
 function showUser() {
     var userTab = $('#userDetails .nav-link.active').text().trim();
@@ -385,27 +332,6 @@ function openUser() {
 }
 
 
-//UTILITIES
-function getHtmlFromDeck(deck) {
-    var html = '';
-    deck.forEach(function (value) {
-        html += '<a class="cardContainer" href="#">';
-        if (value != "") {
-            html += '<img src="' + value + '">';
-        }
-        html += '</a>';
-    });
-    return html;
-}
-
-function activateSelectableCards() {
-    var selectCard = $('.cards .area a.cardContainer');
-    selectCard.on('click', function () {
-        $(this).parent('.area').find('a.cardContainer.glowBorder').removeClass('glowBorder');
-        $(this).addClass('glowBorder');
-    });
-}
-
 function doHqAction(activity, selector) {
     let position = getCardPosition(selector);
     if (position == undefined) {
@@ -413,25 +339,6 @@ function doHqAction(activity, selector) {
     }
     return action(activity, position - 1);
 }
-
-function doCardAction(activity, selector) {
-    let cardId = getCardSelection(selector);
-    if (cardId == undefined) {
-        throw "Select a Card";
-    }
-    return action(activity, cardId);
-}
-
-function getCardPosition(selector) {
-    let selection = $(selector).find('a.cardContainer.glowBorder');
-    return $(selector).find('a.cardContainer').index(selection);
-}
-
-function getCardSelection(selector) {
-    let parts = $(selector).find('a.cardContainer.glowBorder img').attr('src').split("/");
-    return parts[parts.length - 1]
-}
-
 
 
 //DRAG&DROP
@@ -540,14 +447,6 @@ $(function () {
             getGameInfo();
         }, 28000);
     }
-
-    $('.console input').keypress(function (e) {
-        if (e.which == 13) {
-            let value = $('.console input').val().match(/^(\S+)\s(.*)/).slice(1);
-            action(value[0], value[1]);
-            $('.console input').val("");
-        }
-    });
 
 });
 
