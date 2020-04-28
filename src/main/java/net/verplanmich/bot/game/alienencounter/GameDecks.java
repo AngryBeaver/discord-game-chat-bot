@@ -7,8 +7,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.IntStream;
 
-import static net.verplanmich.bot.game.alienencounter.Mission.NOSTROMO;
-import static net.verplanmich.bot.game.alienencounter.Mission.SULACI;
+import static net.verplanmich.bot.game.alienencounter.Mission.*;
 
 @Service
 public class GameDecks {
@@ -31,7 +30,7 @@ public class GameDecks {
     private HashMap<Mission, List<List<String>>> objectiveCards = new HashMap();
     private HashMap<Integer,HashMap<Integer,Integer>> difficutly = new HashMap();
 
-    private List<String> hiveAndCrew = Arrays.asList("jonesy","newt");
+    private List<String> hiveAndCrew = Arrays.asList("jonesy","newt","missing-brother-red","missing-brother-green");
 
     private Deck chars;
     private Deck strikes;
@@ -67,6 +66,10 @@ public class GameDecks {
         objectiveCards.get(SULACI).add( Arrays.asList("xenomorph-swarmer","xenomorph-swarmer","xenomorph-swarmer","hazard","event","event","colonist-host","colonist-host","colonist-host"));
         objectiveCards.get(SULACI).add( Arrays.asList("hazard","event","event","acid-blood-xenomorph","acid-blood-xenomorph","acid-blood-xenomorph","facehugger","facehugger","newt","sentry-guns","sentry-guns"));
         objectiveCards.get(SULACI).add( Arrays.asList("hazard","event","event","howling-xenomorph","howling-xenomorph","howling-xenomorph","howling-xenomorph","xenomorph-snatcher","xenomorph-snatcher","xenomorph-snatcher","xenomorph-snatcher","carter-burke","the-queen"));
+        objectiveCards.put(FURY,new ArrayList());
+        objectiveCards.get(FURY).add(Arrays.asList("missing-brother-red","missing-brother-green"));//todo needs scanning
+        objectiveCards.get(FURY).add(new ArrayList());
+        objectiveCards.get(FURY).add(new ArrayList());
 
         chars = Deck.getFor(NAME,CHARS);
         strikes = Deck.getFor(NAME,STRIKES);
@@ -86,6 +89,13 @@ public class GameDecks {
         crews.get(SULACI).add(new Deck(Arrays.asList("they-are-all-around-us","they-are-all-around-us","they-are-all-around-us","they-are-all-around-us","they-are-all-around-us","this-aint-happening-man","body-armor","body-armor","body-armor","you-want-some-of-this","you-want-some-of-this","you-want-some-of-this","you-want-some-of-this","you-want-some-of-this")));
         crews.get(SULACI).add(new Deck(Arrays.asList("wont-give-up","wont-give-up","wont-give-up","by-the-numbers","by-the-numbers","by-the-numbers","by-the-numbers","by-the-numbers","fall-back","fall-back","fall-back","fall-back","fall-back","always-were-an-a-hole")));
         crews.get(SULACI).add(new Deck(Arrays.asList("head-mounted-sight","head-mounted-sight","head-mounted-sight","head-mounted-sight","head-mounted-sight","m56-smartgun","m56-smartgun","m56-smartgun","smartgunners","smartgunners","smartgunners","smartgunners","smartgunners","they-aint-paying-us-enough")));
+        crews.put(FURY,new ArrayList());
+        crews.get(FURY).add(new Deck(Arrays.asList("the-companys-orders","the-companys-orders","the-companys-orders","the-companys-orders","the-companys-orders","its-his-iq","its-his-iq,","its-his-iq","its-his-iq","its-his-iq","internal-exam","internal-exam","internal-exam","buying-time")));
+        crews.get(FURY).add(new Deck(Arrays.asList("eulogy","eulogy","eulogy","eulogy","eulogy","i-wanna-get-this-thing","i-wanna-get-this-thing","i-wanna-get-this-thing","re-education","re-education","re-education","re-education","re-education","remember-the-dead")));
+        crews.get(FURY).add(new Deck(Arrays.asList("i-want-it-dead-too","i-want-it-dead-too","i-want-it-dead-too","i-want-it-dead-too","i-want-it-dead-too","we-better-rethink-this-thing","we-better-rethink-this-thing","we-better-rethink-this-thing","we-ought-to-panic","we-ought-to-panic","we-ought-to-panic","we-ought-to-panic","we-ought-to-panic","ten-tons-of-hot-lead")));
+        crews.get(FURY).add(new Deck(Arrays.asList("bait-for-the-beast","bait-for-the-beast","bait-for-the-beast","bait-for-the-beast","bait-for-the-beast","part-of-the-family","part-of-the-family","part-of-the-family","part-of-the-family","part-of-the-family","whatever-it-takes","whatever-it-takes","whatever-it-takes","ultimate-sacrifice")));
+        crews.get(FURY).add(new Deck(Arrays.asList("rumor-control","rumor-control","rumor-control","rumor-control","rumor-control","stop-this-raving","stop-this-raving","stop-this-raving","stop-this-raving","stop-this-raving","were-on-the-honor-system","dont-upset-the-order","dont-upset-the-order","dont-upset-the-order")));
+        crews.get(FURY).add(new Deck(Arrays.asList("autopsy","autopsy","autopsy","emergency-surgery","medical-attention","medical-attention","medical-attention","medical-attention","medical-attention","bar-code","bar-code","bar-code","bar-code","bar-code")));
     }
 
 

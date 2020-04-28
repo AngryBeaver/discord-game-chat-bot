@@ -28,7 +28,6 @@ public class Clank implements Game {
     static final String EVENT_REFRESH_PLAY_AREA = "playArea";
     static final String EVENT_REFRESH_HAND = "hand";
     static final String EVENT_REFRESH_DUNGEON = "dungeon";
-    static final String EVENT_REFRESH_ITEMS = "items";
 
 
     static final String MAP_KEY_USER = "user";
@@ -38,6 +37,7 @@ public class Clank implements Game {
     static final String MAP_KEY_DUNGEON = "dungeon";
     static final String MAP_KEY_USER_MAP = "userMap";
     static final String MAP_KEY_CURRENT_USER = "currentUser";
+    static final String MAP_KEY_DRAGON_ATTACK = "dragonAttack";
 
 
     private GameDecks gameDecks;
@@ -268,6 +268,17 @@ public class Clank implements Game {
     }
 
     @GameMethod
+    public GameResult dungeonToDungeon(String cardId) {
+        gameDecks.dungeonToDiscard(cardId,gameDecks.black);
+        gameDecks.backToDungeon(cardId);
+        return new GameResult()
+                .setText("dungeonToDungeon "+cardId)
+                .addImageId("/"+NAME+"/"+DIRECTORY_IMAGES+"/"+cardId+".png")
+                .addEvent(EVENT_INFO)
+                .addEvent(EVENT_REFRESH_DUNGEON);
+    }
+
+    @GameMethod
     public GameResult dungeonToDiscard(String userId, String cardId) {
         User user = users.get(userId);
         gameDecks.dungeonToDiscard(cardId,user);
@@ -297,7 +308,7 @@ public class Clank implements Game {
                 .setText("itemToUser "+itemId)
                 .addImageId("/"+NAME+"/"+DIRECTORY_ITEMS+"/"+itemId+".png")
                 .addEvent(EVENT_INFO)
-                .addEvent(EVENT_REFRESH_ITEMS)
+                .addEvent(EVENT_REFRESH_USER)
                 .set(MAP_KEY_USER,user.get());
     }
 
@@ -310,6 +321,7 @@ public class Clank implements Game {
                 .setText("getMinorSecret")
                 .addImageId("/"+NAME+"/"+DIRECTORY_ITEMS+"/"+itemId+".png")
                 .addEvent(EVENT_INFO)
+                .addEvent(EVENT_REFRESH_USER)
                 .set(MAP_KEY_USER,user.get());
     }
 
@@ -322,16 +334,19 @@ public class Clank implements Game {
                 .setText("getMajorSecret")
                 .addImageId("/"+NAME+"/"+DIRECTORY_ITEMS+"/"+itemId+".png")
                 .addEvent(EVENT_INFO)
+                .addEvent(EVENT_REFRESH_USER)
                 .set(MAP_KEY_USER,user.get());
     }
 
     @GameMethod
     public GameResult dragonAttack(String value){
         int limit = Integer.valueOf(value);
+        List<String> dragonAttacks = gameDecks.dragonAttack(limit);
         return new GameResult()
-                .setText(gameDecks.dragonAttack(limit).stream().map(c->"<div class='clankCube "+c+"></div>").collect(Collectors.joining()))
+                .setText(dragonAttacks.stream().map(c->"<div class='clankCube "+c+"'></div>").collect(Collectors.joining()))
                 .addEvent(EVENT_INFO)
-                .addEvent(EVENT_DRAGON_ATTACK);
+                .addEvent(EVENT_DRAGON_ATTACK)
+                .set(MAP_KEY_DRAGON_ATTACK,dragonAttacks);
     }
 
     @GameMethod
@@ -396,6 +411,7 @@ public class Clank implements Game {
                 .addImageId("/"+NAME+"/"+DIRECTORY_CHAR+"/"+user.getChar()+"-avatar.png")
                 .addEvent(EVENT_INFO)
                 .addEvent(EVENT_REFRESH_PLAY_AREA)
+                .addEvent(EVENT_REFRESH_HAND)
                 .addEvent(EVENT_REFRESH_GAME)
                 .set(MAP_KEY_CURRENT_USER,userId)
                 .set(MAP_KEY_PLAY_AREA,user.getPlayArea())

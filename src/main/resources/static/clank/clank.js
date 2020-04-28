@@ -5,6 +5,7 @@ let EVENT_REFRESH_DUNGEON = "dungeon";
 let EVENT_REFRESH_PLAY_AREA = "playArea";
 let EVENT_REFRESH_GAME = "game";
 let EVENT_REFRESH_USER = "user";
+let EVENT_DRAGON_ATTACK = "dragonAttack"
 
 let currentSelection = EVENT_INFO;
 let playArea = [];
@@ -52,6 +53,9 @@ $(function () {
         }
         if (gameResult.events.includes(EVENT_JOIN)) {
             getUserInfo();
+        }
+        if( gameResult.events.includes(EVENT_DRAGON_ATTACK)){
+
         }
         if (gameResult.events.includes(EVENT_REFRESH_GAME)) {
             getGame();
