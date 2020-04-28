@@ -55,7 +55,8 @@ $(function () {
             getUserInfo();
         }
         if( gameResult.events.includes(EVENT_DRAGON_ATTACK)){
-
+            getGame();
+            getUserInfo();
         }
         if (gameResult.events.includes(EVENT_REFRESH_GAME)) {
             getGame();
@@ -102,8 +103,6 @@ function fillUserInfo() {
 
         $('#userItems').html(getHtmlFromDeckSize(deckToSrc("clank", "images", userMap[selectedUserId].items), "sm"));
         activateSelectableCards();
-
-
     }
     if (userMap[currentUserId]) {
         fillClankUser(userMap[currentUserId], "#activeUserData");
@@ -192,11 +191,13 @@ function showGameNavi() {
     if (currentUserId) {
         if (currentUserId != userId) {
             $('#gameDetails nav li').hide();
+            $('#gameInfo nav li:eq(2)').show();
         } else {
             $('#gameDetails nav li').show();
             $('#gameInfo nav li:gt(1)').show();
             $('#gameInfo nav li:lt(2)').hide();
         }
+
     }
 }
 

@@ -50,7 +50,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 return withUserAgent(super.convert(oauth2Request));
             }
         });
-
         return client;
     }
 

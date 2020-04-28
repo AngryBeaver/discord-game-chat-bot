@@ -35,14 +35,19 @@ public class GameDecks {
     private List<String> sunken = Arrays.asList("ancient-invocation","black-pearl","silver-pearl","white-pearl","white-pearl","medic","pickpocket","rebel-scholar","rebel-brawler","alchemist",
             "elven-ranger","pipe-organ","boomerang","fishing-pole","climbing-gear","burglars-boot","aspiration","short-cut","grand-plan","deep-dive","merling","merling",
             "mermaid","mermaid","shrine-of-the-mermaid","shrine-of-the-mermaid","sorcerer","eye-in-the-water","eye-in-the-water","saurian","saurian","crystal-fish","crystal-fish");
-
-    List<String> minorSecrets = new ArrayList(Arrays.asList("treasure","treasure","treasure","treasure","egg","egg","egg","potion-of-swiftness","potion-of-swiftness","magic-spring","potion-of-strength","potion-of-strength","potion-of-healing","potion-of-healing","potion-of-healing","skill-boost","skill-boost"));
-    List<String> secrets = new ArrayList(Arrays.asList("greater-skill-boost","greater-skill-boost","chalice","chalice","chalice","flash-of-brilliance","flash-of-brilliance","potion-of-heroism","potion-of-greater-healing","potion-of-greater-healing","greater-treasure","greater-treasure"));
-    List<String> secrets_sunken = new ArrayList(Arrays.asList("mummys-treasure","mummys-chalice"));
-    List<String> minorSecrets_sunken = new ArrayList(Arrays.asList("scarab"));
+    private List<String> mummy = Arrays.asList("canopic-jars","blessed-fountain","blessed-fountain","stone-simian","crocodilian","crocodilian","whiskersphinx","tomb-snake","tomb-snake","ring-of-wishes","camel","doomsayer","historian",
+            "kittypatra","scorpion-queen","daring-explorer","rebel-burglar","rebel-mystic","royal-bodyguard","royal-bodyguard","thrilll-seeker","thrilll-seeker","tomb-robber","excavate","need-for-greed","need-for-greed",
+            "purify","book-of-the-dead","bullwhip","bullwhip","crystal-skull","death-mask","death-mask","ornate-khopesh","staff-of-the-ancients","serpentine","serpentine","lapis-lazuli","jasper","jasper");
+    List<String> minorSecrets = new ArrayList();
+    List<String> secrets = new ArrayList();
+    List<String> minorSecrets_base = new ArrayList(Arrays.asList("treasure","treasure","treasure","treasure","egg","egg","egg","potion-of-swiftness","potion-of-swiftness","magic-spring","potion-of-strength","potion-of-strength","potion-of-healing","potion-of-healing","potion-of-healing","skill-boost","skill-boost"));
+    List<String> secrets_base = new ArrayList(Arrays.asList("greater-skill-boost","greater-skill-boost","chalice","chalice","chalice","flash-of-brilliance","flash-of-brilliance","potion-of-greater-healing","potion-of-greater-healing","greater-treasure","greater-treasure"));
+    List<String> secrets_sunken = new ArrayList(Arrays.asList("potion-of-heroism"));
+    List<String> secrets_mummy = new ArrayList(Arrays.asList("mummys-chalice","mummys-treasure"));
+    List<String> minorSecrets_mummy = new ArrayList(Arrays.asList("scarab","scarab"));
     private List<String> artifacts = new ArrayList(Arrays.asList("artifact-5","artifact-7","artifact-10","artifact-15","artifact-20","artifact-30","artifact-25"));
     private List<String> monkeys = new ArrayList(Arrays.asList("monkey-idol1","monkey-idol2","monkey-idol3"));
-    private List<String> market = new ArrayList(Arrays.asList("crown-10","crown-9","crown-8","backpack","backpack","key","key","scuba","scuba"));
+    private List<String> market = new ArrayList(Arrays.asList("crown-10","crown-9","crown-8","backpack","backpack","key","key","scuba","scuba","ankh"));
 
 
     private List<User> clanks;
@@ -65,11 +70,25 @@ public class GameDecks {
 
     public void initializeBaseGame(String extension){
         List<String> gameCards = new ArrayList(baseGame);
+        secrets = new ArrayList();
+        minorSecrets = new ArrayList();
+        secrets.addAll(secrets_base);
+        minorSecrets.addAll(minorSecrets_base);
         if(extension.toLowerCase().equals("sunken")){
+            secrets.addAll(secrets_sunken);
             gameCards.addAll(new ArrayList(sunken));
             reserve.put(GOLD_FISH,100);
             refillDungeonRow(GOLD_FISH);
         }
+        if(extension.toLowerCase().equals("mummy")){
+            secrets.addAll(secrets_mummy);
+            minorSecrets.addAll(minorSecrets_mummy);
+            gameCards.addAll(new ArrayList(mummy));
+            reserve.put(GOLD_FISH,100);
+            refillDungeonRow(GOLD_FISH);
+        }
+        Collections.shuffle(minorSecrets);
+        Collections.shuffle(secrets);
         this.gameDeck = new Deck(gameCards).shuffle();
         reserve.put(GOBLIN,100);
         reserve.put(EXPLORER,14);

@@ -424,7 +424,6 @@ $(function () {
 
     function eventStart(gameResult) {
         let html = '<video autoplay id="vid">';
-
         html += '<source src="' + gameResult.map.mission + '.mp4" type="video/mp4">';
         html += '</video>';
         showMessage(html);
