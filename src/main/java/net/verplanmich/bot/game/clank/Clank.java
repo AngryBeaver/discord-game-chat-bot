@@ -233,7 +233,7 @@ public class Clank implements Game {
         User user = users.get(userId);
         String cardId = user.drawToPlay();
         return new GameResult()
-                .setText(user.getName() + " drawtoPlay "+cardId)
+                .setText(user.getName() + " drawToPlay "+cardId)
                 .addImageId("/"+NAME+"/"+DIRECTORY_IMAGES+"/"+cardId+".png")
                 .addEvent(EVENT_INFO)
                 .addEvent(EVENT_REFRESH_HAND)
