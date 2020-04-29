@@ -240,3 +240,12 @@ div#footer {
 #userList button{
     margin:5px;
 }
+
+#footer-only .collapseFooter{
+    height:98vH;
+    max-height:98vH;
+}
+
+#footer-only div#footer{
+    margin-left:1vw;
+}

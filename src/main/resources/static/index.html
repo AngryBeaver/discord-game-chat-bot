@@ -72,7 +72,13 @@
                 if (isAuthenticated) {
                     html +=
                         '<div class="col-md-12">' +
-                        '<a href="'+value+'/index.html?gameId='+key+'">join</a>' +
+                        '<a href="'+value+'/index.html?gameId='+key+'">main</a>' +
+                        '</div>'+
+                        '<div class="col-md-12">' +
+                        '<a href="'+value+'/index-chat.html?gameId=' + key + '">chat</a>' +
+                        '</div>' +
+                        '<div class="col-md-12">' +
+                        '<a href="'+value+'/index-small.html?gameId=' + key + '">footer</a>' +
                         '</div>';
                 } else {
                     html +=

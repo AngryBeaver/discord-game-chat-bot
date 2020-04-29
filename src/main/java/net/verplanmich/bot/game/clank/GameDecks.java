@@ -60,12 +60,22 @@ public class GameDecks {
     public GameDecks(){
         this.clanks = new ArrayList();
         black = new User("blank", "0","black");
-        IntStream.range(1,24).forEach(i->
-                clanks.add(black)
-        );
+        adjustBlackClank(24);
         Collections.shuffle(minorSecrets);
         Collections.shuffle(secrets);
         this.clankArea = new ArrayList();
+    }
+
+    public void adjustBlackClank(int amount){
+        if(amount > 0) {
+            IntStream.range(1, amount).forEach(i ->
+                    clanks.add(black)
+            );
+        }else{
+            IntStream.range(1, amount*-1).forEach(i ->
+                    clanks.remove(black)
+            );
+        }
     }
 
     public void initializeBaseGame(String extension){
@@ -121,7 +131,7 @@ public class GameDecks {
     }
 
     void removeClankFromArea(User user, int amount) {
-        IntStream.range(0, amount).forEach((i)->
+        IntStream.range(0, amount*-1).forEach((i)->
         {
             if(clankArea.remove(user)){
                 user.addClankCubes(1);

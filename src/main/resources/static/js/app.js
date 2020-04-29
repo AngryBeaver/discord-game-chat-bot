@@ -129,7 +129,6 @@ function scrollChat() {
     $("#eventChannel .cardArea").animate({scrollTop: $('#eventChannel .chat').height()}, 1000);
 }
 
-
 function typeWriteMessage(message) {
     var i = 0;
     let speed = 100;
@@ -209,3 +208,4 @@ $(function () {
         reselectUser = false;
     });
 });
+

@@ -34,6 +34,8 @@ public class Clank implements Game {
     static final String MAP_KEY_CLANK_AREA = "clankArea";
     static final String MAP_KEY_PLAY_AREA = "playArea";
     static final String MAP_KEY_HAND = "hand";
+    static final String MAP_KEY_DISCARD = "discard";
+    static final String MAP_KEY_DRAW = "draw";
     static final String MAP_KEY_DUNGEON = "dungeon";
     static final String MAP_KEY_USER_MAP = "userMap";
     static final String MAP_KEY_CURRENT_USER = "currentUser";
@@ -90,6 +92,8 @@ public class Clank implements Game {
         }
         return new GameResult().setText("game is already started");
     }
+
+
 
     @GameMethod
     public GameResult adjustClank(String userId,String value){
@@ -368,6 +372,29 @@ public class Clank implements Game {
     }
 
     @GameMethod
+    public GameResult getDiscard(String userId){
+        User user = users.get(userId);
+        List<String> discard = user.deck.getDiscardPile();
+        return new GameResult()
+                .setText(user.getName() + " getDiscard ")
+                .addImageIds(discard.stream().map(cardId->"/"+NAME+"/"+DIRECTORY_IMAGES+"/"+cardId+".png").collect(Collectors.toList()))
+                .addEvent(EVENT_INFO)
+                .set(MAP_KEY_DISCARD,discard);
+    }
+
+    @GameMethod
+    public GameResult getDraw(String userId){
+        User user = users.get(userId);
+        List<String> draw = user.deck.getDrawPile();
+        user.deck.shuffle();
+        return new GameResult()
+                .setText(user.getName() + " getDraw ")
+                .addImageIds(draw.stream().map(cardId->"/"+NAME+"/"+DIRECTORY_IMAGES+"/"+cardId+".png").collect(Collectors.toList()))
+                .addEvent(EVENT_INFO)
+                .set(MAP_KEY_DRAW,draw);
+    }
+
+    @GameMethod
     public GameResult getUserInfo(String targetUserId) throws JsonProcessingException {
         Map<String,UserEntity> userMap= new HashMap();
         users.entrySet().forEach(entry->{
@@ -387,6 +414,15 @@ public class Clank implements Game {
                         .map(cardId->"/"+NAME+"/"+DIRECTORY_IMAGES+"/"+cardId+".png")
                         .collect(Collectors.toList()))
                 .set(MAP_KEY_DUNGEON,gameDecks.getDungeonRow());
+    }
+
+    @GameMethod
+    public GameResult adjustBlackClank(String value){
+        int amount = Integer.valueOf(value);
+        gameDecks.adjustBlackClank(amount);
+        return new GameResult()
+                .setText(" black clanks "+amount)
+                .addEvent(EVENT_INFO);
     }
 
     @GameMethod
