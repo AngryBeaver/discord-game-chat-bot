@@ -13,6 +13,7 @@ public final class User {
     UserEntity userEntity;
     Deck deck;
     List<String> hand = new ArrayList();
+    List<String> devices = new ArrayList();
     List<String> playArea =  new ArrayList();
 
     public User(String userName, String userId,String color){
@@ -25,6 +26,7 @@ public final class User {
     public void initialize(){
         deck = new Deck(startCards).shuffle();
         hand = new ArrayList();
+        devices = new ArrayList();
         playArea = new ArrayList();
         endTurn();
     }
@@ -38,11 +40,15 @@ public final class User {
         return userEntity.getUserChar();
     }
     public List<String> getPlayArea(){
-        return playArea;
+        List<String> result = new ArrayList(playArea);
+        result.addAll(devices);
+        return result;
     }
 
     public List<String> getHand(){
-        return hand;
+        List<String> result = new ArrayList(hand);
+        result.addAll(devices);
+        return result;
     }
 
     public int getCoins(){
@@ -75,6 +81,7 @@ public final class User {
 
     public void damage(int amount){
         int damage = userEntity.getDamage();
+        removeClankCubes(amount);
         userEntity.setDamage(damage+amount);
     }
 
@@ -124,9 +131,16 @@ public final class User {
         return result;
     }
 
+    public boolean playToDevice(String cardId){
+        boolean result = playToVoid(cardId);
+        if(result){
+            devices.add(cardId);
+        }
+        return result;
+    }
+
     public boolean playToVoid(String cardId){
-        hand.remove(cardId);
-        return playArea.remove(cardId);
+        return devices.remove(cardId) || ( hand.remove(cardId) && playArea.remove(cardId));
     }
 
     public String drawCard(){

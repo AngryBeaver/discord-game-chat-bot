@@ -40,7 +40,7 @@ body {
     box-shadow: 0 0 5px #fff, /* outer white */ -0px 0 5px #18f0ff, /* outer left magenta */ 0px 0 5px #0a16ff; /* outer right cyan */
 }
 
-#footer .cardContainer .header {
+.cardContainer .header {
     box-shadow: inset 0 0 100px rgba(10, 22, 255, 0.05), /* inner black */ inset 20px 0 80px rgba(10, 22, 255, 0.05), /* inner left magenta short */ inset -20px 0 80px rgba(24, 240, 255, 0.05), /* inner right cyan short */ inset 20px 0 300px rgba(10, 22, 255, 0.05), /* inner left magenta broad */ inset -20px 0 300px rgba(24, 240, 255, 0.05); /* inner right cyan broad */
 }
 
@@ -108,4 +108,9 @@ body {
 
 #missionInfo img{
     height: 32vh;
+}
+
+.cardContainer {
+    width: 15em !important;
+    height:calc(15em/300*420) !important;
 }

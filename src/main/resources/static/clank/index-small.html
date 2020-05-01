@@ -1,5 +1,7 @@
 <html>
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/gridstack@1.1.1/dist/gridstack.all.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridstack@1.1.1/dist/gridstack.min.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
     <script src="http://code.jquery.com/jquery-3.4.1.min.js"
@@ -18,20 +20,21 @@
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
     <script src="../js/app.js"></script>
-    <link rel="stylesheet" href="clank.css"/>
-    <link rel="stylesheet" href="../css/chat.css"/>
-    <link rel="stylesheet" href="../css/game.css"/>
-</head>
-<body id="footer-only">
 
-<div id="footer">
-    <div class="collapse" id="gameDetails" data-parent="#footer">
-        <div class="collapseFooter area glowBorder">
+
+    <link rel="stylesheet" href="clank.css"/>
+    <link rel="stylesheet" href="../css/grid-chat.css"/>
+    <link rel="stylesheet" href="../css/grid-game.css"/>
+</head>
+<body id="game">
+
+<div class="grid-stack" id="eventChannel">
+    <div id="footer" class="grid-stack-item" data-gs-x="0" data-gs-y="0" data-gs-width="12" data-gs-height="16">
+        <div class="grid-bg grid-bg-black glowBorder collapse show" id="gameDetails">
             <ul class="nav nav-pills " id="game-tab" role="tablist">
                 <li class="nav-item">
                     <div class="nav-link disabled" role="tab">
-                        <a data-toggle="collapse" data-target="#gameDetails" href="#">
-                            <img class="fix-icon" src="game.png"></a>
+                            <img class="fix-icon" src="game.png">
                         clank!
                     </div>
                 </li>
@@ -47,143 +50,143 @@
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="gameInfo" role="tabpanel">
-                    <div class="row cards">
-                        <div class="col-sm-1">
-                            <div class="wrapper">
-                                <nav>
-                                    <ul class="list-unstyled components">
-                                        <p>Actions</p>
-                                        <li>
-                                            <button class="btn btn-sm btn-primary" onclick="action('join')">
-                                                join
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <div class="dropdown">
-                                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
-                                                        id="gameSelection" data-toggle="dropdown" aria-haspopup="true"
-                                                        aria-expanded="false">
-                                                    start
-                                                </button>
-                                                <div class="dropdown-menu" aria-labelledby="gameSelection">
-                                                    <a class="dropdown-item"
-                                                       href="javascript:action('start','base')">base</a>
-                                                    <a class="dropdown-item" href="javascript:action('start','sunken')">sunken</a>
-                                                    <a class="dropdown-item"
-                                                       href="javascript:action('start','mummy')">mummy</a>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <button class="btn btn-sm btn-primary"
-                                                    onclick="doCardAction('addItem','#market')">
-                                                getItem
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <div class="dropdown">
-                                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
-                                                        id="secrets" data-toggle="dropdown" aria-haspopup="true"
-                                                        aria-expanded="false">
-                                                    secrets
-                                                </button>
-                                                <div class="dropdown-menu" aria-labelledby="secrets">
-                                                    <a class="dropdown-item" href="javascript:action('getMinorSecret')">getMinor</a>
-                                                    <a class="dropdown-item" href="javascript:action('getMajorSecret')">getMajor</a>
+                    <div class="row">
+                        <nav>
+                            <ul class="list-unstyled components">
+                                <p>Actions</p>
+                                <li>
+                                    <button class="btn btn-sm btn-primary" onclick="action('join')">
+                                        join
+                                    </button>
+                                </li>
+                                <li>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
+                                                id="gameSelection" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                            start
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="gameSelection">
+                                            <a class="dropdown-item"
+                                               href="javascript:action('start','base')">base</a>
+                                            <a class="dropdown-item"
+                                               href="javascript:action('start','sunken')">sunken</a>
+                                            <a class="dropdown-item"
+                                               href="javascript:action('start','mummy')">mummy</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <button class="btn btn-sm btn-primary"
+                                            onclick="doCardAction('addItem','#market')">
+                                        getItem
+                                    </button>
+                                </li>
+                                <li>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
+                                                id="secrets" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                            secrets
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="secrets">
+                                            <a class="dropdown-item"
+                                               href="javascript:action('getMinorSecret')">getMinor</a>
+                                            <a class="dropdown-item"
+                                               href="javascript:action('getMajorSecret')">getMajor</a>
 
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="dropdown">
-                                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
-                                                        id="dropdownMenuButton" data-toggle="dropdown"
-                                                        aria-haspopup="true"
-                                                        aria-expanded="false">
-                                                    dragon
-                                                </button>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                    <a class="dropdown-item"
-                                                       href="javascript:action('adjustBlackClank',1)">blackBack</a>
-                                                    <a class="dropdown-item"
-                                                       href="javascript:action('dragonAttack',3)">attack 3</a>
-                                                    <a class="dropdown-item"
-                                                       href="javascript:action('dragonAttack',4)">attack 4</a>
-                                                    <a class="dropdown-item"
-                                                       href="javascript:action('dragonAttack',5)">attack 5</a>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <button class="btn btn-sm btn-primary" onclick="action('endTurn')">
-                                                endTurn
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-                        <div class="col cards row">
-                            <div id="clankArea" class=" area area-3 col">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
+                                                id="dropdownMenuButton" data-toggle="dropdown"
+                                                aria-haspopup="true"
+                                                aria-expanded="false">
+                                            dragon
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item"
+                                               href="javascript:action('adjustBlackClank',1)">blackBack</a>
+                                            <a class="dropdown-item"
+                                               href="javascript:action('dragonAttack',3)">attack 3</a>
+                                            <a class="dropdown-item"
+                                               href="javascript:action('dragonAttack',4)">attack 4</a>
+                                            <a class="dropdown-item"
+                                               href="javascript:action('dragonAttack',5)">attack 5</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <button class="btn btn-sm btn-primary" onclick="action('endTurn')">
+                                        endTurn
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
+
+                        <div class="col row">
+                            <div id="clankArea" class="col area area-4">
                                 clankArea
                                 <span></span>
                             </div>
-                            <div id="market" class="area area-3 col">
-                                <a class="cardContainer sm-icon" href="#">
+                            <div id="market" class="col area area-4">
+                                <a class="cardContainer icon" href="#">
                                     <img src="items/crown-8.png"/>
                                 </a>
-                                <a class="cardContainer sm-icon" href="#">
+                                <a class="cardContainer icon" href="#">
                                     <img src="items/crown-9.png"/>
                                 </a>
-                                <a class="cardContainer sm-icon" href="#">
+                                <a class="cardContainer icon" href="#">
                                     <img src="items/crown-10.png"/>
                                 </a>
-                                <a class="cardContainer sm-icon" href="#">
+                                <a class="cardContainer icon" href="#">
                                     <img src="items/backpack.png"/>
                                 </a>
-                                <a class="cardContainer sm-icon" href="#">
+                                <a class="cardContainer icon" href="#">
                                     <img src="items/key.png"/>
                                 </a>
-                                <a class="cardContainer sm-icon" href="#">
+                                <a class="cardContainer icon" href="#">
                                     <img src="items/scuba.png"/>
                                 </a>
-                                <a class="cardContainer sm-icon" href="#">
+                                <a class="cardContainer icon" href="#">
                                     <img src="items/ankh.png"/>
                                 </a>
-                                <a class="cardContainer sm-icon" href="#">
+                                <a class="cardContainer icon" href="#">
                                     <img src="items/curse.png"/>
                                 </a>
-                                <a class="cardContainer sm-icon" href="#">
+                                <a class="cardContainer icon" href="#">
                                     <img src="items/monkey-idol1.png"/>
                                 </a>
-                                <a class="cardContainer sm-icon" href="#">
+                                <a class="cardContainer icon" href="#">
                                     <img src="items/monkey-idol2.png"/>
                                 </a>
-                                <a class="cardContainer sm-icon" href="#">
+                                <a class="cardContainer icon" href="#">
                                     <img src="items/monkey-idol3.png"/>
                                 </a>
-                                <a class="cardContainer sm-icon" href="#">
+                                <a class="cardContainer icon" href="#">
                                     <img src="items/supreme-monkey-idol.png"/>
                                 </a>
-                                <a class="cardContainer sm-icon" href="#">
+                                <a class="cardContainer icon" href="#">
                                     <img src="items/artifact-5.png"/>
                                 </a>
-                                <a class="cardContainer sm-icon" href="#">
+                                <a class="cardContainer icon" href="#">
                                     <img src="items/artifact-7.png"/>
                                 </a>
-                                <a class="cardContainer sm-icon" href="#">
+                                <a class="cardContainer icon" href="#">
                                     <img src="items/artifact-10.png"/>
                                 </a>
-                                <a class="cardContainer sm-icon" href="#">
+                                <a class="cardContainer icon" href="#">
                                     <img src="items/artifact-15.png"/>
                                 </a>
-                                <a class="cardContainer sm-icon" href="#">
+                                <a class="cardContainer icon" href="#">
                                     <img src="items/artifact-20.png"/>
                                 </a>
-                                <a class="cardContainer sm-icon" href="#">
+                                <a class="cardContainer icon" href="#">
                                     <img src="items/artifact-25.png"/>
                                 </a>
-                                <a class="cardContainer sm-icon" href="#">
+                                <a class="cardContainer icon" href="#">
                                     <img src="items/artifact-30.png"/>
                                 </a>
                             </div>
@@ -191,132 +194,121 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="dungeon" role="tabpanel">
-                    <div class="row cards">
-                        <div class="col-sm-1">
-                            <div class="wrapper">
-                                <nav>
-                                    <ul class="list-unstyled components">
-                                        <p>Actions</p>
-                                        <li>
-                                            <button class="btn btn-sm btn-primary"
-                                                    onclick="doCardAction('dungeonToDiscard','#dungeonsDeck')">
-                                                buy
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button class="btn btn-sm btn-primary"
-                                                    onclick="doCardAction('dungeonToDungeon','#dungeonsDeck')">
-                                                switch
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button class="btn btn-sm btn-primary"
-                                                    onclick="doCardAction('dungeonToVoid','#dungeonsDeck')">
-                                                kill
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-                        <div class="col cards">
-                            <div id="dungeonsDeck" class="cards">
-                                <div class="area">
-                                    <a class="cardContainer" href="#">
-
-                                    </a>
-                                </div>
+                    <div class="row">
+                        <nav>
+                            <ul class="list-unstyled components">
+                                <p>Actions</p>
+                                <li>
+                                    <button class="btn btn-sm btn-primary"
+                                            onclick="doCardAction('dungeonToDiscard','#dungeonsDeck')">
+                                        buy
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="btn btn-sm btn-primary"
+                                            onclick="doCardAction('dungeonToDungeon','#dungeonsDeck')">
+                                        switch
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="btn btn-sm btn-primary"
+                                            onclick="doCardAction('dungeonToVoid','#dungeonsDeck')">
+                                        kill
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class="col row">
+                            <div id="dungeonsDeck" class="area">
+                                <a class="cardContainer" href="#">
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="tab-pane fade " id="activePlayer" role="tabpanel">
-                    <div class="row cards">
-                        <div class="col-sm-1">
-                            <div class="wrapper">
-                                <nav>
-                                    <ul class="list-unstyled components">
-                                        <p>Actions</p>
-                                        <li>
-                                            <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
-                                                    id="actCards" data-toggle="dropdown" aria-haspopup="true"
-                                                    aria-expanded="false">
-                                                card
-                                            </button>
-                                            <div class="dropdown-menu" aria-labelledby="actCards">
-                                                <a class="dropdown-item"
-                                                   href="javascript:action('drawToPlay')">draw</a>
-                                                <a class="dropdown-item"
-                                                   href="javascript:doCardAction('playToDiscard','#playArea')">discard</a>
-                                                <a class="dropdown-item"
-                                                   href="javascript:doCardAction('playToVoid','#playArea')">trash</a>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="dropdown">
-                                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
-                                                        id="actCoins" data-toggle="dropdown" aria-haspopup="true"
-                                                        aria-expanded="false">
-                                                    coins
-                                                </button>
-                                                <div class="dropdown-menu" aria-labelledby="actCoins">
-                                                    <a class="dropdown-item"
-                                                       href="javascript:action('adjustCoins','1')">+1</a>
-                                                    <a class="dropdown-item"
-                                                       href="javascript:action('adjustCoins','2')">+2</a>
-                                                    <a class="dropdown-item"
-                                                       href="javascript:action('adjustCoins','-1')">-1</a>
-                                                    <a class="dropdown-item"
-                                                       href="javascript:action('adjustCoins','-2')">-2</a>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="dropdown">
-                                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
-                                                        id="actHealth" data-toggle="dropdown" aria-haspopup="true"
-                                                        aria-expanded="false">
-                                                    health
-                                                </button>
-                                                <div class="dropdown-menu" aria-labelledby="actHealth">
-                                                    <a class="dropdown-item"
-                                                       href="javascript:action('damage','1')">damage</a>
-                                                    <a class="dropdown-item"
-                                                       href="javascript:action('heal','1')">heal</a>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <button class="btn btn-sm btn-primary"
-                                                    onclick="doCardAction('removeItem','#activeUserData')">
-                                                useItem
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <div class="dropdown">
-                                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
-                                                        id="actClank" data-toggle="dropdown" aria-haspopup="true"
-                                                        aria-expanded="false">
-                                                    clank
-                                                </button>
-                                                <div class="dropdown-menu" aria-labelledby="actClank">
-                                                    <a class="dropdown-item"
-                                                       href="javascript:action('adjustClank','1')">+1</a>
-                                                    <a class="dropdown-item"
-                                                       href="javascript:action('adjustClank','2')">+2</a>
-                                                    <a class="dropdown-item"
-                                                       href="javascript:action('adjustClank','-1')">-1</a>
-                                                    <a class="dropdown-item"
-                                                       href="javascript:action('adjustClank','-2')">-2</a>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-                        <div class="col cards row">
-                            <div id="activeUserData" class="col area area-1">
+                    <div class="row">
+                        <nav>
+                            <ul class="list-unstyled components">
+                                <p>Actions</p>
+                                <li>
+                                    <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
+                                            id="actCards" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                        card
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="actCards">
+                                        <a class="dropdown-item"
+                                           href="javascript:action('drawToPlay')">draw</a>
+                                        <a class="dropdown-item"
+                                           href="javascript:doCardAction('playToDiscard','#playArea')">discard</a>
+                                        <a class="dropdown-item"
+                                           href="javascript:doCardAction('playToVoid','#playArea')">trash</a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
+                                                id="actCoins" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                            coins
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="actCoins">
+                                            <a class="dropdown-item"
+                                               href="javascript:action('adjustCoins','1')">+1</a>
+                                            <a class="dropdown-item"
+                                               href="javascript:action('adjustCoins','2')">+2</a>
+                                            <a class="dropdown-item"
+                                               href="javascript:action('adjustCoins','-1')">-1</a>
+                                            <a class="dropdown-item"
+                                               href="javascript:action('adjustCoins','-2')">-2</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
+                                                id="actHealth" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                            health
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="actHealth">
+                                            <a class="dropdown-item"
+                                               href="javascript:action('damage','1')">damage</a>
+                                            <a class="dropdown-item"
+                                               href="javascript:action('heal','1')">heal</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <button class="btn btn-sm btn-primary"
+                                            onclick="doCardAction('removeItem','#activeUserData')">
+                                        useItem
+                                    </button>
+                                </li>
+                                <li>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
+                                                id="actClank" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                            clank
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="actClank">
+                                            <a class="dropdown-item"
+                                               href="javascript:action('adjustClank','1')">+1</a>
+                                            <a class="dropdown-item"
+                                               href="javascript:action('adjustClank','2')">+2</a>
+                                            <a class="dropdown-item"
+                                               href="javascript:action('adjustClank','-1')">-1</a>
+                                            <a class="dropdown-item"
+                                               href="javascript:action('adjustClank','-2')">-2</a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class="col row">
+                            <div id="activeUserData" class="col area area-2">
                                 <div><img class="fix-icon" src="char/' + user.userChar + '-avatar.png">
                                     <span>Name</span>
                                 </div>
@@ -340,9 +332,8 @@
                                     clankCubes
                                 </div>
                             </div>
-                            <div id="playArea" class="col area area-5">
+                            <div id="playArea" class="col area area-6">
                                 <a class="cardContainer" href="#">
-
                                 </a>
                             </div>
                         </div>
@@ -350,10 +341,7 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="collapse" id="userDetails" data-parent="#footer">
-        <div class="collapseFooter area glowBorder">
+        <div class="grid-bg grid-bg-black glowBorder collapse" id="userDetails">
             <ul class="nav nav-pills" role="tablist">
                 <li class="nav-item">
                     <div class="nav-link disabled">
@@ -361,82 +349,91 @@
                     </div>
                 </li>
             </ul>
-            <div class="row cards" id="userInfo">
-                <div class="col-sm-1">
-                    <div class="wrapper">
-                        <nav>
-                            <ul class="list-unstyled components">
-                                <p>Actions</p>
-                                <li>
-                                    <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
-                                            id="userCards" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">
-                                        card
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="userCards">
-                                        <a class="dropdown-item"
-                                           href="javascript:action('drawToPlay')">draw</a>
-                                        <a class="dropdown-item"
-                                           href="javascript:doCardAction('playToDiscard','#playArea')">discard</a>
-                                        <a class="dropdown-item"
-                                           href="javascript:doCardAction('playToVoid','#playArea')">trash</a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="dropdown">
-                                        <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="coins"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            coins
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="coins">
-                                            <a class="dropdown-item" href="javascript:action('adjustCoins','1')">+1</a>
-                                            <a class="dropdown-item" href="javascript:action('adjustCoins','2')">+2</a>
-                                            <a class="dropdown-item" href="javascript:action('adjustCoins','-1')">-1</a>
-                                            <a class="dropdown-item" href="javascript:action('adjustCoins','-2')">-2</a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="dropdown">
-                                        <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="health"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            health
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="health">
-                                            <a class="dropdown-item" href="javascript:action('damage','1')">damage</a>
-                                            <a class="dropdown-item" href="javascript:action('heal','1')">heal</a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <button class="btn btn-sm btn-primary"
-                                            onclick="doCardAction('removeItem','#activeUserData')">
-                                        useItem
-                                    </button>
-                                </li>
-                                <li>
-                                    <div class="dropdown">
-                                        <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="clank"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            clank
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="clank">
-                                            <a class="dropdown-item" href="javascript:action('adjustClank','1')">+1</a>
-                                            <a class="dropdown-item" href="javascript:action('adjustClank','-1')">-1</a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <button class="btn btn-sm btn-primary" onclick="action('endTurn')">
-                                        endTurn
-                                    </button>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-                <div class="col cards row">
-                    <div id="userData" class="col area area-1">
+            <div class="row" id="userInfo">
+                <nav>
+                    <ul class="list-unstyled components">
+                        <p>Actions</p>
+                        <li>
+                            <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
+                                    id="userCards" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
+                                card
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="userCards">
+                                <a class="dropdown-item"
+                                   href="javascript:action('drawToPlay')">draw</a>
+                                <a class="dropdown-item"
+                                   href="javascript:doCardAction('playToDiscard','#playArea')">discard</a>
+                                <a class="dropdown-item"
+                                   href="javascript:doCardAction('playToVoid','#playArea')">trash</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
+                                        id="coins"
+                                        data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                    coins
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="coins">
+                                    <a class="dropdown-item"
+                                       href="javascript:action('adjustCoins','1')">+1</a>
+                                    <a class="dropdown-item"
+                                       href="javascript:action('adjustCoins','2')">+2</a>
+                                    <a class="dropdown-item"
+                                       href="javascript:action('adjustCoins','-1')">-1</a>
+                                    <a class="dropdown-item"
+                                       href="javascript:action('adjustCoins','-2')">-2</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
+                                        id="health"
+                                        data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                    health
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="health">
+                                    <a class="dropdown-item" href="javascript:action('damage','1')">damage</a>
+                                    <a class="dropdown-item"
+                                       href="javascript:action('heal','1')">heal</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <button class="btn btn-sm btn-primary"
+                                    onclick="doCardAction('removeItem','#activeUserData')">
+                                useItem
+                            </button>
+                        </li>
+                        <li>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
+                                        id="clank"
+                                        data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                    clank
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="clank">
+                                    <a class="dropdown-item"
+                                       href="javascript:action('adjustClank','1')">+1</a>
+                                    <a class="dropdown-item"
+                                       href="javascript:action('adjustClank','-1')">-1</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <button class="btn btn-sm btn-primary" onclick="action('endTurn')">
+                                endTurn
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="col row">
+                    <div id="userData" class="col area area-2">
                         <div><img class="fix-icon" src="char/' + user.userChar + '-avatar.png">
                             <span>Name</span>
                         </div>
@@ -460,7 +457,7 @@
                             clankCubes
                         </div>
                     </div>
-                    <div id="handArea" class="col area area-5">
+                    <div id="handArea" class="col area area-6">
                         <a class="cardContainer" href="#">
 
                         </a>
@@ -469,14 +466,12 @@
             </div>
         </div>
     </div>
-    <div id="selectUser">
-        <button class="btn btn-primary" data-toggle="collapse" data-target="#gameDetails">
-            Game
-        </button>
-        <span id="userList"></span>
-    </div>
 </div>
-
+<div class="bot-menu">
+    <a href="javascript:toggleData('#gameDetails')">
+        <img class="fix-icon" src="game.png"></a>
+    <span id="userSelection"></span>
+</div>
 <script type="application/javascript" src="clank.js">
 </script>
 </body>

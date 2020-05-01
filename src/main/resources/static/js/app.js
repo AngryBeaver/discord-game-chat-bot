@@ -53,13 +53,13 @@ function getUrlParameter(sParam) {
 
 //UTILITIES
 function getHtmlFromDeck(deck) {
-    return getHtmlFromDeckSize(deck,"");
+    return getHtmlFromDeckSize(deck, "");
 }
 
-function deckToSrc(gameName,  directory, deck){
+function deckToSrc(gameName, directory, deck) {
     let result = []
     deck.forEach(function (value) {
-        result.push('/'+gameName+'/'+directory+'/'+ value+ '.png');
+        result.push('/' + gameName + '/' + directory + '/' + value + '.png');
     });
     return result;
 }
@@ -67,7 +67,7 @@ function deckToSrc(gameName,  directory, deck){
 function getHtmlFromDeckSize(deck, size) {
     var html = '';
     deck.forEach(function (value) {
-        html += '<a class="cardContainer '+size+'" href="#">';
+        html += '<a class="cardContainer ' + size + '" href="#">';
         if (value != "") {
             html += '<img src="' + value + '">';
         }
@@ -77,7 +77,7 @@ function getHtmlFromDeckSize(deck, size) {
 }
 
 function activateSelectableCards() {
-    var selectCard = $('.cards .area a.cardContainer');
+    var selectCard = $('.area a.cardContainer');
     selectCard.on('click', function () {
         $(this).closest('.area').find('a.cardContainer.glowBorder').removeClass('glowBorder');
         $(this).addClass('glowBorder');
@@ -126,7 +126,7 @@ function showMessage(message) {
 }
 
 function scrollChat() {
-    $("#eventChannel .cardArea").animate({scrollTop: $('#eventChannel .chat').height()}, 1000);
+    $("#eventChannel .area").animate({scrollTop: $('#eventChannel .chat').height()}, 1000);
 }
 
 function typeWriteMessage(message) {
@@ -176,36 +176,40 @@ function getUserInfo() {
 }
 
 function fillUserList() {
-    let html = '<button onclick="selectUserId(\'' + userId + '\')" class="btn btn-primary" data-toggle="collapse" data-target="#userDetails">';
-    html += userMap[userId].userName;
-    html += '</button>';
+    let html = '';
     Object.entries(userMap).forEach(([id, userInfo]) => {
-        if (id != userId) {
-            html += '<button onclick="selectUserId(\'' + id + '\')" class="btn btn-primary" data-toggle="collapse" data-target="#userDetails">';
-            html += userMap[id].userName;
-            html += '</button>';
-        }
+        html += '<a href="javascript:selectUser(\''+id+'\');toggleData(\'#footer\',\'#userDetails\');">';
+        html += '<img class="fix-icon" src="char/' + userMap[id].userChar + '-avatar.png"></a>';
     });
-    $('#userList').html(html);
+    $('#userSelection').html(html);
 }
 
-let reselectUser = false;
-function selectUserId(id) {
-    if(selectedUserId != id){
-        selectedUserId = id;
-        reselectUser = true;
-    }
+function selectUser(id){
+    selectedUserId = id;
 }
+
+function toggleData(parent,target) {
+    $(parent +' .collapse').hide();
+    $(target).show();
+    openData(target);
+}
+
 
 $(function () {
-    $('#footer .collapse').on('hidden.bs.collapse', function () {
-        if (reselectUser) {
-            $('#userDetails').collapse('show')
+    var options = {
+        cellHeight: '6.25vh',
+        verticalMargin: 0,
+        maxRow: 16,
+        minRow: 16,
+        float: true,
+        draggable: true
+    };
+    let grid = GridStack.init(options);
+    grid.on('change', function (event, ui) {
+        console.log(event.target.id);
+        if(event.target.id == 'eventChannel'){
+            scrollChat();
         }
-        reselectUser = false;
     });
-    $('#footer .collapse').on('show.bs.collapse', function () {
-        reselectUser = false;
-    });
-});
 
+});

@@ -257,6 +257,21 @@ public class Clank implements Game {
     }
 
     @GameMethod
+    public GameResult playToDevice(String userId, String cardId){
+        User user = users.get(userId);
+        if(!user.playToDevice(cardId)){
+            throw new GameResultException(new GameResult().setText(user.getName() +"not in your playArea"));
+        }
+        return new GameResult()
+                .setText(user.getName() + " playToDiscard "+cardId)
+                .addImageId("/"+NAME+"/"+DIRECTORY_IMAGES+"/"+cardId+".png")
+                .addEvent(EVENT_INFO)
+                .addEvent(EVENT_REFRESH_HAND)
+                .addEvent(EVENT_REFRESH_PLAY_AREA)
+                .set(MAP_KEY_USER,user.get());
+    }
+
+    @GameMethod
     public GameResult playToDiscard(String userId, String cardId){
         User user = users.get(userId);
         if(!user.playToDiscard(cardId)){
@@ -288,6 +303,18 @@ public class Clank implements Game {
         gameDecks.dungeonToDiscard(cardId,user);
         return new GameResult()
                 .setText("dungeonToDiscard "+cardId)
+                .addImageId("/"+NAME+"/"+DIRECTORY_IMAGES+"/"+cardId+".png")
+                .addEvent(EVENT_INFO)
+                .addEvent(EVENT_REFRESH_DUNGEON)
+                .set(MAP_KEY_USER,user.get());
+    }
+
+    @GameMethod
+    public GameResult dungeonToDevice(String userId, String cardId) {
+        User user = users.get(userId);
+        gameDecks.dungeonToDevice(cardId,user);
+        return new GameResult()
+                .setText("dungeonToDevice "+cardId)
                 .addImageId("/"+NAME+"/"+DIRECTORY_IMAGES+"/"+cardId+".png")
                 .addEvent(EVENT_INFO)
                 .addEvent(EVENT_REFRESH_DUNGEON)

@@ -1,5 +1,7 @@
 <html>
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/gridstack@1.1.1/dist/gridstack.all.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridstack@1.1.1/dist/gridstack.min.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
     <script src="http://code.jquery.com/jquery-3.4.1.min.js"
@@ -19,17 +21,24 @@
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
     <script src="../js/app.js"></script>
     <link rel="stylesheet" href="clank.css"/>
-    <link rel="stylesheet" href="../css/chat.css"/>
-    <link rel="stylesheet" href="../css/game.css"/>
+    <link rel="stylesheet" href="../css/grid-chat.css"/>
+    <link rel="stylesheet" href="../css/grid-game.css"/>
 </head>
 <body id="chat">
-<div id="eventChannel" class="wrapper">
-    <div class="cardArea glowBorder">
-        <div class="chat">
+
+<div class="grid-stack" id="eventChannel">
+    <div class="grid-stack-item" data-gs-x="0" data-gs-y="0" data-gs-width="12" data-gs-height="16">
+        <div class="grid-bg grid-bg-black glowBorder">
+            <div class="area">
+                <div class="chat">
+                </div>
+            </div>
+            <div class="console">#:<input></div>
         </div>
     </div>
-    <div class="console">#:<input></div>
 </div>
+
+
 
 <script type="application/javascript" src="clank.js">
 </script>

@@ -1,0 +1,37 @@
+
+.chat{
+    color:white;
+    width:100%;
+}
+#game .chat video{
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+#game .chat img{
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+#eventChannel .console input{
+    width:calc(100% - 20px);
+}
+#eventChannel .cardArea{
+    height:100%;
+}
+
+#eventChannel .console {
+    color:white;
+    position:absolute;
+    bottom:5px;
+    margin-left:5px;
+    width:100%;
+
+}
+
+#eventChannel .console input{
+    background-color:transparent;
+    padding-left:5px;
+    border:0px;
+    color:white;
+}

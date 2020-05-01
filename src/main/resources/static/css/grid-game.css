@@ -1,0 +1,133 @@
+.grid-bg-black {
+    background-color: rgba(0, 0, 0, 0.8);
+    color:white;
+}
+
+.grid-bg {
+    border-radius:10px;
+    width:100%;
+    height:100%;
+    padding:5px;
+}
+
+.grid-stack-item {
+    padding: 5px;
+}
+.grid-stack>.grid-stack-item>.ui-resizable-se {
+    bottom: 5px;
+}
+
+nav {
+    padding:0.5vh 0.5vw;
+}
+
+nav button {
+    margin: 0.25vh 0.25vw;
+}
+
+
+.nav-link {
+    font-size: 150%;
+    height: 28px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.nav-link img {
+    margin-right: 15px;
+    margin-left:10px;
+    top:-10px;
+    position: relative;
+}
+
+.bot-menu {
+    position: absolute;
+    bottom:0px;
+    margin-left: 22vw;
+    padding:5px;
+}
+
+
+.fix-icon {
+    height: 50px;
+    width: 50px;
+    border-radius: 5px;
+}
+
+.tab-content {
+    overflow: hidden;
+    margin-top:10px;
+    height: calc(100% - 38px);
+}
+
+.row {
+    margin:0px;
+    height:100%;
+}
+
+.col {
+    padding:0px;
+    position: inherit;
+}
+
+.area {
+    overflow-y: auto;
+    height:100%;
+    padding: 0.5vh 0.5vw;
+}
+
+.area-1 {
+     max-width: 12.5%;
+}
+.area-2 {
+     max-width: 25%;
+}
+.area-3 {
+    max-width: 37.5%;
+}
+.area-4 {
+    max-width: 50%;
+}
+.area-5 {
+    max-width: 62.5%;
+}
+.area-6 {
+    max-width: 75%;
+}
+.area-7 {
+    max-width: 87.5%;
+}
+.area-8 {
+    max-width: 100%;
+}
+
+.cardContainer.icon{
+    width:5em;
+    height:5em;
+}
+.cardContainer img {
+    height: 100%;
+    width:100%;
+}
+.cardContainer {
+    width: 10em;
+    height:calc(10em/300*420);
+    border-radius: 10px;
+    display: inline-block;
+    overflow: hidden;
+    background-size: cover;
+    position:relative;
+    margin:0.4em 0.2em;
+}
+
+.cardContainer.sm-icon{
+    width: calc(3em);
+    height: calc(3em);
+}
+
+
+
+
+
+

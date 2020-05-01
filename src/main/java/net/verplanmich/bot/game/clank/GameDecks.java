@@ -1,5 +1,6 @@
 package net.verplanmich.bot.game.clank;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.verplanmich.bot.game.Deck;
 import net.verplanmich.bot.game.GameResult;
 import net.verplanmich.bot.game.alienencounter.Mission;
@@ -24,6 +25,9 @@ public class GameDecks {
     private static final String SECRET_TOME = "secret-tome";
     private static final String MERCENARY = "mercenary";
     private static final String GOLD_FISH = "goldfish";
+
+    private ObjectMapper mapper = new ObjectMapper();
+
 
     private List<String> baseGame = Arrays.asList("cave-troll","watcher","watcher","watcher","animated-door","animated-door","orc-grunt","orc-grunt","orc-grunt","belcher","belcher","kobold","kobold","kobold","overlord","overlord","ogre","ogre","crystal-golem","crystal-golem",
             "coin-purse","coin-purse","ladder","ladder","shrine","shrine","shrine","dragon-shrine","dragon-shrine","treasure-hunter","treasure-hunter","swagger","swagger","teleporter","teleporter",
@@ -68,11 +72,11 @@ public class GameDecks {
 
     public void adjustBlackClank(int amount){
         if(amount > 0) {
-            IntStream.range(1, amount).forEach(i ->
+            IntStream.range(0, amount).forEach(i ->
                     clanks.add(black)
             );
         }else{
-            IntStream.range(1, amount*-1).forEach(i ->
+            IntStream.range(0, amount*-1).forEach(i ->
                     clanks.remove(black)
             );
         }
@@ -165,6 +169,15 @@ public class GameDecks {
     public void backToDungeon(String cardId){
         gameDeck.toDrawPileTop(cardId);
         gameDeck.shuffle();
+    }
+
+    public boolean dungeonToDevice(String cardId,User user){
+        boolean result = dungeonRow.remove(cardId);
+        if(result){
+            user.devices.add(cardId);
+            refillDungeonRow(cardId);
+        }
+        return result;
     }
 
     public boolean dungeonToDiscard(String cardId,User user){

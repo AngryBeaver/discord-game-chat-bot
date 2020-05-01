@@ -33,38 +33,33 @@ let strikes = {};
 let hand = {}
 let operations = [];
 let currentSelection = EVENT_INFO;
+let userSelection = EVENT_INFO;
+
 
 //FOOTER
-$('#footer .collapse').on('shown.bs.collapse', function (e) {
-    if (e.target.id.trim() == 'barracksDetails') {
+function openData(target){
+    if (target == '#barracksDetails') {
         currentSelection = EVENT_REFRESH_BARRACKS;
         openBarracks();
     }
-    if (e.target.id.trim() == 'headQuarterDetails') {
+    if (target == '#headQuarterDetails') {
         currentSelection = EVENT_REFRESH_HQ;
         openHQ();
     }
-    if (e.target.id.trim() == 'userDetails') {
-        currentSelection = EVENT_REFRESH_USER_INFO;
+    if (target == '#userDetails') {
+        userSelection = EVENT_REFRESH_USER_INFO;
         openUser();
     }
-    if (e.target.id.trim() == 'selectUser') {
-        currentSelection = EVENT_INFO;
-        openSelection();
-    }
-    if (e.target.id.trim() == 'gameDetails') {
+    if (target == '#gameDetails') {
         currentSelection = EVENT_REFRESH_GAME;
         openGame();
     }
-    if (e.target.id.trim() == 'complexDetails') {
-        currentSelection = EVENT_REFRESH_ALIEN;
-        openComplex();
-    }
-    if (e.target.id.trim() == 'operationsDetails') {
+    if (target == '#operationsDetails') {
         currentSelection = EVENT_REFRESH_OPERATIONS;
         openOperations();
     }
-});
+}
+
 
 //GAME
 function getGameInfo() {
@@ -73,10 +68,6 @@ function getGameInfo() {
         game.objective = gameResult.map.objective;
         fillMission();
     })
-}
-
-function startGame() {
-    action("start", "nostromo");
 }
 
 function joinGame() {
@@ -96,9 +87,6 @@ function openGame() {
 }
 
 
-function openSelection() {
-
-}
 
 //COMPLEX
 function openComplex() {
@@ -124,7 +112,6 @@ function getHqInfo() {
         hqCards = gameResult.map.hq;
         sergeant = gameResult.map.sergeant;
         fillHqDetails();
-        fillHq();
         fillSergeant();
     })
 }
@@ -132,23 +119,12 @@ function getHqInfo() {
 function fillHqDetails() {
     let html = getHtmlFromDeck(sergeant);
     html += getHtmlFromDeck(hqCards);
-    $('#headQuarterDeck .area').html(html);
+    $('#headQuarterDeck').html(html);
     activateSelectableCards();
 }
 
 function openHQ() {
-
-}
-
-function fillHq() {
-    $('#hq .cardContainer .cardHolder').html("");
-    Object.entries(hqCards).forEach(([key, value]) => {
-        let html = "";
-        if(value != "") {
-            html = '<img src="' + value + '"/>';
-        }
-        $('#hq .cardContainer .cardHolder:eq(' + key + ')').html(html);
-    });
+    getHqInfo();
 }
 
 //OPERATIONS
@@ -161,7 +137,7 @@ function getOperationsInfo() {
 
 function fillOperationDetails() {
     let html = getHtmlFromDeck(operations);
-    $('#operationsDeck .area').html(html);
+    $('#operationsDeck').html(html);
     activateSelectableCards();
 }
 
@@ -177,7 +153,6 @@ $('#barracksDetails a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 function getBarracksInfo() {
     action("getBarracks", "all").then(gameResult => {
         barracks = gameResult.map.barracks;
-        fillBarracks();
         fillBarrackDetails();
     })
 }
@@ -187,16 +162,9 @@ function openBarracks() {
     getBarracksInfo();
 }
 
-function fillBarracks() {
-    $('#barracks .cardHolder').html("");
-    if (barracks.length > 0) {
-        $('#barracks .cardHolder').html('<img src="back.png"/>');
-    }
-}
-
 function fillBarrackDetails() {
     let html = getHtmlFromDeck(barracks);
-    $('#barracksDeck .area').html(html);
+    $('#barracksDeck').html(html);
     showBarrackDetails();
 }
 
@@ -262,7 +230,7 @@ function fillUserInfo() {
         html += userMap[selectedUserId].userName;
         $('#userDetails .nav-link.disabled').html(html);
 
-        html = '<img src="char/' + userMap[selectedUserId].userChar + '-char.png">';
+        html = '<div class="cardContainer"><img src="char/' + userMap[selectedUserId].userChar + '-char.png"></div>';
         $('#userChar').html(html);
         activateSelectableCards();
     }
@@ -300,28 +268,28 @@ function showUser() {
     var userTab = $('#userDetails .nav-link.active').text().trim();
     $('#userDetails').find('a.cardContainer.glowBorder').removeClass('glowBorder');
     if (userTab == "info") {
-        currentSelection = EVENT_REFRESH_USER_INFO;
+        userSelection = EVENT_REFRESH_USER_INFO;
         getUserInfo();
         getUserStrikes();
     }
     if (userTab == "hand") {
-        currentSelection = EVENT_REFRESH_USER_HAND;
+        userSelection = EVENT_REFRESH_USER_HAND;
         getUserHand();
     }
     if (userTab == "discard pile") {
-        currentSelection = EVENT_REFRESH_USER_DISCARD;
+        userSelection = EVENT_REFRESH_USER_DISCARD;
         getUserDiscard();
     }
     if (userTab == "draw pile") {
-        currentSelection = EVENT_REFRESH_USER_DRAW;
+        userSelection = EVENT_REFRESH_USER_DRAW;
         getUserDraw();
     }
 }
 
 function showUserNavi() {
-    $('#userDetails .col-sm-1').hide();
+    $('#userDetails nav li').hide();
     if (selectedUserId == userId) {
-        $('#userDetails .col-sm-1').show();
+        $('#userDetails nav li').show();
     }
 }
 
@@ -363,11 +331,6 @@ function handleCardDrop(event, ui) {
     let area = $(this).parents(".area");
     let from = area.find('.cardContainer').index(ui.draggable.parents(".cardContainer"));
     let to = area.find('.cardContainer').index($(this));
-    console.log(ui.draggable.parent());
-    console.log($(this));
-    console.log(to);
-    console.log(from);
-    console.log(area.find(".cardContainer:eq(" + to + ")"));
     area.find(".cardContainer:eq(" + from + ") .cardHolder").append($(this).find(".cardHolder img"));
     area.find(".cardContainer:eq(" + to + ") .cardHolder").append(ui.draggable[0])
 
@@ -399,16 +362,16 @@ $(function () {
         if (gameResult.events.includes(EVENT_REFRESH_BARRACKS) && currentSelection == EVENT_REFRESH_BARRACKS) {
             getBarracksInfo();
         }
-        if (gameResult.events.includes(EVENT_REFRESH_USER_INFO) && currentSelection == EVENT_REFRESH_USER_INFO && gameResult.map.userId == selectedUserId) {
+        if (gameResult.events.includes(EVENT_REFRESH_USER_INFO) && userSelection == EVENT_REFRESH_USER_INFO && gameResult.map.userId == selectedUserId) {
             getUserInfo();
         }
-        if (gameResult.events.includes(EVENT_REFRESH_USER_HAND) && currentSelection == EVENT_REFRESH_USER_HAND && gameResult.map.userId == selectedUserId) {
+        if (gameResult.events.includes(EVENT_REFRESH_USER_HAND) && userSelection == EVENT_REFRESH_USER_HAND && gameResult.map.userId == selectedUserId) {
             getUserHand();
         }
-        if (gameResult.events.includes(EVENT_REFRESH_USER_DRAW) && currentSelection == EVENT_REFRESH_USER_DRAW && gameResult.map.userId == selectedUserId) {
+        if (gameResult.events.includes(EVENT_REFRESH_USER_DRAW) && userSelection == EVENT_REFRESH_USER_DRAW && gameResult.map.userId == selectedUserId) {
             getUserDraw();
         }
-        if (gameResult.events.includes(EVENT_REFRESH_USER_DISCARD) && currentSelection == EVENT_REFRESH_USER_DISCARD && gameResult.map.userId == selectedUserId) {
+        if (gameResult.events.includes(EVENT_REFRESH_USER_DISCARD) && userSelection == EVENT_REFRESH_USER_DISCARD && gameResult.map.userId == selectedUserId) {
             getUserDiscard();
         }
         if (gameResult.events.includes(EVENT_REFRESH_USER_STRIKES) && currentSelection == EVENT_REFRESH_USER_INFO && gameResult.map.userId == selectedUserId) {

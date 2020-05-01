@@ -13,8 +13,8 @@ let clankArea = [];
 let currentUserId;
 let dungeon = [];
 
-$('#footer .collapse').on('shown.bs.collapse', function (e) {
-    if (e.target.id.trim() == 'userDetails') {
+function openData(target){
+    if (target == '#userDetails') {
         currentSelection = EVENT_REFRESH_USER;
         getUserInfo();
         getUserHand();
@@ -24,18 +24,15 @@ $('#footer .collapse').on('shown.bs.collapse', function (e) {
             $('#userDetails nav li').show();
         }
     }
-    if (e.target.id.trim() == 'selectUser') {
-        currentSelection = EVENT_INFO;
-        openSelection();
-    }
-    if (e.target.id.trim() == 'gameDetails') {
+    if (target == '#gameDetails') {
         currentSelection = EVENT_REFRESH_GAME;
         showGame();
     }
-});
+}
 
 
 $(function () {
+    getGame();
     $('#gameInfo nav li:gt(1)').hide();
     $('#gameInfo nav li:lt(2)').show();
     socket("event", parseEvents);
@@ -73,7 +70,6 @@ $(function () {
                 getUserHand();
             }
         }
-
 
     }
 
@@ -143,7 +139,7 @@ function getDungeon() {
     action("getDungeon").then(gameResult => {
         dungeon = gameResult.map.dungeon;
         let html = getHtmlFromDeck(deckToSrc("clank", "images", dungeon));
-        $('#dungeonsDeck .area').html(html);
+        $('#dungeonsDeck').html(html);
         activateSelectableCards();
     });
 }
@@ -212,7 +208,7 @@ function clankCubesHtml(colors) {
 function itemListHtml(items) {
     var html = '';
     items.forEach(function (item) {
-        html += '<a class="cardContainer ssm-icon" href="#">'
+        html += '<a class="cardContainer sm-icon" href="#">'
         html += '<img src="items/' + item + '.png"/></a>'
     });
     return html;
