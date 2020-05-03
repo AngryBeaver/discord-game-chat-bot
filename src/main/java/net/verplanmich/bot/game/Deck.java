@@ -54,6 +54,13 @@ public class Deck {
         return cardId;
     }
 
+    public String drawOrShuffle(){
+        if(isEmpty()){
+            shuffleDiscard();
+        }
+        return drawCard();
+    }
+
     public void toDrawPileTop(String cardId) {
         drawPile.add(0,cardId);
     }

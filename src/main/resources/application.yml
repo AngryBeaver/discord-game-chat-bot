@@ -3,6 +3,7 @@ server:
 discord:
   secret_token: ${SECRET_TOKEN}
 
+
 spring:
   security:
     oauth2:

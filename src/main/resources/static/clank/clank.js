@@ -127,6 +127,7 @@ function getGame() {
     action("getGame").then(
         gameResult => {
             clankArea = gameResult.map.clankArea;
+            currentUserId = gameResult.map.currentUser;
             showGameNavi();
             $('#clankArea span').html(clankCubesHtml(clankArea));
         }

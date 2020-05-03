@@ -47,7 +47,6 @@ public class Clank implements Game {
     private List<User> userOrder;
     private int currentUserIndex;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
     private List<String> colors = new ArrayList(Arrays.asList("red","green","blue","yellow","orange","purple"));
     private boolean gameStarted = false;
 
