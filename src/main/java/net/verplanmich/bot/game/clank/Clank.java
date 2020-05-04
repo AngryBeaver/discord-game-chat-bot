@@ -194,7 +194,7 @@ public class Clank implements Game {
                 .setText(user.getName() + " discardToPlay "+cardId)
                 .addImageId("/"+NAME+"/"+DIRECTORY_IMAGES+"/"+cardId+".png")
                 .addEvent(EVENT_INFO)
-                .addEvent(EVENT_REFRESH_HAND)
+                .addEvent(EVENT_REFRESH_USER)
                 .addEvent(EVENT_REFRESH_PLAY_AREA)
                 .set(MAP_KEY_USER,user.get());
     }
@@ -209,8 +209,6 @@ public class Clank implements Game {
                 .setText(user.getName() + " discardToVoid "+cardId)
                 .addImageId("/"+NAME+"/"+DIRECTORY_IMAGES+"/"+cardId+".png")
                 .addEvent(EVENT_INFO)
-                .addEvent(EVENT_REFRESH_HAND)
-                .addEvent(EVENT_REFRESH_PLAY_AREA)
                 .set(MAP_KEY_USER,user.get());
     }
 
@@ -222,7 +220,7 @@ public class Clank implements Game {
                 .setText(user.getName() + " toPlay "+cardId)
                 .addImageId("/"+NAME+"/"+DIRECTORY_IMAGES+"/"+cardId+".png")
                 .addEvent(EVENT_INFO)
-                .addEvent(EVENT_REFRESH_HAND)
+                .addEvent(EVENT_REFRESH_USER)
                 .addEvent(EVENT_REFRESH_PLAY_AREA)
                 .set(MAP_KEY_USER,user.get());
     }
@@ -235,7 +233,7 @@ public class Clank implements Game {
                 .setText(user.getName() + " drawToPlay "+cardId)
                 .addImageId("/"+NAME+"/"+DIRECTORY_IMAGES+"/"+cardId+".png")
                 .addEvent(EVENT_INFO)
-                .addEvent(EVENT_REFRESH_HAND)
+                .addEvent(EVENT_REFRESH_USER)
                 .addEvent(EVENT_REFRESH_PLAY_AREA)
                 .set(MAP_KEY_USER,user.get());
     }
@@ -250,7 +248,7 @@ public class Clank implements Game {
                 .setText(user.getName() + " playToVoid "+cardId)
                 .addImageId("/"+NAME+"/"+DIRECTORY_IMAGES+"/"+cardId+".png")
                 .addEvent(EVENT_INFO)
-                .addEvent(EVENT_REFRESH_HAND)
+                .addEvent(EVENT_REFRESH_USER)
                 .addEvent(EVENT_REFRESH_PLAY_AREA)
                 .set(MAP_KEY_USER,user.get());
     }
@@ -265,7 +263,7 @@ public class Clank implements Game {
                 .setText(user.getName() + " playToDiscard "+cardId)
                 .addImageId("/"+NAME+"/"+DIRECTORY_IMAGES+"/"+cardId+".png")
                 .addEvent(EVENT_INFO)
-                .addEvent(EVENT_REFRESH_HAND)
+                .addEvent(EVENT_REFRESH_USER)
                 .addEvent(EVENT_REFRESH_PLAY_AREA)
                 .set(MAP_KEY_USER,user.get());
     }
@@ -280,7 +278,7 @@ public class Clank implements Game {
                 .setText(user.getName() + " playToDiscard "+cardId)
                 .addImageId("/"+NAME+"/"+DIRECTORY_IMAGES+"/"+cardId+".png")
                 .addEvent(EVENT_INFO)
-                .addEvent(EVENT_REFRESH_HAND)
+                .addEvent(EVENT_REFRESH_USER)
                 .addEvent(EVENT_REFRESH_PLAY_AREA)
                 .set(MAP_KEY_USER,user.get());
     }
@@ -316,6 +314,7 @@ public class Clank implements Game {
                 .setText("dungeonToDevice "+cardId)
                 .addImageId("/"+NAME+"/"+DIRECTORY_IMAGES+"/"+cardId+".png")
                 .addEvent(EVENT_INFO)
+                .addEvent(EVENT_REFRESH_USER)
                 .addEvent(EVENT_REFRESH_DUNGEON)
                 .set(MAP_KEY_USER,user.get());
     }
