@@ -56,10 +56,13 @@ function getHtmlFromDeck(deck) {
     return getHtmlFromDeckSize(deck, "");
 }
 
-function deckToSrc(gameName, directory, deck) {
+function deckToSrc(gameName, directory, deck,ext) {
+    if(!ext){
+        ext = ".png";
+    }
     let result = []
     deck.forEach(function (value) {
-        result.push('/' + gameName + '/' + directory + '/' + value + '.png');
+        result.push('/' + gameName + '/' + directory + '/' + value + ext);
     });
     return result;
 }
@@ -213,3 +216,85 @@ $(function () {
     });
 
 });
+//DICE
+function d6(){
+    return "        <ol class=\"die-list\" data-roll=\"1\" id=\"die-1\">\n" +
+        "        <li class=\"die-item\" data-side=\"1\">\n" +
+        "        <span class=\"dot\"></span>\n" +
+        "        </li>\n" +
+        "        <li class=\"die-item\" data-side=\"2\">\n" +
+        "        <span class=\"dot\"></span>\n" +
+        "        <span class=\"dot\"></span>\n" +
+        "        </li>\n" +
+        "        <li class=\"die-item\" data-side=\"3\">\n" +
+        "        <span class=\"dot\"></span>\n" +
+        "        <span class=\"dot\"></span>\n" +
+        "        <span class=\"dot\"></span>\n" +
+        "        </li>\n" +
+        "        <li class=\"die-item\" data-side=\"4\">\n" +
+        "        <span class=\"dot\"></span>\n" +
+        "        <span class=\"dot\"></span>\n" +
+        "        <span class=\"dot\"></span>\n" +
+        "        <span class=\"dot\"></span>\n" +
+        "        </li>\n" +
+        "        <li class=\"die-item\" data-side=\"5\">\n" +
+        "        <span class=\"dot\"></span>\n" +
+        "        <span class=\"dot\"></span>\n" +
+        "        <span class=\"dot\"></span>\n" +
+        "        <span class=\"dot\"></span>\n" +
+        "        <span class=\"dot\"></span>\n" +
+        "        </li>\n" +
+        "        <li class=\"die-item\" data-side=\"6\">\n" +
+        "        <span class=\"dot\"></span>\n" +
+        "        <span class=\"dot\"></span>\n" +
+        "        <span class=\"dot\"></span>\n" +
+        "        <span class=\"dot\"></span>\n" +
+        "        <span class=\"dot\"></span>\n" +
+        "        <span class=\"dot\"></span>\n" +
+        "        </li>\n" +
+        "        </ol>";
+}
+
+function rollDice(results,char) {
+    let dice = $("<div class='dice'></div>");
+    $("#eventChannel .chat").append(char+" rolls:");
+    $("#eventChannel .chat").append(dice);
+    results.forEach(result=>{
+        let die = $(d6());
+        if(getRandomNumber(0,1)){
+            die.addClass("odd-roll");
+        }else{
+            die.addClass("even-roll");
+        }
+        dice.append(die);
+    });
+    scrollChat();
+    setTimeout(diceRoll, 200,dice,results)
+    setTimeout(diceResult, 5000,dice,results)
+}
+
+function diceRoll(dice,results){
+    let list = dice.find(".die-list");
+    let i = 0;
+    results.forEach(result=>{
+        toggleClasses(list.get(i));
+        list.get(i).dataset.roll = result;
+        i++;
+    });
+}
+
+function getRandomNumber(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function diceResult(dice,results){
+    dice.remove();
+    showMessage(results.join(", "));
+}
+
+function toggleClasses(die) {
+    die.classList.toggle("odd-roll");
+    die.classList.toggle("even-roll");
+}

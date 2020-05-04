@@ -1,84 +1,77 @@
 package net.verplanmich.bot.game.zombicide;
 
-import net.verplanmich.bot.game.GameMethod;
-import net.verplanmich.bot.game.GameResult;
+import net.verplanmich.bot.game.GameData;
 
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.verplanmich.bot.game.zombicide.Zombicide.*;
-
 public class User {
-    private Integer xp = 0;
-    private List<String> hand = new ArrayList();
-    private String charId;
-    private DangerLevel dangerLevel = DangerLevel.getForXp(xp);
-    private boolean isDead =false;
 
-    public User(String charId){
-        this.charId = charId;
+    private UserEntity userEntity;
+
+    public User(GameData gameData, Survivor userChar){
+        userEntity = new UserEntity(gameData,userChar);
+    }
+
+    void initialize(){
+        userEntity.setGear(new ArrayList());
+        userEntity.setZombified(false);
+        userEntity.setXp(0);
+    }
+
+    public String getId(){
+        return userEntity.getUserId();
+    }
+
+    public String getChar(){
+        return userEntity.getUserChar();
+    }
+
+    public List<String> getGear(){
+        return userEntity.getGear();
+    }
+    public boolean isStartPlayer(){
+        return userEntity.isStartPlayer();
+    }
+    public void setStartPlayer(boolean isStartPlayer){
+        userEntity.setStartPlayer(isStartPlayer);
     }
 
     public DangerLevel getDangerLevel(){
-        return dangerLevel;
+        return userEntity.getDangerLevel();
     }
 
-    public GameResult gear(){
-        GameResult gameResult = new GameResult();
-        hand.forEach(cardId->
-                gameResult.addImageId("/"+NAME+"/"+GEAR+"/"+cardId)
-        );
-        return gameResult;
+    public UserEntity get(){
+        return userEntity;
     }
 
-    public GameResult info(){
-        GameResult gameResult = getTextInfo();
-        gameResult.addImageId("/"+NAME+"/"+CHARS+"/"+charId);
-        return gameResult;
+    public void addXp(String xp){
+        int nextXp = userEntity.getXp()+Integer.valueOf(xp);
+        userEntity.setXp(nextXp);
+        userEntity.setDangerLevel(DangerLevel.getForXp(nextXp));
     }
 
-    private GameResult getTextInfo(){
-        GameResult gameResult = new GameResult();
-        gameResult.setText("{XP:"+xp+ ",DangerLevel:"+dangerLevel+"}");
-        return gameResult;
+    public void add(String cardId) {
+        userEntity.getGear().add(cardId);
     }
 
-    public GameResult addXp(String xp){
-        this.xp += Integer.valueOf(xp);
-        this.dangerLevel = DangerLevel.getForXp(this.xp);
-        return getTextInfo();
+    public boolean drop(String cardId) {
+        return userEntity.getGear().remove(cardId);
     }
 
-    public GameResult add(String cardId) {
-        hand.add(cardId);
-        GameResult gameResult = new GameResult();
-        gameResult.setText(cardId);
-        gameResult.addImageId("/"+NAME+"/"+GEAR+"/"+cardId);
-        return gameResult;
+    public boolean damage(){
+        userEntity.getGear().add("wound");
+        long damage = userEntity.getGear().stream().filter(cardId->cardId.equals("wound")).count();
+        return (damage < 5);
     }
 
-    public GameResult drop(String cardId) {
-        String text = "Card not in hand";
-        if(hand.remove(cardId)){
-            text= "Card dropped";
+    public boolean die(){
+        boolean result = userEntity.isZombified();
+        if(!result) {
+            userEntity.setZombified(true);
+            userEntity.setGear(new ArrayList());
         }
-        GameResult gameResult = new GameResult();
-        gameResult.setText(text);
-        return gameResult;
-    }
-
-    public GameResult die(){
-        if(!isDead) {
-            isDead = true;
-            String part = charId.substring(0, charId.length()-4);
-            charId = part + "-z" + charId.substring(charId.length()-4);
-            hand = new ArrayList();
-            return info();
-        }
-        GameResult gameResult = new GameResult();
-        gameResult.setText("You are dead !!");
-        return gameResult;
+        return result;
     }
 
 

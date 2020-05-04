@@ -1,0 +1,192 @@
+a {
+    color: #8a0005;
+}
+
+a:hover {
+    color: #8a0005;
+}
+
+.clankCube {
+    width: 20px;
+    border: 1px solid black;
+    height: 20px;
+    box-shadow: 2px 2px 5px #ff9a18;
+    display:inline-block;
+    margin:5px;
+}
+.black {
+    background-color: black;
+}
+.red {
+    background-color: red;
+}
+.green {
+    background-color: green;
+}
+.blue {
+    background-color: blue;
+}
+.yellow {
+    background-color: yellow;
+}
+.orange {
+    background-color: orange;
+}
+.purple {
+    background-color: purple;
+}
+
+.glowBorder {
+    box-shadow: inset 0 0 5px #000000, /* inner white */
+    inset 20px 0 80px rgba(117, 37, 12, 0.05), /* inner left magenta short */
+    inset -20px 0 80px rgba(255, 154, 24, 0.05), /* inner right cyan short */
+    inset 20px 0 300px rgba(117, 37, 12, 0.05), /* inner left magenta broad */
+    inset -20px 0 300px rgba(255, 125, 58, 0.05), /* inner right cyan broad */
+    0 0 5px #fff, /* outer white */
+    -0px 0 10px #ff3e00, /* outer left magenta */
+    0px 0 10px #8a0005; /* outer right cyan */
+}
+
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: #8a0005 !important;
+    border-color: #8a0005 !important;
+}
+.btn-primary:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255, 62, 0, 0.5);
+}
+
+.glow {
+    text-shadow: 0 0 10px #FFFFFF,
+    0 0 20px #FFFFFF,
+    0 0 30px #FFFFFF,
+    0 0 40px #ff3e00,
+    0 0 70px #ff3e00,
+    0 0 80px #8a0005,
+    0 0 100px #8a0005,
+    0 0 150px #ff3e00;
+}
+
+.nav-link.active {
+    background-color: transparent !important;
+    color: #FFFFFF;
+    text-shadow: 0 0 10px #000,
+    0 0 20px #FFFFFF,
+    0 0 30px #FFFFFF,
+    0 0 40px #ff3e00,
+    0 0 70px #ff3e00,
+    0 0 80px #8a0005,
+    0 0 100px #8a0005,
+    0 0 150px #ff3e00;
+}
+
+.cardGlow {
+    box-shadow: 0 0 5px #fff, /* outer white */
+    -0px 0 5px #ff3e00, /* outer left magenta */
+    0px 0 5px #8a0005; /* outer right cyan */
+}
+
+.fix-icon{
+    box-shadow: 0 0 5px #fff, /* outer white */
+    -0px 0 5px #ff3e00, /* outer left magenta */
+    0px 0 5px #8a0005; /* outer right cyan */
+}
+
+.cardContainer:hover .header {
+    box-shadow: inset 0 0 100px rgba(138, 0, 5, 0.05), /* inner black */
+    inset 20px 0 80px rgba(138, 0, 5, 0.05), /* inner left magenta short */
+    inset -20px 0 80px rgba(255, 62, 0, 0.05), /* inner right cyan short */
+    inset 20px 0 300px rgba(138, 0, 5, 0.05), /* inner left magenta broad */
+    inset -20px 0 300px rgba(255, 62, 0, 0.05); /* inner right cyan broad */
+}
+
+.animated-bg {
+    background-image: repeating-linear-gradient(
+            -45deg,
+            rgba(198, 0, 5, 0.2) 0%,  /* blau */ rgba(255, 137, 0, 0.2) 15%, /* grün */ rgba(0, 0, 0, 0.2) 30%,  /* rosa */ rgba(198, 0, 5, 0.2) 45%  /* blau */
+    );
+    box-shadow: inset 0 0 5px #000000, /* inner white */
+    inset 20px 0 80px rgba(198, 0, 5, 0.5), /* inner left magenta short */
+    inset -20px 0 80px rgba(255, 137, 0, 0.2), /* inner right cyan short */
+    inset 20px 0 300px rgba(198, 0, 5, 0.2), /* inner left magenta broad */
+    inset -20px 0 300px rgba(255, 137, 0, 0.2), /* inner right cyan broad */
+    0 0 20px rgba(0, 0, 0, 0.5);
+
+    background-size: 200% 100%;
+    animation: diagonal alternate 30s infinite;
+    background-color: rgba(0, 0, 0, 0.8);
+    color:white;
+    border:1px solid black;
+}
+.animated-bg .dropdown-item{
+    color:white;
+}
+
+.animated-bg .dropdown-item:hover{
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+@keyframes diagonal {
+    0% {background-position: 0% 50%}
+    100% {background-position: 100% 50%}
+}
+
+
+body {
+    background: url("title.jpg");
+    background-size: cover;
+}
+
+.xp-progress {
+    position:relative;
+    background-image:url("progress.jpg");
+    background-size: cover;
+    direction:rtl;
+}
+.xp-progress .xp-bar{
+    background-color: rgba(0, 0, 0, 0.8);
+    height:100%;
+}
+.danger-blue {
+    padding-left:24px;
+    background-image:url("blue.png");
+    background-repeat:no-repeat;
+    margin: 5px;
+}
+.danger-red {
+    padding-left:24px;
+    background-image:url("red.png");
+    background-repeat:no-repeat;
+    margin: 5px;
+}
+.danger-orange {
+    padding-left:24px;
+    background-image:url("orange.png");
+    background-repeat:no-repeat;
+    margin: 5px;
+}
+.danger-yellow {
+    padding-left:24px;
+    background-image:url("yellow.png");
+    background-repeat:no-repeat;
+    margin: 5px;
+}
+.chat {
+    font-size:small;
+}
+.user-xp {
+    height:50px;
+    width:653px;
+}
+.user-header {
+    margin-top:5px;
+    width:100%;
+    display: -webkit-box;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.
+
+
+
+
