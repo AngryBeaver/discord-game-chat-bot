@@ -24,7 +24,6 @@ function openData(target){
     if (target == '#userDetails') {
         currentSelection = EVENT_REFRESH_USER;
         getUserInfo();
-        getUserHand();
         if (selectedUserId != userId) {
             $('#userDetails nav li').hide();
         } else {
@@ -50,8 +49,8 @@ $(function () {
     function parseEvents(gameResult) {
         if(gameResult.map.currentUser){
             currentUserId = gameResult.map.currentUser;
+            showGameNavi();
         }
-
         if (gameResult.events.includes(EVENT_INFO)) {
             showGameResult(gameResult);
         }

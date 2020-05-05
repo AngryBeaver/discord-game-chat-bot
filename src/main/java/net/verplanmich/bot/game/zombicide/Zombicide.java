@@ -47,6 +47,7 @@ public class Zombicide implements Game {
     private int currentUserIndex;
     private boolean gameStarted = false;
     private boolean isZombiTurn = false;
+    private boolean isUltraRedMode = false;
 
 
     public Zombicide() throws IOException {
@@ -111,7 +112,7 @@ public class Zombicide implements Game {
         if(nextUser.isStartPlayer()){
             isZombiTurn = true;
             nextUser.setStartPlayer(false);
-            return startTurn(getNextUser(nextUser))
+            return startTurn(nextUserId)
                     .setText(nextUser.getChar()+"'s ZombieTime")
                     .addImageId("/"+NAME+"/zombie-time.png");
         }
@@ -199,6 +200,11 @@ public class Zombicide implements Game {
     public GameResult xp(String userId, String xp) {
         User user = getUser(userId);
         getUser(userId).addXp(xp);
+        users.forEach((s,userx)->dangerLevel = dangerLevel.highest(userx.getDangerLevel()));
+        if(dangerLevel.equals(DangerLevel.RED) && !isUltraRedMode){
+            isUltraRedMode = true;
+            gameDecks.enableUltraRed();
+        }
         return new GameResult()
                 .setText(user.getChar() +" xp "+ xp)
                 .addEvent(EVENT_INFO)
