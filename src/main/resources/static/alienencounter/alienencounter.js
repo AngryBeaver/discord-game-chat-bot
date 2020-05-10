@@ -374,7 +374,7 @@ $(function () {
         if (gameResult.events.includes(EVENT_REFRESH_USER_DISCARD) && userSelection == EVENT_REFRESH_USER_DISCARD && gameResult.map.userId == selectedUserId) {
             getUserDiscard();
         }
-        if (gameResult.events.includes(EVENT_REFRESH_USER_STRIKES) && currentSelection == EVENT_REFRESH_USER_INFO && gameResult.map.userId == selectedUserId) {
+        if (gameResult.events.includes(EVENT_REFRESH_USER_STRIKES) && userSelection == EVENT_REFRESH_USER_INFO && gameResult.map.userId == selectedUserId) {
             getUserStrikes();
         }
         if (gameResult.events.includes(EVENT_REFRESH_OPERATIONS) && currentSelection == EVENT_REFRESH_OPERATIONS) {
