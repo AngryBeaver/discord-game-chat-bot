@@ -13,5 +13,4 @@ public class UserEntity {
     private List<String> completedQuests;
     private List<String> plotQuests;
     private List<String> activeQuests;
-    private
 }

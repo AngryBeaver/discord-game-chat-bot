@@ -30,15 +30,7 @@ public class Waterdeep implements Game {
 
     @GameMethod
     public GameResult join(GameData gameData) {
-        if(!users.containsKey(gameData.getUserId())) {
-            String color = colors.remove(0);
-            User user = new User(gameData.getUserName(),gameData.getUserId(),color);
-            users.put(gameData.getUserId(), user);
-            int amount = 5-userOrder.size();
-            return adjustClank(gameData.getUserId(),String.valueOf(amount))
-                    .setText(gameData.getUserName() + " joined as "+ color)
-                    .addEvent(EVENT_JOIN);
-        }
+
         return new GameResult()
                 .setText(gameData.getUserName() + " is highly interested in this game");
     }
