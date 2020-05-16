@@ -48,8 +48,11 @@ $(function () {
 
     function parseEvents(gameResult) {
         if(gameResult.map.currentUser){
-            currentUserId = gameResult.map.currentUser;
-            showGameNavi();
+            if(currentUserId != gameResult.map.currentUser) {
+                currentUserId = gameResult.map.currentUser;
+                showGameNavi();
+                fillUserInfo();
+            }
         }
         if (gameResult.events.includes(EVENT_INFO)) {
             showGameResult(gameResult);

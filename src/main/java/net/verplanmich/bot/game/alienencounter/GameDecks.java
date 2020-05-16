@@ -30,7 +30,7 @@ public class GameDecks {
     private HashMap<Mission, List<List<String>>> objectiveCards = new HashMap();
     private HashMap<Integer,HashMap<Integer,Integer>> difficutly = new HashMap();
 
-    private List<String> hiveAndCrew = Arrays.asList("jonesy","newt","missing-brother-red","missing-brother-green");
+    private List<String> hiveAndCrew = Arrays.asList("jonesy","newt","missing-brother-red","missing-brother-green","larry-purvis");
 
     private Deck chars;
     private Deck strikes;
@@ -70,6 +70,11 @@ public class GameDecks {
         objectiveCards.get(FURY).add(Arrays.asList("missing-brother-red","missing-brother-green"));//todo needs scanning
         objectiveCards.get(FURY).add(new ArrayList());
         objectiveCards.get(FURY).add(new ArrayList());
+        objectiveCards.put(AURIGA, new ArrayList());
+        objectiveCards.get(AURIGA).add(new ArrayList());
+        objectiveCards.get(AURIGA).add(new ArrayList());
+        objectiveCards.get(AURIGA).add(new ArrayList());
+
 
         chars = Deck.getFor(NAME,CHARS);
         strikes = Deck.getFor(NAME,STRIKES);
@@ -90,12 +95,20 @@ public class GameDecks {
         crews.get(SULACI).add(new Deck(Arrays.asList("wont-give-up","wont-give-up","wont-give-up","by-the-numbers","by-the-numbers","by-the-numbers","by-the-numbers","by-the-numbers","fall-back","fall-back","fall-back","fall-back","fall-back","always-were-an-a-hole")));
         crews.get(SULACI).add(new Deck(Arrays.asList("head-mounted-sight","head-mounted-sight","head-mounted-sight","head-mounted-sight","head-mounted-sight","m56-smartgun","m56-smartgun","m56-smartgun","smartgunners","smartgunners","smartgunners","smartgunners","smartgunners","they-aint-paying-us-enough")));
         crews.put(FURY,new ArrayList());
-        crews.get(FURY).add(new Deck(Arrays.asList("the-companys-orders","the-companys-orders","the-companys-orders","the-companys-orders","the-companys-orders","its-his-iq","its-his-iq,","its-his-iq","its-his-iq","its-his-iq","internal-exam","internal-exam","internal-exam","buying-time")));
+        crews.get(FURY).add(new Deck(Arrays.asList("the-companys-orders","the-companys-orders","the-companys-orders","the-companys-orders","the-companys-orders","its-his-iq","its-his-iq","its-his-iq","its-his-iq","its-his-iq","internal-exam","internal-exam","internal-exam","buying-time")));
         crews.get(FURY).add(new Deck(Arrays.asList("eulogy","eulogy","eulogy","eulogy","eulogy","i-wanna-get-this-thing","i-wanna-get-this-thing","i-wanna-get-this-thing","re-education","re-education","re-education","re-education","re-education","remember-the-dead")));
         crews.get(FURY).add(new Deck(Arrays.asList("i-want-it-dead-too","i-want-it-dead-too","i-want-it-dead-too","i-want-it-dead-too","i-want-it-dead-too","we-better-rethink-this-thing","we-better-rethink-this-thing","we-better-rethink-this-thing","we-ought-to-panic","we-ought-to-panic","we-ought-to-panic","we-ought-to-panic","we-ought-to-panic","ten-tons-of-hot-lead")));
         crews.get(FURY).add(new Deck(Arrays.asList("bait-for-the-beast","bait-for-the-beast","bait-for-the-beast","bait-for-the-beast","bait-for-the-beast","part-of-the-family","part-of-the-family","part-of-the-family","part-of-the-family","part-of-the-family","whatever-it-takes","whatever-it-takes","whatever-it-takes","ultimate-sacrifice")));
         crews.get(FURY).add(new Deck(Arrays.asList("rumor-control","rumor-control","rumor-control","rumor-control","rumor-control","stop-this-raving","stop-this-raving","stop-this-raving","stop-this-raving","stop-this-raving","were-on-the-honor-system","dont-upset-the-order","dont-upset-the-order","dont-upset-the-order")));
         crews.get(FURY).add(new Deck(Arrays.asList("autopsy","autopsy","autopsy","emergency-surgery","medical-attention","medical-attention","medical-attention","medical-attention","medical-attention","bar-code","bar-code","bar-code","bar-code","bar-code")));
+
+        crews.put(AURIGA, new ArrayList());
+        crews.get(AURIGA).add(new Deck(Arrays.asList("kawlang-maneuver","kawlang-maneuver","kawlang-maneuver","gun-for-hire","play-the-angles","play-the-angles","play-the-angles","play-the-angles","play-the-angles","concealed-pistol","concealed-pistol","concealed-pistol","concealed-pistol","concealed-pistol")));
+        crews.get(AURIGA).add(new Deck(Arrays.asList("go-it-alone","go-it-alone","go-it-alone","share-a-drink","share-a-drink","share-a-drink","share-a-drink","share-a-drink","shipmates","shipmates","shipmates","shipmates","shipmates","elgyns-crew")));
+        //crews.get(AURIGA).add(new Deck(Arrays.asList("i-can-smell-it","i-can-smell-it","i-can-smell-it","i-can-smell-it","i-can-smell-it","the-monsters-mother","new-and-improved","new-and-improved","new-and-improved","new-and-improved","new-and-improved","grown-in-a-lab","grown-in-a-lab","grown-in-a-lab")));
+        crews.get(AURIGA).add(new Deck(Arrays.asList("desperate-times","motorized-wheel-chair","motorized-wheel-chair","motorized-wheel-chair","motorized-wheel-chair","motorized-wheel-chair","ill-put-holes-in-you","ill-put-holes-in-you","ill-put-holes-in-you","ill-put-holes-in-you","ill-put-holes-in-you","spare-parts","spare-parts","spare-parts")));
+        crews.get(AURIGA).add(new Deck(Arrays.asList("interface-with-fa-th-ur","unlikely-allies","unlikely-allies","unlikely-allies","full-of-surprises","full-of-surprises","full-of-surprises","full-of-surprises","full-of-surprises","secret-mission","secret-mission","secret-mission","secret-mission","secret-mission")));
+        crews.get(AURIGA).add(new Deck(Arrays.asList("incinerator-flamer","incinerator-flamer","incinerator-flamer","incinerator-flamer","incinerator-flamer","i-mostly-just-hurt-people","i-mostly-just-hurt-people","i-mostly-just-hurt-people","sleep-when-you-die-man","sleep-when-you-die-man","sleep-when-you-die-man","sleep-when-you-die-man","sleep-when-you-die-man","thermos-gun")));
     }
 
 

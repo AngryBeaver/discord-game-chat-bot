@@ -267,6 +267,7 @@ $('#userDetails a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 function showUser() {
     var userTab = $('#userDetails .nav-link.active').text().trim();
     $('#userDetails').find('a.cardContainer.glowBorder').removeClass('glowBorder');
+    fillUserInfo();
     if (userTab == "info") {
         userSelection = EVENT_REFRESH_USER_INFO;
         getUserInfo();
@@ -294,7 +295,6 @@ function showUserNavi() {
 }
 
 function openUser() {
-    $('#userDetails .nav-link:eq(1)').tab('show');
     showUser();
     showUserNavi();
 }
