@@ -246,7 +246,7 @@ public class Alienencounter implements Game {
     @GameMethod()
     public GameResult handShow(String userId, String cardId) {
         return GameResultBuilder.showHand(this,userId,cardId)
-                .setText("shows");
+                .setText(getUser(userId).getUserInfo().get(USER_NAME)+" shows");
     }
 
     @GameMethod()
@@ -319,6 +319,14 @@ public class Alienencounter implements Game {
     public GameResult drawToHand(String userId, String cardId) {
         return GameResultBuilder.fromDraw(this, userId, cardId)
                 .toHand(userId);
+    }
+
+    @GameMethod()
+    public GameResult drawShuffle(String userId) {
+        User user = getUser(userId);
+        user.shuffle();
+        return new GameResult().addEvent(EVENT_INFO).setText(user.getUserInfo().get(USER_NAME)+" shuffles");
+
     }
     @GameMethod()
     public GameResult drawToDiscard(String userId, String cardId) {

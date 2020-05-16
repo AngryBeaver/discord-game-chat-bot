@@ -97,22 +97,35 @@ function fillSurvivor(user, target) {
     if(user.zombified){
         actions = user.survivor.z_actions;
     }
-    html = addAction("blue",0,actions);
-    html += addAction("yellow",0,actions);
-    html += addAction("orange",0,actions);
-    html += addAction("orange",1,actions);
-    html += addAction("red",0,actions);
-    html += addAction("red",1,actions);
-    html += addAction("red",2,actions);
+    html = addAction("blue",actions["blue"][0],user,1);
+    html += addAction("yellow",actions["yellow"][0],user,2);
+    html += addAction("orange",actions["orange"][0],user,4);
+    html += addAction("orange",actions["orange"][1],user,8);
+    html += addAction("red",actions["red"][0],user,16);
+    html += addAction("red",actions["red"][1],user,32);
+    html += addAction("red",actions["red"][2],user,64);
     $(target +" .user-action").html(html);
-    let percent = ((43-Math.min(user.xp,43))/44*100);
+    let floor = Math.floor(user.xp/44);
+    let xp = user.xp-(floor*44);
+    if(floor > 0){
+        xp = xp +1;
+    }
+    let percent = ((43-Math.min(xp,43))/44*100);
+
     $(target +" .user-xp .xp-bar").css({width: "calc("+percent+"% + 1px)"});
     $(target + " .user-gear div").html(getHtmlFromDeck(deckToSrc("zombicide","gear",user.gear,".jpg")));
     activateSelectableCards();
 }
 
-function addAction(color,amount,actions){
-    return "<div class='danger-"+color+" data-toggle='tooltip' data-placement='top' title='"+actionInfo[actions[color][amount]]+"'>"+actions[color][amount]+"</div>";
+function addAction(color,action,user, amount){
+    action = action.toLowerCase();
+    let active = "";
+    if((user.action & amount) > 0){
+        active = "active";
+        amount = amount * -1;
+    }
+
+    return "<div onclick='action(\"adjustAction\","+amount+")' class='danger-"+color+" "+active+" data-toggle='tooltip' data-placement='top' title='"+actionInfo[action]+"'>"+action+"</div>";
 }
 
 function getGame() {

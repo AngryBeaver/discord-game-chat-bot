@@ -224,6 +224,17 @@ public class Zombicide implements Game {
     }
 
     @GameMethod
+    public GameResult adjustAction(String userId,String action) {
+        User user = getUser(userId);
+        user.adjustAction(action);
+        return new GameResult()
+                .setText(user.getChar()+" levelUp")
+                .addEvent(EVENT_INFO)
+                .addEvent(EVENT_REFRESH_USER)
+                .set(MAP_KEY_USER,user.get());
+    }
+
+    @GameMethod
     public GameResult damage(String userId) {
         User user = getUser(userId);
         String text = user.getChar() + " is wounded";

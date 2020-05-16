@@ -74,6 +74,14 @@ public class User {
         return result;
     }
 
+    public void adjustAction(String action){
+        Integer value = Integer.valueOf(action);
+        if(value > 0){
+            userEntity.setAction(userEntity.getAction() | value);
+        }else{
+            userEntity.setAction(userEntity.getAction() & (~(-128+value*-1)));
+        }
+    }
 
 
 }

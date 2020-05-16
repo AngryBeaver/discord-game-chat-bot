@@ -13,6 +13,8 @@ public class UserEntity {
     private Integer xp = 0;
     private DangerLevel dangerLevel;
 
+    private Integer action = 1;
+
     private boolean isStartPlayer = false;
     private boolean isZombified = false;
     private List<String> gear = new ArrayList();
@@ -83,6 +85,14 @@ public class UserEntity {
 
     public void setStartPlayer(boolean startPlayer) {
         isStartPlayer = startPlayer;
+    }
+
+    public Integer getAction() {
+        return action;
+    }
+
+    public void setAction(Integer action) {
+        this.action = action;
     }
 
 }

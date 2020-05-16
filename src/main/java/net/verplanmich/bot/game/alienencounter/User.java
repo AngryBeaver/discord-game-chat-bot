@@ -37,6 +37,10 @@ public class User {
         refreshHand();
     }
 
+    public  void shuffle(){
+        deck.shuffle();
+    }
+
     public void strike(String cardId){
         strikes.add(cardId);
     }

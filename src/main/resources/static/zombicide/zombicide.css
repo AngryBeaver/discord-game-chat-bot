@@ -130,6 +130,11 @@ a:hover {
     100% {background-position: 100% 50%}
 }
 
+@keyframes diagonal2 {
+    0% {background-position: 0% 50%, 0 0}
+    100% {background-position: 100% 50%,0 0}
+}
+
 
 body {
     background: url("title.jpg");
@@ -148,28 +153,88 @@ body {
 }
 .danger-blue {
     padding-left:24px;
-    background-image:url("blue.png");
     background-repeat:no-repeat;
     margin: 5px;
+    background-image: repeating-linear-gradient(
+            -45deg,
+            rgba(18, 14, 64, 0.2) 0%,  /* blau */ rgba(35, 120, 255, 0.2) 15%, /* grün */ rgba(0, 27, 198, 0.2) 30%,  /* rosa */ rgba(18, 14, 64, 0.2) 45%  /* blau */
+    ),url("blue.png");
+    background-size: 200% 100%, 22px 22px;;
+    animation: diagonal2 alternate 30s infinite;
+    border-radius:5px;
 }
 .danger-red {
+    cursor: pointer;
+    color:grey;
     padding-left:24px;
-    background-image:url("red.png");
+    background-image: repeating-linear-gradient(
+            -45deg,
+            rgba(171, 0, 9, 0.2) 0%,  /* blau */ rgba(255, 68, 67, 0.2) 15%, /* grün */ rgba(255, 177, 170, 0.2) 30%,  /* rosa */ rgba(117, 0, 3, 0.2) 45%  /* blau */
+    );
+    background-size: 200% 100%, 22px 22px;
+    animation: diagonal2 alternate 30s infinite;
     background-repeat:no-repeat;
     margin: 5px;
+    border-radius:5px;
 }
+.danger-red.active{
+    color:white;
+    background-image: repeating-linear-gradient(
+            -45deg,
+            rgba(171, 0, 9, 0.2) 0%,  /* blau */ rgba(255, 68, 67, 0.2) 15%, /* grün */ rgba(255, 177, 170, 0.2) 30%,  /* rosa */ rgba(117, 0, 3, 0.2) 45%  /* blau */
+    ),url("red.png");
+    background-size: 200% 100%, 22px 22px;
+    animation: diagonal2 alternate 30s infinite;
+}
+
 .danger-orange {
+    cursor: pointer;
+    color:grey;
     padding-left:24px;
     background-image:url("orange.png");
     background-repeat:no-repeat;
+    background-image: repeating-linear-gradient(
+            -45deg,
+            rgba(171, 65, 0, 0.2) 0%,  /* blau */ rgba(255, 207, 87, 0.2) 15%, /* grün */ rgba(255, 137, 0, 0.2) 30%,  /* rosa */ rgba(171, 65, 0, 0.2) 45%  /* blau */
+    );
+    background-size: 200% 100%, 22px 22px;
+    animation: diagonal2 alternate 30s infinite;
     margin: 5px;
+    border-radius:5px;
+}
+.danger-orange.active{
+    color:white;
+    background-image: repeating-linear-gradient(
+            -45deg,
+            rgba(171, 65, 0, 0.2) 0%,  /* blau */ rgba(255, 207, 87, 0.2) 15%, /* grün */ rgba(255, 137, 0, 0.2) 30%,  /* rosa */ rgba(171, 65, 0, 0.2) 45%  /* blau */
+    ),url("orange.png");
+    background-size: 200% 100%, 22px 22px;
+    animation: diagonal2 alternate 30s infinite;
 }
 .danger-yellow {
+    cursor: pointer;
+    color:grey;
     padding-left:24px;
-    background-image:url("yellow.png");
+    background-image: repeating-linear-gradient(
+            -45deg,
+            rgba(171, 169, 0, 0.2) 0%,  /* blau */ rgba(253, 255, 68, 0.2) 15%, /* grün */ rgba(255, 239, 235, 0.2) 30%,  /* rosa */ rgba(171, 169, 0, 0.2) 45%  /* blau */
+    );
+    background-size: 200% 100%,22px 22px;;
     background-repeat:no-repeat;
     margin: 5px;
+    border-radius:5px;
+    animation: diagonal2 alternate 30s infinite;
 }
+.danger-yellow.active {
+    color:white;
+    background-image:url("yellow.png");
+    background-image: repeating-linear-gradient(
+            -45deg,
+            rgba(171, 169, 0, 0.2) 0%,  /* blau */ rgba(253, 255, 68, 0.2) 15%, /* grün */ rgba(255, 239, 235, 0.2) 30%,  /* rosa */ rgba(171, 169, 0, 0.2) 45%  /* blau */
+    ),url("yellow.png");
+    background-size: 200% 100%,22px 22px;;
+}
+
 .chat {
     font-size:small;
 }
