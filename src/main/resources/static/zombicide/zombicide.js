@@ -118,14 +118,13 @@ function fillSurvivor(user, target) {
 }
 
 function addAction(color,action,user, amount){
-    action = action.toLowerCase();
     let active = "";
     if((user.action & amount) > 0){
         active = "active";
         amount = amount * -1;
     }
 
-    return "<div onclick='action(\"adjustAction\","+amount+")' class='danger-"+color+" "+active+" data-toggle='tooltip' data-placement='top' title='"+actionInfo[action]+"'>"+action+"</div>";
+    return "<div onclick='action(\"adjustAction\","+amount+")' class='danger-"+color+" "+active+" data-toggle='tooltip' data-placement='top' title='"+actionInfo[action]+"'>"+action.toLowerCase()+"</div>";
 }
 
 function getGame() {
