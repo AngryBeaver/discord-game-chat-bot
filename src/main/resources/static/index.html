@@ -33,6 +33,7 @@
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="javascript:newGame('alienencounter')">Alien Encounter</a>
                 <a class="dropdown-item" href="javascript:newGame('clank')">Clank!</a>
+                <a class="dropdown-item" href="javascript:newGame('waterdeep')">Lords of Waterdeep</a>
                 <a class="dropdown-item" href="javascript:newGame('zombicide')">Zombicide</a>
             </div>
         </div>
@@ -75,10 +76,7 @@
                         '<a href="'+value+'/index.html?gameId='+key+'">main</a>' +
                         '</div>'+
                         '<div class="col-md-12">' +
-                        '<a href="'+value+'/index-chat.html?gameId=' + key + '">chat</a>' +
-                        '</div>' +
-                        '<div class="col-md-12">' +
-                        '<a href="'+value+'/index-small.html?gameId=' + key + '">footer</a>' +
+                        '<a href="'+value+'/?gameId=' + key + '">app</a>' +
                         '</div>';
                 } else {
                     html +=

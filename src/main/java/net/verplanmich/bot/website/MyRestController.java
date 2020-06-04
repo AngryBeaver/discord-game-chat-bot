@@ -37,6 +37,14 @@ public class MyRestController {
         return gameResult;
     }
 
+    @RequestMapping(value={"/games/{gameId}/{command}"})
+    public GameResult game2(@PathVariable String gameId, @PathVariable String command, @AuthenticationPrincipal OAuth2User principal) throws Exception {
+        GameData gameData =  getGameData(gameId,principal);
+        GameResult gameResult = gameEngine.callGameMethod(command,gameData);
+        sendToChat(gameData, gameResult);
+        return gameResult;
+    }
+
     public void sendToChat(GameData gameData, GameResult gameResult) throws JsonProcessingException {
         template.convertAndSend("/event/" + gameData.getGameId(), mapper.writeValueAsString(gameResult));
     }
