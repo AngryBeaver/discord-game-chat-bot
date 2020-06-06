@@ -82,6 +82,8 @@ public class GameEngine {
             gameResult = (GameResult) method.invoke(getGame(gameData), parameters);
         }catch(GameResultException e){
             gameResult = e.getGameResult();
+        }catch(InvocationTargetException e){
+            gameResult = ((GameResultException)e.getTargetException()).getGameResult();
         }
         return gameResult;
     }

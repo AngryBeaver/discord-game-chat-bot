@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserEntity {
+    private String id;
     private String name;
     private String color;
     private int victory;
@@ -94,8 +95,8 @@ public class UserEntity {
         return plotQuests;
     }
 
-    public UserEntity setPlotQuests(List<String> plotQuests) {
-        this.plotQuests = plotQuests;
+    public UserEntity addPlotQuests(String plotQuest) {
+        this.plotQuests.add(plotQuest);
         return this;
     }
 
@@ -109,7 +110,7 @@ public class UserEntity {
     }
 
     public int getCompletedQuests() {
-        return completedQuests;
+        return completedQuests+this.plotQuests.size();
     }
 
     public UserEntity setCompletedQuests(int completedQuests) {
@@ -117,7 +118,7 @@ public class UserEntity {
         return this;
     }
 
-    public int getIntigues() {
+    public int getIntrigues() {
         return intrigues;
     }
 
@@ -133,5 +134,13 @@ public class UserEntity {
     public UserEntity setHasPassed(boolean hasPassed) {
         this.hasPassed = hasPassed;
         return this;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

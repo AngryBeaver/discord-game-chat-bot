@@ -63,8 +63,7 @@ public class GameDecks {
                     (user,gameDecks)->{
                         user.adjustVictory("25");
                         return new GameResult()
-                                .setText(user.getUserEntity().getName()+" take Quest from Inn")
-                                .addEvent(EVENT_REWARD);
+                                .setText(user.getUserEntity().getName()+" scored");
                     }),
             new Quest("defeat-uprising-from-undermountain", Quest.Type.WAREFARE,false, new UserEntity().setCleric(1).setFighter(3).setRogue(1).setGold(2),
                     (user,gameDecks)->{
@@ -494,8 +493,8 @@ public class GameDecks {
         //types here
 
 
-        Map<String,Quest> questMap = quests.stream().collect(Collectors.toMap(Quest::getName, q->q));
-        mandatory.stream().forEach(q->questMap.put(q.getName(),q));
+        this.questMap = quests.stream().collect(Collectors.toMap(Quest::getName, q->q));
+        mandatory.stream().forEach(q->this.questMap.put(q.getName(),q));
         this.intrigues = new Deck(intrigueCards).shuffle();
         this.chars = new Deck(charCards).shuffle();
         this.quests = new Deck(quests.stream().map(q->q.getName()).collect(Collectors.toList())).shuffle();
@@ -524,4 +523,11 @@ public class GameDecks {
         this.tavern.add(this.quests.drawCard());
     }
 
+    public List<String> getTavern() {
+        return tavern;
+    }
+
+    public Map<String, Quest> getQuestMap() {
+        return questMap;
+    }
 }

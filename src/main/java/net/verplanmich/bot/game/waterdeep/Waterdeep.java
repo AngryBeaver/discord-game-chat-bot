@@ -20,9 +20,13 @@ public class Waterdeep implements Game {
 
 
     public static final String EVENT_START_GAME = "startGame";
+    public static final String EVENT_SCORE = "score";
     public static final String EVENT_USER = "user";
-    public static final String EVENT_UPDATE_INTRIGUES = "updateIntrigues";
+    public static final String EVENT_UPDATE_INTRIGUES = "intrigueCards";
     public static final String EVENT_REWARD = "reward";
+    public static final String EVENT_TAVERN = "tavern";
+    public static final String EVENT_ROUND = "round";
+    public static final String EVENT_CURRENT_USER = "currentUser";
 
 
     public static final String MAP_KEY_INTRIGUES = "intrigueCards";
@@ -31,6 +35,7 @@ public class Waterdeep implements Game {
     public static final String MAP_KEY_CURRENT_USER_ID = "currentUserId";
     public static final String MAP_KEY_ROUND = "round";
     public static final String MAP_KEY_COMPLETED_QUESTS = "completedQuests";
+    public static final String MAP_KEY_TAVERN = "tavern";
 
 
     private GameDecks gameDecks;
@@ -63,9 +68,11 @@ public class Waterdeep implements Game {
         if(this.round == 1){
             gameResult = this.startGame(user, "base");
         }
-        return new GameResult()
+        return gameResult
                 .setText(user.getUserEntity().getName()+" startsRound")
+                .addEvent(EVENT_CURRENT_USER)
                 .set(MAP_KEY_CURRENT_USER_ID,currentUserId)
+                .addEvent(EVENT_ROUND)
                 .set(MAP_KEY_ROUND,round);
     }
 
@@ -84,7 +91,21 @@ public class Waterdeep implements Game {
              currentUser.addIntrigues(gameDecks.getIntrigue());
         }
         return new GameResult().addEvent(EVENT_START_GAME)
-                .set(MAP_KEY_USERS,userList.stream().map(user2->user2.getUserEntity()).toArray());
+                .set(MAP_KEY_USERS,userList.stream().map(user2->user2.getUserEntity()).toArray())
+                .addEvent(EVENT_TAVERN)
+                .set(MAP_KEY_TAVERN,this.gameDecks.getTavern());
+    }
+
+    @GameMethod
+    public GameResult questToComplete(String userId, String cardId){
+        User user = this.users.get(userId);
+        if(user.getUserEntity().getActiveQuests().contains(cardId)){
+            return this.gameDecks.getQuestMap().get(cardId).complete(user,this.gameDecks);
+        }else{
+            return new GameResult().addEvent(EVENT_INFO)
+                    .setText(user.getUserEntity().getName()+" quest not found");
+        }
+
     }
 
     @GameMethod
@@ -172,7 +193,7 @@ public class Waterdeep implements Game {
         List<String> quests = this.users.get(userId).getQuests();
         return new GameResult()
                 .setText("completedQuests")
-                .addImageIds(quests.stream().map(cardId->WATERDEEP+"/quests+/"+cardId+".jpg").collect(Collectors.toList()))
+                .addImageIds(quests.stream().map(cardId->"./assets/quests+/"+cardId+".jpg").collect(Collectors.toList()))
                 .set(MAP_KEY_COMPLETED_QUESTS,quests);
     }
 
@@ -181,8 +202,17 @@ public class Waterdeep implements Game {
         List<String> intrigues = this.users.get(userId).getIntrigues();
         return new GameResult()
                 .setText("intrigues")
-                .addImageIds(intrigues.stream().map(cardId->WATERDEEP+"/intrigues+/"+cardId+".jpg").collect(Collectors.toList()))
+                .addImageIds(intrigues.stream().map(cardId->"./assets/intrigues+/"+cardId+".jpg").collect(Collectors.toList()))
                 .set(MAP_KEY_INTRIGUES,intrigues);
+    }
+
+
+    @GameMethod
+    public GameResult getTavern(GameData gameData){
+        return new GameResult()
+                .setText("tavern")
+                .addImageIds(this.gameDecks.getTavern().stream().map(cardId->"./assets/quests+/"+cardId+".jpg").collect(Collectors.toList()))
+                .set(MAP_KEY_TAVERN, this.gameDecks.getTavern());
     }
 
     @GameMethod

@@ -4,21 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-    private String id;
     private List<String> quests = new ArrayList();
     private List<String> intrigues = new ArrayList();
     private String identity;
     private UserEntity userEntity;
 
     public User(String id, String name,String color){
-        this.id = id;
         userEntity = new UserEntity();
+        userEntity.setId(id);
         userEntity.setName(name);
         userEntity.setColor(color);
     }
 
     public String getId(){
-        return id;
+        return userEntity.getId();
     }
 
     public UserEntity getUserEntity(){return userEntity;}

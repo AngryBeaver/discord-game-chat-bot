@@ -33,33 +33,44 @@ public class Quest {
     public GameResult complete(User user, GameDecks gameDecks){
         checkCosts(user.getUserEntity());
         payCost(user);
-        //todo set quest to completed
+        if(this.isPlot){
+            user.getUserEntity().addPlotQuests(this.name);
+        }else {
+            user.addQuests(this.name);
+        }
+        user.getUserEntity().getActiveQuests().remove(this.name);
         return reward.consume(user,gameDecks)
                 .addEvent(EVENT_INFO)
                 .addEvent(EVENT_USER)
+                .addEvent(EVENT_SCORE)
                 .set(MAP_KEY_USER, user.getUserEntity())
-                .addImageId(WATERDEEP+"/quests+/"+name+".jpg");
+                .addImageId("./assets/quests/"+name+".jpg");
     }
 
     private void checkCosts(UserEntity userEntity){
         if(costs.getCleric() > userEntity.getCleric()){
             throw new GameResultException(new GameResult()
+                    .addEvent(EVENT_INFO)
                     .setText(userEntity.getName()+" can't complete<br/>"+ name+ "<br/>you need "+costs.getCleric()+" clerics"));
         }
         if(costs.getRogue() > userEntity.getRogue()){
             throw new GameResultException(new GameResult()
+                    .addEvent(EVENT_INFO)
                     .setText(userEntity.getName()+" can't complete<br/>"+ name+ "<br/>you need "+costs.getRogue()+" rogues"));
         }
         if(costs.getWizard() > userEntity.getWizard()){
             throw new GameResultException(new GameResult()
+                    .addEvent(EVENT_INFO)
                     .setText(userEntity.getName()+" can't complete<br/>"+ name+  "<br/>you need "+costs.getWizard()+" wizards"));
         }
         if(costs.getFighter() > userEntity.getFighter()){
             throw new GameResultException(new GameResult()
+                    .addEvent(EVENT_INFO)
                     .setText(userEntity.getName()+" can't complete<br/>"+ name+ "<br/>you need "+costs.getFighter()+" fighters"));
         }
-        if(costs.getRogue() > userEntity.getGold()){
+        if(costs.getGold() > userEntity.getGold()){
             throw new GameResultException(new GameResult()
+                    .addEvent(EVENT_INFO)
                     .setText(userEntity.getName()+" can't complete<br/>"+ name+ "<br/>you need "+costs.getGold()+" gold"));
         }
     }
