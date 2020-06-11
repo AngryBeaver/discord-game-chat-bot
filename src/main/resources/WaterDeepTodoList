@@ -1,6 +1,14 @@
 [x] fix intrigues amount display
 [x] fix plot amount+ completed amount display
-[ ] fix chat image size
-[ ] fix chat scroll
-[ ] implement get Tavern
-[ ] implement get Intrigue
+[x] fix chat image size
+[x] fix chat scroll
+[x] implement get Tavern
+[x] implement get Intrigue
+[x] close tavern modal after successfull get
+[x] fix chat tavern image
+[x] fix refresh active quests
+[x] fix ng serve cors
+[ ] fix refresh active intrigues
+[ ] getMandatory Quest from chat
+[ ] shuffle tavern
+[ ] get type quest from deck

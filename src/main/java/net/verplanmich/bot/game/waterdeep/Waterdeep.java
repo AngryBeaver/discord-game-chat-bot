@@ -189,11 +189,41 @@ public class Waterdeep implements Game {
     }
 
     @GameMethod
+    public GameResult drawIntrigue(String userId){
+        User user = this.users.get(userId);
+        String cardId = gameDecks.getIntrigue();
+        user.addIntrigues(cardId);
+        return new GameResult()
+                .setText(user.getUserEntity().getName()+" drawIntrigue")
+                .addEvent(EVENT_INFO)
+                .addImageId("./assets/intrigues/"+cardId+".jpg");
+    }
+
+    @GameMethod
+    public GameResult getQuestFromTavern(String userId, String cardId){
+        User user = this.users.get(userId);
+        if(gameDecks.getTavernCard(cardId)){
+            user.getUserEntity().addActiveQuests(cardId);
+            return new GameResult()
+                    .setText(user.getUserEntity().getName()+" getQuestFromTavern")
+                    .addEvent(EVENT_INFO)
+                    .addEvent(EVENT_USER)
+                    .set(MAP_KEY_USER,user.getUserEntity())
+                    .addEvent(EVENT_TAVERN)
+                    .set(MAP_KEY_TAVERN,gameDecks.getTavern())
+                    .addImageId("./assets/quests/"+cardId+".jpg");
+        }else{
+            return new GameResult().addEvent(EVENT_INFO)
+                    .setText(user.getUserEntity().getName()+" quest not found");
+        }
+    }
+
+    @GameMethod
     public GameResult getCompletedQuests(String userId){
         List<String> quests = this.users.get(userId).getQuests();
         return new GameResult()
                 .setText("completedQuests")
-                .addImageIds(quests.stream().map(cardId->"./assets/quests+/"+cardId+".jpg").collect(Collectors.toList()))
+                .addImageIds(quests.stream().map(cardId->"./assets/quests/"+cardId+".jpg").collect(Collectors.toList()))
                 .set(MAP_KEY_COMPLETED_QUESTS,quests);
     }
 
@@ -202,7 +232,7 @@ public class Waterdeep implements Game {
         List<String> intrigues = this.users.get(userId).getIntrigues();
         return new GameResult()
                 .setText("intrigues")
-                .addImageIds(intrigues.stream().map(cardId->"./assets/intrigues+/"+cardId+".jpg").collect(Collectors.toList()))
+                .addImageIds(intrigues.stream().map(cardId->"./assets/intrigues/"+cardId+".jpg").collect(Collectors.toList()))
                 .set(MAP_KEY_INTRIGUES,intrigues);
     }
 
@@ -211,7 +241,7 @@ public class Waterdeep implements Game {
     public GameResult getTavern(GameData gameData){
         return new GameResult()
                 .setText("tavern")
-                .addImageIds(this.gameDecks.getTavern().stream().map(cardId->"./assets/quests+/"+cardId+".jpg").collect(Collectors.toList()))
+                .addImageIds(this.gameDecks.getTavern().stream().map(cardId->"./assets/quests/"+cardId+".jpg").collect(Collectors.toList()))
                 .set(MAP_KEY_TAVERN, this.gameDecks.getTavern());
     }
 

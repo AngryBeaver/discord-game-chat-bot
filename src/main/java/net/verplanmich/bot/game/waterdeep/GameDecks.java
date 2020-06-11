@@ -306,7 +306,7 @@ public class GameDecks {
                         return new GameResult()
                                 .setText(user.getUserEntity().getName()+" scored");
                     }),
-            new Quest(  "recruit-for-blackstaff-academy", Quest.Type.ARCANE,false, new UserEntity().setFighter(1).setRogue(1).setWizard(2),
+            new Quest(  "recruit-for-blackstaff-academy", Quest.Type.ARCANE,false, new UserEntity().setFighter(1).setRogue(1).setWizard(2).setGold(4),
                     (user,gameDecks)->{
                         user.adjustVictory("6");
                         user.adjustWizard("3");
@@ -500,6 +500,15 @@ public class GameDecks {
         this.quests = new Deck(quests.stream().map(q->q.getName()).collect(Collectors.toList())).shuffle();
         refillTavern();
 
+    }
+
+    public boolean getTavernCard(String cardId){
+        boolean result =  tavern.contains(cardId);
+        if(result){
+            int index = tavern.indexOf(cardId);
+            tavern.set(index,quests.drawCard());
+        }
+        return result;
     }
 
     public String getQuest(){

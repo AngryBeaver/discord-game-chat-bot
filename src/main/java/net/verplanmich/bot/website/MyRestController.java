@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@CrossOrigin(origins="http://localhost:4200")
+@CrossOrigin
 public class MyRestController {
 
     public static final String EVENT_INFO = "info";
@@ -60,8 +60,10 @@ public class MyRestController {
     private GameData getGameData(String gameId, OAuth2User principal){
         GameData gameData = new GameData();
         gameData.setGameId(gameId);
-        gameData.setUserId((String)principal.getAttributes().get("id"));
-        gameData.setUserName((String)principal.getAttributes().get("username"));
+        gameData.setUserId("10");
+        gameData.setUserName("AngryBeaver");
+        //gameData.setUserId((String)principal.getAttributes().get("id"));
+        //gameData.setUserName((String)principal.getAttributes().get("username"));
         return gameData;
     }
 
@@ -87,8 +89,8 @@ public class MyRestController {
     }
 
     @GetMapping("/user")
-    public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) {
-        return principal.getAttributes();
+    public GameData user(@AuthenticationPrincipal OAuth2User principal) {
+        return getGameData("xx",principal);
     }
 
 }
