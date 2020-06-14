@@ -8,7 +8,28 @@
 [x] fix chat tavern image
 [x] fix refresh active quests
 [x] fix ng serve cors
-[ ] fix refresh active intrigues
-[ ] getMandatory Quest from chat
-[ ] shuffle tavern
-[ ] get type quest from deck
+[x] use ng serve with local backend
+[x] fix refresh active intrigues
+[x] do not show intrigue Card drawn
+[x] use intrigue Card backend
+[x] cloe window on remove intrigue
+[x] refresh intrigues from view
+[x] fix refresh intrigues view when updating quests vise versa.
+[x] fix updateIntrigue counter
+[x] use intrigue remove counter
+[x] getMandatory Quest from chat
+[x] shuffle tavern
+[x] scan all intrigues for needed implementations
+[x] draw quest from deck equal to player amount ech player takes one
+[x] draw quest until type keep it discard rest
+[x] discard active quest
+[x] fix chat scroll
+[x] fix adjust victory
+[x] display headline nicely
+[ ] implement EndTurn
+[ ] implement pass
+[ ] display char
+[ ] test mulitplayer
+[ ] implement end show allQuests/chars
+[ ] implement statistics
+[ ] implement endScreen

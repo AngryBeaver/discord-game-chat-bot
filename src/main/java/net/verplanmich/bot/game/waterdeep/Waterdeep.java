@@ -189,14 +189,32 @@ public class Waterdeep implements Game {
     }
 
     @GameMethod
-    public GameResult drawIntrigue(String userId){
+    public GameResult discardActiveQuest(String userId, String cardId){
         User user = this.users.get(userId);
-        String cardId = gameDecks.getIntrigue();
-        user.addIntrigues(cardId);
+        if(user.getUserEntity().getActiveQuests().remove(cardId)){
+            gameDecks.discardQuest(cardId);
+            return new GameResult()
+                    .addEvent(EVENT_USER)
+                    .set(MAP_KEY_USER,user.getUserEntity())
+                    .setText(user.getUserEntity().getName()+" discards")
+                    .addEvent(EVENT_INFO)
+                    .addImageId("./assets/quests/"+cardId+".jpg");
+        }else{
+            return new GameResult().addEvent(EVENT_INFO)
+                    .setText(user.getUserEntity().getName()+" quest not found");
+        }
+
+    }
+
+    @GameMethod
+    public GameResult drawQuest(String userId){
+        User user = this.users.get(userId);
+        String cardId = gameDecks.getQuest();
+        gameDecks.discardQuest(cardId);
         return new GameResult()
-                .setText(user.getUserEntity().getName()+" drawIntrigue")
+                .setText(user.getUserEntity().getName()+" drawQuest")
                 .addEvent(EVENT_INFO)
-                .addImageId("./assets/intrigues/"+cardId+".jpg");
+                .addImageId("./assets/quests/"+cardId+".jpg");
     }
 
     @GameMethod
@@ -219,12 +237,63 @@ public class Waterdeep implements Game {
     }
 
     @GameMethod
+    public GameResult questToActive(String userId, String cardId){
+        User user = this.users.get(userId);
+        if(gameDecks.isQuest(cardId)){
+            user.getUserEntity().addActiveQuests(cardId);
+            gameDecks.removeQuestCard(cardId);
+            return new GameResult()
+                    .setText(user.getUserEntity().getName()+" questToActive")
+                    .addEvent(EVENT_INFO)
+                    .addEvent(EVENT_USER)
+                    .set(MAP_KEY_USER,user.getUserEntity())
+                    .addImageId("./assets/quests/"+cardId+".jpg");
+        }else{
+            return new GameResult().addEvent(EVENT_INFO)
+                    .setText(user.getUserEntity().getName()+" quest not found");
+        }
+    }
+
+    @GameMethod
     public GameResult getCompletedQuests(String userId){
         List<String> quests = this.users.get(userId).getQuests();
         return new GameResult()
                 .setText("completedQuests")
                 .addImageIds(quests.stream().map(cardId->"./assets/quests/"+cardId+".jpg").collect(Collectors.toList()))
                 .set(MAP_KEY_COMPLETED_QUESTS,quests);
+    }
+
+    @GameMethod
+    public GameResult drawIntrigue(String userId){
+        User user = this.users.get(userId);
+        String cardId = gameDecks.getIntrigue();
+        user.addIntrigues(cardId);
+        return new GameResult()
+                .setText(user.getUserEntity().getName()+" drawIntrigue")
+                .addEvent(EVENT_INFO)
+                .addEvent(EVENT_USER)
+                .set(MAP_KEY_USER,user.getUserEntity());
+    }
+
+    @GameMethod
+    public GameResult intriguesToVoid(String userId,String cardId) {
+        User user = this.users.get(userId);
+        if (user.removeIntrigues(cardId)){
+            String type = "intrigues";
+            if(gameDecks.isQuest(cardId)){
+                type="quests";
+            }
+            return new GameResult()
+                    .setText(user.getUserEntity().getName() + " intrigue used")
+                    .addEvent(EVENT_UPDATE_INTRIGUES)
+                    .addEvent(EVENT_INFO)
+                    .addEvent(EVENT_USER)
+                    .set(MAP_KEY_USER,user.getUserEntity())
+                    .addImageId("./assets/"+type+"/"+cardId+".jpg");
+        }else{
+            return new GameResult()
+                    .setText("you do not own the card "+cardId);
+            }
     }
 
     @GameMethod
@@ -236,6 +305,16 @@ public class Waterdeep implements Game {
                 .set(MAP_KEY_INTRIGUES,intrigues);
     }
 
+
+    @GameMethod
+    public GameResult tavernShuffle(GameData gameData){
+        gameDecks.refillTavern();
+        return new GameResult()
+                .setText("tavern")
+                .addImageIds(this.gameDecks.getTavern().stream().map(cardId->"./assets/quests/"+cardId+".jpg").collect(Collectors.toList()))
+                .addEvent(EVENT_TAVERN)
+                .set(MAP_KEY_TAVERN,gameDecks.getTavern());
+    }
 
     @GameMethod
     public GameResult getTavern(GameData gameData){

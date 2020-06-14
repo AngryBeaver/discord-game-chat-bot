@@ -32,6 +32,14 @@ public class User {
         this.userEntity.setIntrigues(this.intrigues.size());
     }
 
+    public boolean removeIntrigues(String intrigue) {
+        if(this.intrigues.remove(intrigue)) {
+            this.userEntity.setIntrigues(this.intrigues.size());
+            return true;
+        }
+        return false;
+    }
+
     public void adjustGold(String value){
         int intValue = Integer.valueOf(value);
         this.userEntity.setGold(this.userEntity.getGold()+intValue);

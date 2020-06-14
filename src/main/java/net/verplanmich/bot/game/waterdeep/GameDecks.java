@@ -511,25 +511,38 @@ public class GameDecks {
         return result;
     }
 
+    public boolean isQuest(String cardId){
+        return questMap.containsKey(cardId);
+    }
+
     public String getQuest(){
-        return quests.drawCard();
+        return quests.drawOrShuffle();
     }
 
     public String getIntrigue(){
-        return intrigues.drawCard();
+        return intrigues.drawOrShuffle();
     }
 
     public String getChar(){
-        return chars.drawCard();
+        return chars.drawOrShuffle();
     }
 
     public void refillTavern(){
         this.tavern.forEach(quest->quests.discardCard(quest));
         this.tavern = new ArrayList();
-        this.tavern.add(this.quests.drawCard());
-        this.tavern.add(this.quests.drawCard());
-        this.tavern.add(this.quests.drawCard());
-        this.tavern.add(this.quests.drawCard());
+        this.tavern.add(this.quests.drawOrShuffle());
+        this.tavern.add(this.quests.drawOrShuffle());
+        this.tavern.add(this.quests.drawOrShuffle());
+        this.tavern.add(this.quests.drawOrShuffle());
+    }
+
+    public void removeQuestCard(String cardId){
+        quests.getDiscardPile().remove(cardId);
+        quests.getDrawPile().remove(cardId);
+    }
+
+    public void discardQuest(String cardId){
+        quests.discardCard(cardId);
     }
 
     public List<String> getTavern() {
