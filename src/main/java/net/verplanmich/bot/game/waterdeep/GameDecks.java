@@ -219,10 +219,10 @@ public class GameDecks {
                     (user,gameDecks)->{
                         user.adjustVictory("7");
                         user.addIntrigues(gameDecks.getIntrigue());
+                        user.getUserEntity().addActiveQuests(gameDecks.getQuest());
                         return new GameResult()
                                 .addEvent(EVENT_UPDATE_INTRIGUES)
-                                .setText(user.getUserEntity().getName()+" take Quest from Inn")
-                                .addEvent(EVENT_REWARD);
+                                .setText(user.getUserEntity().getName()+" scored");
                     }),
             new Quest( "lure-artisans-of-mirabar", Quest.Type.COMMERCE,false, new UserEntity().setCleric(1).setFighter(1).setRogue(1).setGold(2),
                     (user,gameDecks)->{

@@ -14,10 +14,35 @@ public class UserEntity {
     private int rogue;
     private int wizard;
     private boolean hasPassed;
+    private boolean isStartPlayer;
     private List<String> plotQuests = new ArrayList<>();
     private List<String> activeQuests = new ArrayList<>();
     private int completedQuests;
     private int intrigues;
+    private String statsAxis;
+    private int finalVictory;
+
+    public UserEntity(){
+
+    }
+
+    public UserEntity(UserEntity userEntity){
+        id=userEntity.getId();
+        name=userEntity.getName();
+        color=userEntity.getColor();
+        victory = userEntity.getVictory();
+        gold=userEntity.getGold();
+        cleric=userEntity.getCleric();
+        fighter=userEntity.getFighter();
+        rogue=userEntity.getRogue();
+        wizard=userEntity.getWizard();
+        completedQuests=userEntity.getCompletedQuests();
+        intrigues=userEntity.getIntrigues();
+        isStartPlayer=userEntity.isStartPlayer();
+        hasPassed=userEntity.isHasPassed();
+        statsAxis = userEntity.getStatsAxis();
+        finalVictory = victory+fighter+cleric+rogue+wizard+(int)(Math.floor(gold/2));
+    }
 
     public String getName() {
         return name;
@@ -142,5 +167,30 @@ public class UserEntity {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+
+    public boolean isStartPlayer() {
+        return isStartPlayer;
+    }
+
+    public void setStartPlayer(boolean startPlayer) {
+        isStartPlayer = startPlayer;
+    }
+
+    public String getStatsAxis() {
+        return statsAxis;
+    }
+
+    public void setStatsAxis(String statsAxis) {
+        this.statsAxis = statsAxis;
+    }
+
+    public int getFinalVictory() {
+        return finalVictory;
+    }
+
+    public void setFinalVictory(int finalVictory) {
+        this.finalVictory = finalVictory;
     }
 }

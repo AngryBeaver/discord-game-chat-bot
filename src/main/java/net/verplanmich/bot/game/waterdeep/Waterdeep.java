@@ -1,9 +1,6 @@
 package net.verplanmich.bot.game.waterdeep;
 
-import net.verplanmich.bot.game.Game;
-import net.verplanmich.bot.game.GameData;
-import net.verplanmich.bot.game.GameMethod;
-import net.verplanmich.bot.game.GameResult;
+import net.verplanmich.bot.game.*;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -26,16 +23,20 @@ public class Waterdeep implements Game {
     public static final String EVENT_REWARD = "reward";
     public static final String EVENT_TAVERN = "tavern";
     public static final String EVENT_ROUND = "round";
+    public static final String EVENT_END = "end";
     public static final String EVENT_CURRENT_USER = "currentUser";
 
 
     public static final String MAP_KEY_INTRIGUES = "intrigueCards";
+    public static final String MAP_KEY_USER_DATA = "userData";
     public static final String MAP_KEY_USERS = "users";
     public static final String MAP_KEY_USER = "user";
     public static final String MAP_KEY_CURRENT_USER_ID = "currentUserId";
     public static final String MAP_KEY_ROUND = "round";
     public static final String MAP_KEY_COMPLETED_QUESTS = "completedQuests";
     public static final String MAP_KEY_TAVERN = "tavern";
+    public static final String MAP_KEY_CHAR = "char";
+    public static final String MAP_KEY_STATS = "stats";
 
 
     private GameDecks gameDecks;
@@ -44,7 +45,9 @@ public class Waterdeep implements Game {
     private List<String> colors = new ArrayList(Arrays.asList("red","green","blue","yellow"));
     private int round = 0;
     private String currentUserId = "";
-    private List<Map<String,UserEntity>> stats = new ArrayList();
+    private int turn = 0;
+    private boolean isEnd = false;
+    private Map<String,Map<String,UserEntity>> stats = new HashMap<>();
 
     @Override
     public String getName() {
@@ -57,14 +60,109 @@ public class Waterdeep implements Game {
     }
 
     @GameMethod
+    public GameResult getStatistic(){
+        Map<String,List<UserEntity>> stats = new HashMap();
+        userList.forEach(user-> {
+            user.getUserEntity().setStatsAxis(round + "." + turn);
+            this.stats.get(user.getId()).put(round + "." + turn, new UserEntity(user.getUserEntity()));
+        });
+        this.stats.forEach((key,value)->
+            stats.put(key,value.values().stream().collect(Collectors.toList()))
+        );
+        return new GameResult().set(MAP_KEY_STATS,stats);
+    }
+
+    @GameMethod
+    public GameResult endTurn(String userId){
+        User user = this.users.get(userId);
+        checkAllHasPassed();
+        setNextUser(user);
+        return new GameResult()
+                .setText(user.getUserEntity().getName()+" ends turn")
+                .addEvent(EVENT_INFO)
+                .addEvent(EVENT_CURRENT_USER)
+                .set(MAP_KEY_CURRENT_USER_ID,currentUserId);
+    }
+
+    @GameMethod
+    public GameResult pass(String userId){
+        User user = this.users.get(userId);
+        user.getUserEntity().setHasPassed(true);
+        return endTurn(userId);
+    }
+
+    private void checkAllHasPassed(){
+        long amountNonPassedUser =userList.stream()
+                .filter(user-> {
+                    user.getUserEntity().setStatsAxis(round + "." + turn);
+                    stats.get(user.getId()).put(round + "." + turn, new UserEntity(user.getUserEntity()));
+                    return !user.getUserEntity().isHasPassed();
+                }).count();
+        if(amountNonPassedUser == 0){
+            endRound();
+            throw new GameResultException(new GameResult()
+                    .setText("Round "+round+" ends")
+                    .addEvent(EVENT_INFO)
+                    .addEvent(EVENT_CURRENT_USER)
+                    .set(MAP_KEY_CURRENT_USER_ID,currentUserId));
+        }
+    }
+
+    private void endRound(){
+        currentUserId="";
+        userList.stream().forEach(user->{
+            user.getUserEntity().setHasPassed(false);
+            user.getUserEntity().setStartPlayer(false);
+        });
+        if(round >= 9){
+            endGame();
+        }
+    }
+
+    private void endGame(){
+        isEnd = true;
+        currentUserId = "end";
+        this.turn = turn +1;
+        Map map = new HashMap();
+        userList.forEach(user->{
+            Map<String,Object> internal = new HashMap();
+            map.put(user.getId(),internal);
+            internal.put(MAP_KEY_INTRIGUES,user.getIntrigues());
+            internal.put(MAP_KEY_COMPLETED_QUESTS,user.getQuests());
+            internal.put(MAP_KEY_CHAR,user.getIdentity());
+        });
+        throw new GameResultException(new GameResult()
+                .setText("Game ends")
+                .addEvent(EVENT_INFO)
+                .addEvent(EVENT_END)
+                .addEvent(EVENT_CURRENT_USER)
+                .set(MAP_KEY_USER_DATA,map)
+                .set(MAP_KEY_CURRENT_USER_ID,currentUserId));
+    }
+
+    private User setNextUser(User user){
+        int index = userList.indexOf(user);
+        int cur = (index+1) % userList.size();
+        User currentUser= userList.get(cur);
+        if(currentUser.getUserEntity().isStartPlayer()){
+            turn = turn +1;
+        }
+        if(currentUser.getUserEntity().isHasPassed()){
+            return setNextUser(currentUser);
+        }
+        this.currentUserId = currentUser.getId();
+        return currentUser;
+    }
+
+    @GameMethod
     public GameResult startRound(String userId){
         GameResult gameResult = new GameResult();
         User user = this.users.get(userId);
         this.currentUserId = userId;
         this.round = round +1;
-        userList.stream().forEach(user2->{
-            user2.getUserEntity().setHasPassed(false);
-        });
+        this.turn = 0;
+
+        user.getUserEntity().setStartPlayer(true);
         if(this.round == 1){
             gameResult = this.startGame(user, "base");
         }
@@ -81,7 +179,7 @@ public class Waterdeep implements Game {
         //set tavern
         int index = userList.indexOf(user);
         for(int i = 0; i<userList.size(); i++){
-            int cur = index+i % userList.size();
+            int cur = (index+i) % userList.size();
              User currentUser= userList.get(cur);
              currentUser.getUserEntity().setGold(4+i);
              currentUser.setIdentity(gameDecks.getChar());
@@ -89,11 +187,24 @@ public class Waterdeep implements Game {
              currentUser.getUserEntity().addActiveQuests(gameDecks.getQuest());
              currentUser.addIntrigues(gameDecks.getIntrigue());
              currentUser.addIntrigues(gameDecks.getIntrigue());
+             Map<String,UserEntity> map = new TreeMap<>();
+             map.put(round+"."+turn,new UserEntity(currentUser.getUserEntity()));
+             stats.put(currentUser.getId(),map);
         }
+        this.turn = turn +1;
         return new GameResult().addEvent(EVENT_START_GAME)
                 .set(MAP_KEY_USERS,userList.stream().map(user2->user2.getUserEntity()).toArray())
                 .addEvent(EVENT_TAVERN)
                 .set(MAP_KEY_TAVERN,this.gameDecks.getTavern());
+    }
+
+    @GameMethod
+    public GameResult getChar(String userId){
+        User user = this.users.get(userId);
+        return new GameResult()
+                    .set(MAP_KEY_CHAR,user.getIdentity())
+                    .addImageId("./assets/char/"+user.getIdentity()+".jpg")
+                    .setText(user.getUserEntity().getName()+" getChar");
     }
 
     @GameMethod
@@ -105,7 +216,6 @@ public class Waterdeep implements Game {
             return new GameResult().addEvent(EVENT_INFO)
                     .setText(user.getUserEntity().getName()+" quest not found");
         }
-
     }
 
     @GameMethod
@@ -176,6 +286,9 @@ public class Waterdeep implements Game {
 
     @GameMethod
     public GameResult getCurrentUser(String userId){
+        if(isEnd){
+            endGame();
+        }
         return new GameResult()
                 .setText("currentUserId "+currentUserId)
                 .set(MAP_KEY_CURRENT_USER_ID,currentUserId);
@@ -246,8 +359,7 @@ public class Waterdeep implements Game {
                     .setText(user.getUserEntity().getName()+" questToActive")
                     .addEvent(EVENT_INFO)
                     .addEvent(EVENT_USER)
-                    .set(MAP_KEY_USER,user.getUserEntity())
-                    .addImageId("./assets/quests/"+cardId+".jpg");
+                    .set(MAP_KEY_USER,user.getUserEntity());
         }else{
             return new GameResult().addEvent(EVENT_INFO)
                     .setText(user.getUserEntity().getName()+" quest not found");

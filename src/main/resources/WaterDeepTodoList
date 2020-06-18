@@ -26,10 +26,14 @@
 [x] fix chat scroll
 [x] fix adjust victory
 [x] display headline nicely
-[ ] implement EndTurn
-[ ] implement pass
-[ ] display char
-[ ] test mulitplayer
-[ ] implement end show allQuests/chars
-[ ] implement statistics
-[ ] implement endScreen
+[x] implement EndTurn
+[x] implement pass
+[x] fix currentUser awareness
+[x] display char
+[x] implement end show allQuests/chars
+[x] implement statistics
+[x] implement endScreen
+[x] test mulitplayer
+[x] fix identity multiplayer
+[x] fix next player > 1
+[x] check all quest rewards and costs

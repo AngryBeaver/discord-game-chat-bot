@@ -62,8 +62,8 @@ public class MyRestController {
         gameData.setGameId(gameId);
         gameData.setUserId("10");
         gameData.setUserName("AngryBeaver");
-        //gameData.setUserId((String)principal.getAttributes().get("id"));
-        //gameData.setUserName((String)principal.getAttributes().get("username"));
+        gameData.setUserId((String)principal.getAttributes().get("id"));
+        gameData.setUserName((String)principal.getAttributes().get("username"));
         return gameData;
     }
 
