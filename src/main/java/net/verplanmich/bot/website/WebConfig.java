@@ -16,6 +16,9 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceHandler("/clank/**")
                 .addResourceLocations("/clank/");
         registry
+                .addResourceHandler("/zombicide/**")
+                .addResourceLocations("/zombicide/");
+        registry
                 .addResourceHandler("/waterdeep/**")
                 .addResourceLocations("/waterdeep/");
     }
@@ -25,6 +28,8 @@ public class WebConfig implements WebMvcConfigurer {
         return new WebMvcConfigurerAdapter() {
             @Override
             public void addViewControllers(ViewControllerRegistry registry) {
+                registry.addViewController("/zombicide/").setViewName(
+                        "forward:/zombicide/index.html");
                 registry.addViewController("/alienencounter/").setViewName(
                         "forward:/alienencounter/index.html");
                 registry.addViewController("/clank/").setViewName(
