@@ -114,7 +114,7 @@ public class Waterdeep implements Game {
             user.getUserEntity().setHasPassed(false);
             user.getUserEntity().setStartPlayer(false);
         });
-        if(round >= 9){
+        if(round >= 8){
             endGame();
         }
     }
@@ -450,6 +450,7 @@ public class Waterdeep implements Game {
             users.put(gameData.getUserId(),user);
             userList.add(user);
             gameResult.addEvent(EVENT_INFO)
+                    .addEvent(EVENT_USER)
                     .setText(gameData.getUserName()+" joined")
                     .set(MAP_KEY_USER,user.getUserEntity());
         }

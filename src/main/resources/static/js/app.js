@@ -165,7 +165,7 @@ $(function () {
 fetch("/user")
     .then(function (response) {
         response.json().then(function (data) {
-            userId = data.id;
+            userId = data.userId;
             getUserInfo();
         });
     });

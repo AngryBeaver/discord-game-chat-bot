@@ -5,7 +5,7 @@
 
     <groupId>net.verplanmich</groupId>
     <artifactId>gameBot</artifactId>
-    <version>0.0.13-SNAPSHOT</version>
+    <version>0.0.14-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>gameBot</name>
@@ -38,6 +38,16 @@
         <dependency>
             <groupId>net.verplanmich</groupId>
             <artifactId>waterdeep</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.verplanmich</groupId>
+            <artifactId>alienencounter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.verplanmich</groupId>
+            <artifactId>clank</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 

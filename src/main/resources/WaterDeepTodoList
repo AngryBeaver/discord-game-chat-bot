@@ -37,3 +37,8 @@
 [x] fix identity multiplayer
 [x] fix next player > 1
 [x] check all quest rewards and costs
+[ ] refresh after end get all informations
+[x] after join refresh side
+[x] max round count
+[x] disable parallax
+[x] enlarge statistics
