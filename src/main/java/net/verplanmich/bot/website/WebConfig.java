@@ -21,6 +21,9 @@ public class WebConfig implements WebMvcConfigurer {
         registry
                 .addResourceHandler("/waterdeep/**")
                 .addResourceLocations("/waterdeep/");
+        registry
+                .addResourceHandler("/spiritisland/**")
+                .addResourceLocations("/spiritisland/");
     }
 
     @Bean
@@ -36,6 +39,8 @@ public class WebConfig implements WebMvcConfigurer {
                         "forward:/clank/index.html");
                 registry.addViewController("/waterdeep/").setViewName(
                         "forward:/waterdeep/index.html");
+                registry.addViewController("/spiritisland/").setViewName(
+                        "forward:/spiritisland/index.html");
             }
         };
     }
