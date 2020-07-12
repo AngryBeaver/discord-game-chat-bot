@@ -164,7 +164,7 @@ public class Waterdeep implements Game {
 
         user.getUserEntity().setStartPlayer(true);
         if(this.round == 1){
-            gameResult = this.startGame(user, "base");
+            gameResult = this.startGame(user, "under");
         }
         return gameResult
                 .setText(user.getUserEntity().getName()+" startsRound")
@@ -409,6 +409,19 @@ public class Waterdeep implements Game {
     }
 
     @GameMethod
+    public GameResult getIntriguesCard(String userId,String cardId){
+        User user = this.users.get(userId);
+        user.addIntrigues(cardId);
+        return new GameResult()
+                .setText(user.getUserEntity().getName()+" getIntrigueCard")
+                .addEvent(EVENT_UPDATE_INTRIGUES)
+                .addEvent(EVENT_INFO)
+                .addEvent(EVENT_USER)
+                .set(MAP_KEY_USER,user.getUserEntity());
+    }
+
+
+    @GameMethod
     public GameResult getIntrigueCards(String userId){
         List<String> intrigues = this.users.get(userId).getIntrigues();
         return new GameResult()
@@ -416,6 +429,8 @@ public class Waterdeep implements Game {
                 .addImageIds(intrigues.stream().map(cardId->"./assets/intrigues/"+cardId+".jpg").collect(Collectors.toList()))
                 .set(MAP_KEY_INTRIGUES,intrigues);
     }
+
+
 
 
     @GameMethod
