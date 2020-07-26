@@ -45,6 +45,7 @@ public class Gaia implements Game {
     private List<UserEntity> userList = new ArrayList();
 
     private String currentUser = "";
+    private List<UserEntity> nextRoundOrder = new ArrayList<>();
     private int round;
     private int turn = 0;
     private boolean isEnd = false;
@@ -91,6 +92,7 @@ public class Gaia implements Game {
     public GameResult pass(String userId){
         UserEntity userEntity = this.users.get(userId);
         userEntity.setHasPassed(true);
+        nextRoundOrder.add(userEntity);
         return endTurn(userId);
     }
 
@@ -112,7 +114,6 @@ public class Gaia implements Game {
     }
 
     private void endRound(){
-        currentUser="";
         userList.stream().forEach(user->{
             user.setHasPassed(false);
             user.setStartPlayer(false);
@@ -120,6 +121,9 @@ public class Gaia implements Game {
         if(round >= 6){
             endGame();
         }
+        userList = nextRoundOrder;
+        currentUser = userList.get(0).getId();
+        startRound(currentUser);
     }
 
     private void endGame(){
@@ -159,6 +163,7 @@ public class Gaia implements Game {
         user.setStartPlayer(true);
         if(this.round == 1){
             gameResult = this.startGame(user);
+            userList = getFirstRoundOrder(user);
         }
         return gameResult
                 .setText(user.getName()+" startsRound")
@@ -187,6 +192,21 @@ public class Gaia implements Game {
                 .set(MAP_KEY_TECHS,gameDecks.getTechs())
                 .set(MAP_KEY_USERS,userList);
     }
+
+    private List<UserEntity> getFirstRoundOrder(UserEntity user) {
+        List<UserEntity> firstRoundOrder = new ArrayList<>();
+        int index = userList.indexOf(user);
+        if (index < userList.size() - 1) {
+            firstRoundOrder.addAll(userList.subList(index, userList.size()));
+        }
+        if (index > 0) {
+            firstRoundOrder.addAll(userList.subList(0, index));
+        }
+
+        return firstRoundOrder;
+    }
+
+
     @GameMethod
     public GameResult adjustTech0(GameData gameData, String amount) {
         UserEntity userEntity = users.get(gameData.getUserId());

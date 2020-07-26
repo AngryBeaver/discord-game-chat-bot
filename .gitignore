@@ -1,3 +1,7 @@
 /.idea/
 /.mvn/
 /target/
+
+.classpath
+.project
+.settings
