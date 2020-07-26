@@ -25,6 +25,7 @@ public class Gaia implements Game {
     public static final String EVENT_CURRENT_USER = "currentUser";
     public static final String EVENT_ROUND = "round";
     public static final String EVENT_END = "end";
+    public static final String EVENT_USER_ORDER = "userOrder";
 
 
     public static final String MAP_KEY_USERS = "users";
@@ -38,6 +39,7 @@ public class Gaia implements Game {
     public static final String MAP_KEY_CURRENT_USER = "currentUser";
     public static final String MAP_KEY_ROUND = "round";
     public static final String MAP_KEY_STATS = "stats";
+    public static final String MAP_KEY_USER_ORDER = "userOrder";
 
 
     private GameDecks gameDecks;
@@ -48,7 +50,6 @@ public class Gaia implements Game {
     private List<UserEntity> nextRoundOrder = new ArrayList<>();
     private int round;
     private int turn = 0;
-    private boolean isEnd = false;
     private Map<String,Map<String, UserEntity>> stats = new HashMap<>();
 
     private Map<String,String> userActions = new HashMap<>();
@@ -104,38 +105,35 @@ public class Gaia implements Game {
                     return !user.isHasPassed();
                 }).count();
         if(amountNonPassedUser == 0){
-            endRound();
-            throw new GameResultException(new GameResult()
-                    .setText("Round "+round+" ends")
-                    .addEvent(EVENT_INFO)
-                    .addEvent(EVENT_CURRENT_USER)
-                    .set(MAP_KEY_CURRENT_USER,currentUser));
+            throw new GameResultException(endRound());
         }
     }
 
-    private void endRound(){
+    private GameResult endRound(){
         userList.stream().forEach(user->{
             user.setHasPassed(false);
             user.setStartPlayer(false);
         });
         if(round >= 6){
-            endGame();
+            return endGame();
         }
         userList = nextRoundOrder;
+        nextRoundOrder = new ArrayList<>();
         currentUser = userList.get(0).getId();
-        startRound(currentUser);
+        return startRound(currentUser)
+                .addEvent(EVENT_USER_ORDER)
+                .set(MAP_KEY_USER_ORDER,userList.stream().map(user->user.getId()).toArray());
     }
 
-    private void endGame(){
-        isEnd = true;
+    private GameResult endGame(){
         currentUser = "end";
         this.turn = turn +1;
-        throw new GameResultException(new GameResult()
+        return new GameResult()
                 .setText("Game ends")
                 .addEvent(EVENT_INFO)
                 .addEvent(EVENT_END)
                 .addEvent(EVENT_CURRENT_USER)
-                .set(MAP_KEY_CURRENT_USER,currentUser));
+                .set(MAP_KEY_CURRENT_USER,currentUser);
     }
 
     private UserEntity setNextUser(UserEntity userEntity){
@@ -163,7 +161,6 @@ public class Gaia implements Game {
         user.setStartPlayer(true);
         if(this.round == 1){
             gameResult = this.startGame(user);
-            userList = getFirstRoundOrder(user);
         }
         return gameResult
                 .setText(user.getName()+" startsRound")
@@ -176,36 +173,26 @@ public class Gaia implements Game {
     }
 
     private GameResult startGame(UserEntity user){
-        //set tavern
         int index = userList.indexOf(user);
         gameDecks.startGame(userList.size());
+        List<UserEntity> startList = new ArrayList();
         for(int i = 0; i<userList.size(); i++){
             int cur = (index+i) % userList.size();
             UserEntity currentUser= userList.get(cur);
+            startList.add(currentUser);
             Map<String, UserEntity> map = new TreeMap<>();
             map.put(round+"."+turn,new UserEntity(currentUser));
             stats.put(currentUser.getId(),map);
         }
+        userList = startList;
         this.turn = turn +1;
         return new GameResult()
                 .addEvent(EVENT_TECHS)
                 .set(MAP_KEY_TECHS,gameDecks.getTechs())
-                .set(MAP_KEY_USERS,userList);
+                .set(MAP_KEY_USERS,userList)
+                .addEvent(EVENT_USER_ORDER)
+                .set(MAP_KEY_USER_ORDER,userList.stream().map(u->u.getId()).toArray());
     }
-
-    private List<UserEntity> getFirstRoundOrder(UserEntity user) {
-        List<UserEntity> firstRoundOrder = new ArrayList<>();
-        int index = userList.indexOf(user);
-        if (index < userList.size() - 1) {
-            firstRoundOrder.addAll(userList.subList(index, userList.size()));
-        }
-        if (index > 0) {
-            firstRoundOrder.addAll(userList.subList(0, index));
-        }
-
-        return firstRoundOrder;
-    }
-
 
     @GameMethod
     public GameResult adjustTech0(GameData gameData, String amount) {

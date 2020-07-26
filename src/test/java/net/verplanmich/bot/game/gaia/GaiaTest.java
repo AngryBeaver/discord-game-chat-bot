@@ -30,8 +30,8 @@ public class GaiaTest {
         Gaia gaia = new Gaia();
 
         gaia.join(newUser("1", "Bob"), "ambas");
-        gaia.join(newUser("2", "Sally"), "baltak");
-        gaia.join(newUser("3", "Claudia"), "bescod");
+        gaia.join(newUser("3", "Sally"), "baltak");
+        gaia.join(newUser("2", "Claudia"), "bescod");
 
         gaia.startRound("1");
 
@@ -39,27 +39,27 @@ public class GaiaTest {
 
         gaia.endTurn("1");
 
-        assertThat((String) gaia.getCurrentUser().get("currentUser")).isEqualTo("2");
-
-        gaia.endTurn("2");
-
         assertThat((String) gaia.getCurrentUser().get("currentUser")).isEqualTo("3");
 
-        gaia.pass("3");
+        gaia.endTurn("3");
+
+        assertThat((String) gaia.getCurrentUser().get("currentUser")).isEqualTo("2");
+
+        gaia.pass("2");
 
         assertThat((String) gaia.getCurrentUser().get("currentUser")).isEqualTo("1");
 
         gaia.pass("1");
 
-        assertThat((String) gaia.getCurrentUser().get("currentUser")).isEqualTo("2");
+        assertThat((String) gaia.getCurrentUser().get("currentUser")).isEqualTo("3");
 
-        gaia.endTurn("2");
-
-        assertThat((String) gaia.getCurrentUser().get("currentUser")).isEqualTo("2");
-
-        assertThatThrownBy(() -> gaia.pass("2")).isInstanceOf(GameResultException.class);
+        gaia.endTurn("3");
 
         assertThat((String) gaia.getCurrentUser().get("currentUser")).isEqualTo("3");
+
+        assertThatThrownBy(() -> gaia.pass("3")).isInstanceOf(GameResultException.class);
+
+        assertThat((String) gaia.getCurrentUser().get("currentUser")).isEqualTo("2");
     }
 
     @Test
