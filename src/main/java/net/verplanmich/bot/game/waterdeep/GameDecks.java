@@ -481,7 +481,7 @@ public class GameDecks {
                         return new GameResult()
                                 .setText(user.getUserEntity().getName() + " scored");
                     }),
-            new Quest("ransack-whitehelms-tombe", Quest.Type.COMMERCE, false, new UserEntity().setCleric(2).setFighter(3).setRogue(4).setGold(10),
+            new Quest("ransack-whitehelms-tomb", Quest.Type.COMMERCE, false, new UserEntity().setCleric(2).setFighter(3).setRogue(4).setGold(10),
                     (user, gameDecks) -> {
                         user.adjustVictory("40");
                         return new GameResult()
