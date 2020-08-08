@@ -60,8 +60,8 @@ public class MyRestController {
     private GameData getGameData(String gameId, OAuth2User principal){
         GameData gameData = new GameData();
         gameData.setGameId(gameId);
-        gameData.setUserId("10");
-        gameData.setUserName("AngryBeaver");
+        //gameData.setUserId("10");
+        //gameData.setUserName("AngryBeaver");
         gameData.setUserId((String)principal.getAttributes().get("id"));
         gameData.setUserName((String)principal.getAttributes().get("username"));
         return gameData;

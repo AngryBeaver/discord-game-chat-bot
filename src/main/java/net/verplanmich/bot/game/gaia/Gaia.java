@@ -26,6 +26,10 @@ public class Gaia implements Game {
     public static final String EVENT_ROUND = "round";
     public static final String EVENT_END = "end";
     public static final String EVENT_USER_ORDER = "userOrder";
+    public static final String EVENT_EXPLORED = "explored";
+    public static final String EVENT_SECTORS = "sectors";
+    public static final String EVENT_SCORE = "score";
+    public static final String EVENT_END_SCORE = "endScore";
 
 
     public static final String MAP_KEY_USERS = "users";
@@ -40,6 +44,11 @@ public class Gaia implements Game {
     public static final String MAP_KEY_ROUND = "round";
     public static final String MAP_KEY_STATS = "stats";
     public static final String MAP_KEY_USER_ORDER = "userOrder";
+    public static final String MAP_KEY_EXPLORED = "explored";
+    public static final String MAP_KEY_SECTORS = "sectors";
+    public static final String MAP_KEY_SCORE = "score";
+    public static final String MAP_KEY_END_SCORE = "endScore";
+
 
 
     private GameDecks gameDecks;
@@ -190,8 +199,23 @@ public class Gaia implements Game {
                 .addEvent(EVENT_TECHS)
                 .set(MAP_KEY_TECHS,gameDecks.getTechs())
                 .set(MAP_KEY_USERS,userList)
+                .addEvent(EVENT_SECTORS)
+                .set(MAP_KEY_SECTORS,gameDecks.getSectors(userList.size()))
                 .addEvent(EVENT_USER_ORDER)
-                .set(MAP_KEY_USER_ORDER,userList.stream().map(u->u.getId()).toArray());
+                .set(MAP_KEY_USER_ORDER,userList.stream().map(u->u.getId()).toArray())
+                .addEvent(EVENT_SCORE)
+                .set(MAP_KEY_SCORE,gameDecks.score)
+                .addEvent(EVENT_END_SCORE)
+                .set(MAP_KEY_END_SCORE,gameDecks.endScore);
+    }
+
+    @GameMethod
+    public GameResult explore(GameData gameData,String explorInfo){
+        UserEntity userEntity = users.get(gameData.getUserId());
+        gameDecks.explore(explorInfo,userEntity);
+        return new GameResult()
+                .addEvent(EVENT_EXPLORED)
+                .set(MAP_KEY_EXPLORED,gameDecks.getMap());
     }
 
     @GameMethod
@@ -534,6 +558,19 @@ public class Gaia implements Game {
         return new GameResult()
                 .addEvent(EVENT_USER_BOOSTER)
                 .set(MAP_KEY_USER_BOOSTER,userBooster);
+    }
+
+    @GameMethod
+    public GameResult getScores(){
+        return new GameResult()
+                .set(MAP_KEY_SCORE,gameDecks.score)
+                .set(MAP_KEY_END_SCORE,gameDecks.endScore);
+    }
+
+    @GameMethod
+    public GameResult getExplored(GameData gameData){
+        return new GameResult()
+                .set(MAP_KEY_EXPLORED,gameDecks.getMap());
     }
 
     @GameMethod

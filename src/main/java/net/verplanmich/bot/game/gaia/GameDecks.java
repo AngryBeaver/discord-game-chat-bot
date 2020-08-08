@@ -7,6 +7,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GameDecks {
 
+    private List<String> scores = new ArrayList(Arrays.asList("score-1","score-2","score-3","score-4","score-5","score-5","score-6","score-6","score-7","score-7"));
+
+    private List<String> finals = new ArrayList(Arrays.asList("final-1","final-2","final-3","final-4","final-5","final-6"));
+
+
     private Map<String, UserEntity> avatars = new HashMap();
 
     {
@@ -78,13 +83,62 @@ public class GameDecks {
         }
     }
 
+    public Map<String,Map<String,Map<String,String>>> map = new HashMap();
+
+    public void explore(String exploreString, UserEntity userEntity){
+        String[] parts = exploreString.split(",");
+        String sector = parts[0];
+        String field = parts[1];
+        String type = "";
+        if(parts.length == 3) {
+            type = parts[2];
+        }
+        if(!map.containsKey(sector)){
+            map.put(sector, new HashMap());
+        }
+        if(!map.get(sector).containsKey(field)){
+            map.get(sector).put(field, new HashMap());
+        }
+        map.get(sector).get(field).remove(userEntity.getColor());
+        if(!type.equals("")){
+            map.get(sector).get(field).put(userEntity.getColor(),type);
+        }
+
+    }
+
+    public Map<String,Map<String,Map<String,String>>> getMap(){
+        return map;
+    }
+
     public List<String> gameRoundBooster = new ArrayList();
 
+    public List<String> score = new ArrayList();
+    public List<String> endScore = new ArrayList();
+
+
     public GameDecks() {
+        Collections.shuffle(scores);
+        score =  scores.subList(0,6);
+        Collections.shuffle(finals);
+        endScore = finals.subList(0,2);
         Collections.shuffle(roundBooster);
         gameRoundBooster.add(roundBooster.remove(0));
         gameRoundBooster.add(roundBooster.remove(0));
         gameRoundBooster.add(roundBooster.remove(0));
+    }
+
+    public List<List<String>> getSectors(int players){
+        List<List<String>> sectors = new ArrayList();
+        if(players <3) {
+            sectors.add(Arrays.asList("1", "5-2"));
+            sectors.add(Arrays.asList("2", "3", "6-2"));
+            sectors.add(Arrays.asList("4", "7-2"));
+            return sectors;
+        }
+        sectors.add(Arrays.asList("10","1","5"));
+        sectors.add(Arrays.asList("9","2","3","6"));
+        sectors.add(Arrays.asList("8","4","7"));
+        return sectors;
     }
 
     public void startGame(int amount) {
