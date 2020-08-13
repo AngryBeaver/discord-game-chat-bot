@@ -1,0 +1,10 @@
+[x] round number is not loaded initialy and will get lost on refresh
+[x] terraformer on planets
+[x] visibility of mines, statellites etc on space.
+[x] fix final score each 3 combined anyhow will provide 1 point
+[x] black planet
+[ ] flag for used
+[ ] undo get tech
+[ ] undo get alliance
+[ ] rotate power
+[ ] pay costs and remove/add mines to char automatically when dropping them on space.

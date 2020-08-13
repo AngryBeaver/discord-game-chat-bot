@@ -568,6 +568,12 @@ public class Gaia implements Game {
     }
 
     @GameMethod
+    public GameResult getSectors(GameData gameData){
+        return new GameResult()
+                .set(MAP_KEY_SECTORS,gameDecks.getSectors(userList.size()));
+    }
+
+    @GameMethod
     public GameResult getExplored(GameData gameData){
         return new GameResult()
                 .set(MAP_KEY_EXPLORED,gameDecks.getMap());
@@ -625,6 +631,12 @@ public class Gaia implements Game {
     public GameResult getUsers(GameData gameData){
         return new GameResult()
                 .set(MAP_KEY_USERS,userList);
+    }
+
+    @GameMethod
+    public GameResult getRound(GameData gameData){
+        return new GameResult()
+                .set(MAP_KEY_ROUND,round);
     }
 
     @GameMethod

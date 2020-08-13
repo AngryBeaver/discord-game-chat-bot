@@ -61,7 +61,7 @@ public class UserEntity {
         setHasPassed(userEntity.isHasPassed());
         setStartPlayer(userEntity.isStartPlayer());
         List<Integer> tech = userEntity.getTech();
-        setFinalVictory(victory+(int)(Math.floor(credit/3))+(int)(Math.floor(knowledge/3))+(int)(Math.floor(ore/3))
+        setFinalVictory(victory+(int)(Math.floor((credit+knowledge+ore+qic+might3+might2/2)/3)+brainstone3)
         +Math.max(0,(tech.get(0)-2)*4)+Math.max(0,(tech.get(1)-2)*4)+Math.max(0,(tech.get(2)-2)*4)
                 +Math.max(0,(tech.get(3)-2)*4)+Math.max(0,(tech.get(4)-2)*4)+Math.max(0,(tech.get(5)-2)*4));
     }
