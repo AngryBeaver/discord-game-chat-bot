@@ -219,7 +219,9 @@ public class Gaia implements Game {
         gameDecks.explore(explorInfo, userEntity);
         return new GameResult()
                 .addEvent(EVENT_EXPLORED)
-                .set(MAP_KEY_EXPLORED, gameDecks.getMap());
+                .set(MAP_KEY_EXPLORED, gameDecks.getMap())
+                .addEvent(EVENT_USER)
+                .set(MAP_KEY_USER, userEntity);
     }
 
     @GameMethod

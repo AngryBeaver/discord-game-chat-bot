@@ -1,9 +1,13 @@
 package net.verplanmich.bot.game.gaia;
 
+import net.verplanmich.bot.game.GameResult;
 import net.verplanmich.bot.game.GameResultException;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import static net.verplanmich.bot.game.gaia.Gaia.EVENT_EXPLORED;
+import static net.verplanmich.bot.game.gaia.Gaia.MAP_KEY_EXPLORED;
 
 public class GameDecks {
 
@@ -99,9 +103,107 @@ public class GameDecks {
         if(!map.get(sector).containsKey(field)){
             map.get(sector).put(field, new HashMap());
         }
+        String previousType = map.get(sector).get(field).get(userEntity.getColor());
+        if(previousType == null){
+            previousType = "";
+        }
+        adjustTypeForUser(previousType,type,userEntity);
         map.get(sector).get(field).remove(userEntity.getColor());
         if(!type.equals("")){
             map.get(sector).get(field).put(userEntity.getColor(),type);
+        }
+    }
+
+    private void adjustTypeForUser(String previousType, String currentType, UserEntity userEntity){
+        if(currentType.equals("mine")){
+            if(userEntity.getMines().size() > 0){
+                userEntity.getMines().remove(0);
+            }else{
+                throw new GameResultException(new GameResult().addEvent(EVENT_EXPLORED)
+                        .set(MAP_KEY_EXPLORED, getMap())
+                );
+
+            }
+        }
+        if(currentType.equals("trade")){
+            if(userEntity.getTrades().size() > 0){
+                userEntity.getTrades().remove(0);
+            }else{
+                throw new GameResultException(new GameResult().addEvent(EVENT_EXPLORED)
+                        .set(MAP_KEY_EXPLORED, getMap())
+                );
+            }
+        }
+        if(currentType.equals("laboratory")){
+            if(userEntity.getLaboratories().size() > 0){
+                userEntity.getLaboratories().remove(0);
+            }else{
+                throw new GameResultException(new GameResult().addEvent(EVENT_EXPLORED)
+                        .set(MAP_KEY_EXPLORED, getMap())
+                );
+            }
+        }
+        if(currentType.equals("gaia")){
+            if(userEntity.getTerraformers().size() > 0){
+                userEntity.getTerraformers().remove(0);
+            }else{
+                throw new GameResultException(new GameResult().addEvent(EVENT_EXPLORED)
+                        .set(MAP_KEY_EXPLORED, getMap())
+                );
+            }
+        }
+        if(currentType.equals("station")){
+            if(!userEntity.isStation()){
+                userEntity.setStation(true);
+            }else{
+                throw new GameResultException(new GameResult().addEvent(EVENT_EXPLORED)
+                        .set(MAP_KEY_EXPLORED, getMap())
+                );
+            }
+        }
+        if(currentType.equals("academie")){
+            if(!userEntity.isAcademy1()){
+                userEntity.setAcademy1(true);
+            }else if(!userEntity.isAcademy2()) {
+                userEntity.setAcademy2(true);
+            }else{
+                throw new GameResultException(new GameResult().addEvent(EVENT_EXPLORED)
+                        .set(MAP_KEY_EXPLORED, getMap())
+                );
+            }
+        }
+
+        if(previousType.equals("mine")){
+            if(userEntity.getMines().size() < 8){
+                userEntity.getMines().add("");
+            }
+        }
+        if(previousType.equals("trade")){
+            if(userEntity.getTrades().size() < 4){
+                userEntity.getTrades().add("");
+            }
+        }
+        if(previousType.equals("laboratory")){
+            if(userEntity.getLaboratories().size() < 3){
+                userEntity.getLaboratories().add("");
+            }
+        }
+        if(previousType.equals("gaia")){
+            if(userEntity.getTerraformers().size() < 3){
+                userEntity.getTerraformers().add("");
+            }
+        }
+        if(previousType.equals("station")){
+            if(userEntity.isStation()){
+                userEntity.setStation(false);
+            }
+        }
+        if(previousType.equals("academie")){
+            if(userEntity.isAcademy1()){
+                userEntity.setAcademy1(false);
+            }else if(userEntity.isAcademy2()) {
+                userEntity.setAcademy2(false);
+            }
         }
 
     }

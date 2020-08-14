@@ -8,7 +8,8 @@
 [x] taklons iritating brainstone
 [x] fix streaming
 [x] rotate power
+[x] remove/add mines to char automatically when dropping them on space.
 [ ] flag for used
 [ ] undo get tech
 [ ] undo get alliance
-[ ] pay costs and remove/add mines to char automatically when dropping them on space.
+

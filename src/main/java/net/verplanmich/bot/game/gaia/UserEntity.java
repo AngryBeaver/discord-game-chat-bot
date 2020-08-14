@@ -13,7 +13,7 @@ public class UserEntity {
     private String avatar;
     private List<String> mines = new ArrayList<>(Arrays.asList("","","","","","","",""));
     private List<String> trades = new ArrayList<>(Arrays.asList("","","",""));
-    private List<String> laboratories = new ArrayList<>(Arrays.asList("","",""));
+    private List<String> laboratories = new ArrayList<>();
     private boolean academy1;
     private boolean academy2;
     private boolean station;
