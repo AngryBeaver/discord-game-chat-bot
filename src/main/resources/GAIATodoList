@@ -3,8 +3,12 @@
 [x] visibility of mines, statellites etc on space.
 [x] fix final score each 3 combined anyhow will provide 1 point
 [x] black planet
+[x] fix statistic
+[x] fix authentication
+[x] taklons iritating brainstone
+[x] fix streaming
+[x] rotate power
 [ ] flag for used
 [ ] undo get tech
 [ ] undo get alliance
-[ ] rotate power
 [ ] pay costs and remove/add mines to char automatically when dropping them on space.

@@ -1,5 +1,6 @@
 server:
   port: 8090
+  address: localhost
 discord:
   secret_token: ${SECRET_TOKEN}
 
