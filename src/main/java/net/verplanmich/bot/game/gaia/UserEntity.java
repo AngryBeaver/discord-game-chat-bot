@@ -38,6 +38,8 @@ public class UserEntity {
     private boolean hasPassed;
     private boolean startPlayer;
     private int finalVictory;
+    private boolean isUsed1;
+    private boolean isUsed2;
     public UserEntity(){
 
     }
@@ -352,5 +354,21 @@ public class UserEntity {
 
     public void setFinalVictory(int finalVictory) {
         this.finalVictory = finalVictory;
+    }
+
+    public boolean isUsed1() {
+        return isUsed1;
+    }
+
+    public void setUsed1(boolean used1) {
+        isUsed1 = used1;
+    }
+
+    public boolean isUsed2() {
+        return isUsed2;
+    }
+
+    public void setUsed2(boolean used2) {
+        isUsed2 = used2;
     }
 }

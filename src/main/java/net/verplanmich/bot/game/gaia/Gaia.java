@@ -126,6 +126,8 @@ public class Gaia implements Game {
         userList.stream().forEach(user -> {
             user.setHasPassed(false);
             user.setStartPlayer(false);
+            user.setUsed1(false);
+            user.setUsed2(false);
         });
         if (round >= 6) {
             return endGame();
@@ -220,6 +222,20 @@ public class Gaia implements Game {
         return new GameResult()
                 .addEvent(EVENT_EXPLORED)
                 .set(MAP_KEY_EXPLORED, gameDecks.getMap())
+                .addEvent(EVENT_USER)
+                .set(MAP_KEY_USER, userEntity);
+    }
+
+    @GameMethod
+    public GameResult use(GameData gameData, String amount) {
+        UserEntity userEntity = users.get(gameData.getUserId());
+        if(amount.equals("1")){
+            userEntity.setUsed1(!userEntity.isUsed1());
+        }
+        if(amount.equals("2")){
+            userEntity.setUsed2(!userEntity.isUsed2());
+        }
+        return new GameResult()
                 .addEvent(EVENT_USER)
                 .set(MAP_KEY_USER, userEntity);
     }
