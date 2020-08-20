@@ -30,6 +30,7 @@ public class Gaia implements Game {
     public static final String EVENT_SECTORS = "sectors";
     public static final String EVENT_SCORE = "score";
     public static final String EVENT_END_SCORE = "endScore";
+    public static final String EVENT_USERS = "users";
 
 
     public static final String MAP_KEY_USERS = "users";
@@ -136,6 +137,8 @@ public class Gaia implements Game {
         nextRoundOrder = new ArrayList<>();
         currentUser = userList.get(0).getId();
         return startRound(currentUser)
+                .addEvent(EVENT_USERS)
+                .set(MAP_KEY_USERS,userList)
                 .addEvent(EVENT_USER_ORDER)
                 .set(MAP_KEY_USER_ORDER, userList.stream().map(user -> user.getId()).toArray());
     }

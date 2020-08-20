@@ -35,12 +35,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests(a -> a
-                        .antMatchers("/", "/error", "/webjars/**","/websocket/**","/games/**","/user/**").permitAll()
-                        .anyRequest().authenticated()
-                ) .exceptionHandling(e -> e
-                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-                )
                 //.headers().cacheControl().disable().and()
                 .oauth2Login()
                 .tokenEndpoint().accessTokenResponseClient(accessTokenResponseClient())
