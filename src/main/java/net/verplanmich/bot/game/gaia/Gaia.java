@@ -57,7 +57,7 @@ public class Gaia implements Game {
 
     private String currentUser = "";
     private List<UserEntity> nextRoundOrder = new ArrayList<>();
-    private int round;
+    private int round = 0;
     private int turn = 0;
     private Map<String, Map<String, UserEntity>> stats = new HashMap<>();
 
@@ -137,8 +137,6 @@ public class Gaia implements Game {
         nextRoundOrder = new ArrayList<>();
         currentUser = userList.get(0).getId();
         return startRound(currentUser)
-                .addEvent(EVENT_USERS)
-                .set(MAP_KEY_USERS,userList)
                 .addEvent(EVENT_USER_ORDER)
                 .set(MAP_KEY_USER_ORDER, userList.stream().map(user -> user.getId()).toArray());
     }
@@ -180,14 +178,144 @@ public class Gaia implements Game {
         if (this.round == 1) {
             gameResult = this.startGame(user);
         }
+        userList.stream().forEach(user2 -> {
+            try {
+                income(user2);
+            } catch (Exception e) {
+
+            }
+        });
         return gameResult
                 .setText(user.getName() + " startsRound")
+                .addEvent(EVENT_USERS)
+                .set(MAP_KEY_USERS, userList)
                 .addEvent(EVENT_CURRENT_USER)
                 .set(MAP_KEY_CURRENT_USER, currentUser)
                 .addEvent(EVENT_SHARED_ACTIONS)
                 .set(MAP_KEY_SHARED_ACTIONS, userActions)
                 .addEvent(EVENT_ROUND)
                 .set(MAP_KEY_ROUND, round);
+    }
+
+    private void income(UserEntity user) {
+        String booster = userBooster.entrySet().stream().filter(e -> e.getValue().equals(user.getAvatar())).findFirst().get().getKey();
+        int ore = user.getOre();
+        int credit = user.getCredit();
+        int qic = user.getQic();
+        int knowledge = user.getKnowledge();
+        int mines = Math.max(0,8-user.getMines().size());
+        int trades = Math.max(0,4-user.getTrades().size());
+        int labs = Math.max(0,3-user.getLaboratories().size());
+        ore = ore+ 1;
+        if (user.getAvatar().equals("ambas")) {
+            ore = ore+ 1;
+        }
+        ore += mines;
+        if (mines > 2) {
+            ore = ore-1;
+        }
+        if("bescod".equals(user.getAvatar())){
+            credit = credit+ Math.max(0,3*labs+(labs-1));
+            if(labs>2){
+                credit = credit +1;
+            }
+            knowledge = knowledge+trades;
+        }else{
+            credit = credit+ Math.max(0,(3*trades)+(trades-1));
+            if(trades>3){
+                credit = credit +1;
+            }
+            knowledge = knowledge +1;
+            if("fireaks".equals(user.getAvatar())){
+                knowledge = knowledge +1;
+            }
+            if(!"nevla".equals(user.getAvatar())){
+                knowledge = knowledge + labs;
+            }
+        }
+        if("hadsch-halla".equals(user.getAvatar())){
+            credit = credit +3;
+        }
+
+        if(user.isAcademy1()){
+            knowledge = knowledge +2;
+            if("itar".equals(user.getAvatar())){
+                knowledge = knowledge +1;
+            }
+        }
+        if("ivits".equals(user.getAvatar())){
+            qic = qic +1;
+        }
+
+        if("xenos".equals(user.getAvatar()) && user.isStation()){
+            qic = qic +1;
+        }
+        if(user.getAvatar().equals("gleen") && user.isStation()){
+            ore= ore+1;
+        }
+
+        if(booster.equals("round-booster-1")){
+            credit = credit+ 2;
+            qic = qic+1;
+        }
+        if(booster.equals("round-booster-2")){
+            ore = ore+ 1;
+            knowledge = knowledge + 1;
+        }
+        if(booster.equals("round-booster-3")){
+            ore = ore+ 1;
+        }
+        if(booster.equals("round-booster-4")){
+            ore = ore+ 1;
+        }
+        if(booster.equals("round-booster-5")){
+            ore = ore+ 1;
+        }
+        if(booster.equals("round-booster-6")){
+            knowledge = knowledge + 1;
+        }
+        if(booster.equals("round-booster-8")){
+            credit = credit+ 4;
+        }
+        if(booster.equals("round-booster-10")){
+            credit = credit+ 2;
+        }
+
+        if(user.getTech().get(5)<5) {
+            knowledge = knowledge + user.getTech().get(5);
+        }
+
+        if(user.getTech().get(4)==1) {
+            credit = credit +2;
+        }
+        if(user.getTech().get(4)==2) {
+            credit = credit +2;
+            ore = ore +1;
+        }
+        if(user.getTech().get(4)==3) {
+            credit = credit +3;
+            ore = ore +1;
+        }
+        if(user.getTech().get(4)==4) {
+            credit = credit +4;
+            ore = ore +2;
+        }
+
+        if(user.getTechCards().contains("tech-3")){
+            credit = credit +4;
+        }
+        if(user.getTechCards().contains("tech-4")){
+            credit = credit + 1;
+            knowledge = knowledge + 1;
+        }
+        if(user.getTechCards().contains("tech-5")){
+            ore = ore +1;
+        }
+
+        user.setCredit(credit);
+        user.setQic(qic);
+        user.setOre(ore);
+        user.setKnowledge(knowledge);
     }
 
     private GameResult startGame(UserEntity user) {
@@ -221,7 +349,7 @@ public class Gaia implements Game {
     @GameMethod
     public GameResult explore(GameData gameData, String explorInfo) {
         UserEntity userEntity = users.get(gameData.getUserId());
-        gameDecks.explore(explorInfo, userEntity);
+        gameDecks.explore(explorInfo, userEntity,round);
         return new GameResult()
                 .addEvent(EVENT_EXPLORED)
                 .set(MAP_KEY_EXPLORED, gameDecks.getMap())
@@ -232,10 +360,10 @@ public class Gaia implements Game {
     @GameMethod
     public GameResult use(GameData gameData, String amount) {
         UserEntity userEntity = users.get(gameData.getUserId());
-        if(amount.equals("1")){
+        if (amount.equals("1")) {
             userEntity.setUsed1(!userEntity.isUsed1());
         }
-        if(amount.equals("2")){
+        if (amount.equals("2")) {
             userEntity.setUsed2(!userEntity.isUsed2());
         }
         return new GameResult()
@@ -363,14 +491,14 @@ public class Gaia implements Game {
     public GameResult mightPush(GameData gameData) {
         UserEntity userEntity = users.get(gameData.getUserId());
         if (userEntity.getBrainstone2() > 0 && userEntity.getMight2() > 0) {
-            userEntity.setMight2(userEntity.getMight2()-1);
+            userEntity.setMight2(userEntity.getMight2() - 1);
             userEntity.setBrainstone3(1);
             userEntity.setBrainstone2(0);
-        }else if (userEntity.getMight2() > 1) {
-            userEntity.setMight3(userEntity.getMight3()+1);
-            userEntity.setMight2(userEntity.getMight2()-2);
+        } else if (userEntity.getMight2() > 1) {
+            userEntity.setMight3(userEntity.getMight3() + 1);
+            userEntity.setMight2(userEntity.getMight2() - 2);
             if (userEntity.getAvatar() == "itar") {
-                userEntity.setMight0(userEntity.getMight0()+1);
+                userEntity.setMight0(userEntity.getMight0() + 1);
             }
         }
         return new GameResult()

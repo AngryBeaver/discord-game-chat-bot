@@ -11,9 +11,9 @@ import static net.verplanmich.bot.game.gaia.Gaia.MAP_KEY_EXPLORED;
 
 public class GameDecks {
 
-    private List<String> scores = new ArrayList(Arrays.asList("score-1","score-2","score-3","score-4","score-5","score-5","score-6","score-6","score-7","score-7"));
+    private List<String> scores = new ArrayList(Arrays.asList("score-1", "score-2", "score-3", "score-4", "score-5", "score-5", "score-6", "score-6", "score-7", "score-7"));
 
-    private List<String> finals = new ArrayList(Arrays.asList("final-1","final-2","final-3","final-4","final-5","final-6"));
+    private List<String> finals = new ArrayList(Arrays.asList("final-1", "final-2", "final-3", "final-4", "final-5", "final-6"));
 
 
     private Map<String, UserEntity> avatars = new HashMap();
@@ -45,14 +45,14 @@ public class GameDecks {
 
     private List<Tech> alliances = new ArrayList(
             Arrays.asList(
-                    new Tech(1,"alliance-front-1"),
-                    new Tech(4,"alliance-front-2"),
-                    new Tech(4,"alliance-front-3"),
-                    new Tech(4,"alliance-front-4"),
-                    new Tech(4,"alliance-front-5"),
-                    new Tech(4,"alliance-front-6"),
-                    new Tech(4,"alliance-front-7")
-                    )
+                    new Tech(1, "alliance-front-1"),
+                    new Tech(4, "alliance-front-2"),
+                    new Tech(4, "alliance-front-3"),
+                    new Tech(4, "alliance-front-4"),
+                    new Tech(4, "alliance-front-5"),
+                    new Tech(4, "alliance-front-6"),
+                    new Tech(4, "alliance-front-7")
+            )
     );
 
     private List<String> roundBooster = new ArrayList(Arrays.asList(
@@ -87,128 +87,155 @@ public class GameDecks {
         }
     }
 
-    public Map<String,Map<String,Map<String,String>>> map = new HashMap();
+    public Map<String, Map<String, Map<String, String>>> map = new HashMap();
 
-    public void explore(String exploreString, UserEntity userEntity){
+    public void explore(String exploreString, UserEntity userEntity, int round) {
         String[] parts = exploreString.split(",");
         String sector = parts[0];
         String field = parts[1];
         String type = "";
-        if(parts.length == 3) {
+        if (parts.length == 3) {
             type = parts[2];
         }
-        if(!map.containsKey(sector)){
+        if (!map.containsKey(sector)) {
             map.put(sector, new HashMap());
         }
-        if(!map.get(sector).containsKey(field)){
+        if (!map.get(sector).containsKey(field)) {
             map.get(sector).put(field, new HashMap());
         }
         String previousType = map.get(sector).get(field).get(userEntity.getColor());
-        if(previousType == null){
+        if (previousType == null) {
             previousType = "";
         }
-        adjustTypeForUser(previousType,type,userEntity);
+        adjustTypeForUser(previousType, type, userEntity, round);
         map.get(sector).get(field).remove(userEntity.getColor());
-        if(!type.equals("")){
-            map.get(sector).get(field).put(userEntity.getColor(),type);
+        if (!type.equals("")) {
+            map.get(sector).get(field).put(userEntity.getColor(), type);
         }
     }
 
-    private void adjustTypeForUser(String previousType, String currentType, UserEntity userEntity){
-        if(currentType.equals("mine")){
-            if(userEntity.getMines().size() > 0){
+    private void adjustTypeForUser(String previousType, String currentType, UserEntity userEntity, int round) {
+        int credit = userEntity.getCredit();
+        int ore = userEntity.getOre();
+
+        if (currentType.equals("mine")) {
+            if (userEntity.getMines().size() > 0 && (round == 0 || (credit > 1 && ore > 0))) {
                 userEntity.getMines().remove(0);
-            }else{
+                if (round != 0) {
+                    userEntity.setCredit(credit - 2);
+                    userEntity.setOre(ore - 1);
+                }
+            } else {
                 throw new GameResultException(new GameResult().addEvent(EVENT_EXPLORED)
                         .set(MAP_KEY_EXPLORED, getMap())
                 );
 
             }
         }
-        if(currentType.equals("trade")){
-            if(userEntity.getTrades().size() > 0){
+        if (currentType.equals("trade")) {
+            if (userEntity.getTrades().size() > 0 && (round == 0 || (credit > 2 && ore > 1))) {
                 userEntity.getTrades().remove(0);
-            }else{
+                if (round != 0) {
+                    userEntity.setOre(ore - 2);
+                    userEntity.setCredit(credit - 3);
+                }
+            } else {
                 throw new GameResultException(new GameResult().addEvent(EVENT_EXPLORED)
                         .set(MAP_KEY_EXPLORED, getMap())
                 );
             }
         }
-        if(currentType.equals("laboratory")){
-            if(userEntity.getLaboratories().size() > 0){
+        if (currentType.equals("laboratory")) {
+            if (userEntity.getLaboratories().size() > 0 && (round == 0 || (credit > 4 && ore > 2))) {
                 userEntity.getLaboratories().remove(0);
-            }else{
+                if (round != 0) {
+                    userEntity.setOre(ore - 3);
+                    userEntity.setCredit(credit - 5);
+                }
+            } else {
                 throw new GameResultException(new GameResult().addEvent(EVENT_EXPLORED)
                         .set(MAP_KEY_EXPLORED, getMap())
                 );
             }
         }
-        if(currentType.equals("gaia")){
-            if(userEntity.getTerraformers().size() > 0){
+        if (currentType.equals("gaia")) {
+            if (userEntity.getTerraformers().size() > 0) {
                 userEntity.getTerraformers().remove(0);
-            }else{
+            } else {
                 throw new GameResultException(new GameResult().addEvent(EVENT_EXPLORED)
                         .set(MAP_KEY_EXPLORED, getMap())
                 );
             }
         }
-        if(currentType.equals("station")){
-            if(!userEntity.isStation()){
+        if (currentType.equals("station")) {
+            if (!userEntity.isStation() && (round == 0 || (credit > 5 && ore > 3))) {
                 userEntity.setStation(true);
-            }else{
+                if (round != 0) {
+                    userEntity.setOre(ore - 4);
+                    userEntity.setCredit(credit - 6);
+                }
+            } else {
                 throw new GameResultException(new GameResult().addEvent(EVENT_EXPLORED)
                         .set(MAP_KEY_EXPLORED, getMap())
                 );
             }
         }
-        if(currentType.equals("academie")){
-            if(!userEntity.isAcademy1()){
-                userEntity.setAcademy1(true);
-            }else if(!userEntity.isAcademy2()) {
+        if (currentType.equals("academie")) {
+            if (!userEntity.isAcademy2() && (round == 0 || (credit > 5 && ore > 5))) {
                 userEntity.setAcademy2(true);
-            }else{
+                if (round != 0) {
+                    userEntity.setOre(ore - 6);
+                    userEntity.setCredit(credit - 6);
+                }
+            } else if (!userEntity.isAcademy1() && (round == 0 || (credit > 5 && ore > 5))) {
+                userEntity.setAcademy1(true);
+                if (round != 0) {
+                    userEntity.setOre(ore - 6);
+                    userEntity.setCredit(credit - 6);
+                }
+            } else {
                 throw new GameResultException(new GameResult().addEvent(EVENT_EXPLORED)
                         .set(MAP_KEY_EXPLORED, getMap())
                 );
             }
         }
 
-        if(previousType.equals("mine")){
-            if(userEntity.getMines().size() < 8){
+        if (previousType.equals("mine")) {
+            if (userEntity.getMines().size() < 8) {
                 userEntity.getMines().add("");
             }
         }
-        if(previousType.equals("trade")){
-            if(userEntity.getTrades().size() < 4){
+        if (previousType.equals("trade")) {
+            if (userEntity.getTrades().size() < 4) {
                 userEntity.getTrades().add("");
             }
         }
-        if(previousType.equals("laboratory")){
-            if(userEntity.getLaboratories().size() < 3){
+        if (previousType.equals("laboratory")) {
+            if (userEntity.getLaboratories().size() < 3) {
                 userEntity.getLaboratories().add("");
             }
         }
-        if(previousType.equals("gaia")){
-            if(userEntity.getTerraformers().size() < 3){
+        if (previousType.equals("gaia")) {
+            if (userEntity.getTerraformers().size() < 3) {
                 userEntity.getTerraformers().add("");
             }
         }
-        if(previousType.equals("station")){
-            if(userEntity.isStation()){
+        if (previousType.equals("station")) {
+            if (userEntity.isStation()) {
                 userEntity.setStation(false);
             }
         }
-        if(previousType.equals("academie")){
-            if(userEntity.isAcademy1()){
+        if (previousType.equals("academie")) {
+            if (userEntity.isAcademy1()) {
                 userEntity.setAcademy1(false);
-            }else if(userEntity.isAcademy2()) {
+            } else if (userEntity.isAcademy2()) {
                 userEntity.setAcademy2(false);
             }
         }
 
     }
 
-    public Map<String,Map<String,Map<String,String>>> getMap(){
+    public Map<String, Map<String, Map<String, String>>> getMap() {
         return map;
     }
 
@@ -217,29 +244,28 @@ public class GameDecks {
     public List<String> score = new ArrayList();
     public List<String> endScore = new ArrayList();
 
-
     public GameDecks() {
         Collections.shuffle(scores);
-        score =  scores.subList(0,6);
+        score = scores.subList(0, 6);
         Collections.shuffle(finals);
-        endScore = finals.subList(0,2);
+        endScore = finals.subList(0, 2);
         Collections.shuffle(roundBooster);
         gameRoundBooster.add(roundBooster.remove(0));
         gameRoundBooster.add(roundBooster.remove(0));
         gameRoundBooster.add(roundBooster.remove(0));
     }
 
-    public List<List<String>> getSectors(int players){
+    public List<List<String>> getSectors(int players) {
         List<List<String>> sectors = new ArrayList();
-        if(players <3) {
+        if (players < 3) {
             sectors.add(Arrays.asList("1", "5-2"));
             sectors.add(Arrays.asList("2", "3", "6-2"));
             sectors.add(Arrays.asList("4", "7-2"));
             return sectors;
         }
-        sectors.add(Arrays.asList("10","1","5"));
-        sectors.add(Arrays.asList("9","2","3","6"));
-        sectors.add(Arrays.asList("8","4","7"));
+        sectors.add(Arrays.asList("10", "1", "5"));
+        sectors.add(Arrays.asList("9", "2", "3", "6"));
+        sectors.add(Arrays.asList("8", "4", "7"));
         return sectors;
     }
 
@@ -298,7 +324,7 @@ public class GameDecks {
                 }
             });
         });
-        if(!found.get()) {
+        if (!found.get()) {
             throw new GameResultException("tech " + cardId + " no longer avaiable");
         }
     }

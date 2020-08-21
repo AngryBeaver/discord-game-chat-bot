@@ -13,11 +13,11 @@ public class UserEntity {
     private String avatar;
     private List<String> mines = new ArrayList<>(Arrays.asList("","","","","","","",""));
     private List<String> trades = new ArrayList<>(Arrays.asList("","","",""));
-    private List<String> laboratories = new ArrayList<>();
+    private List<String> laboratories = new ArrayList<>(Arrays.asList("","",""));
     private boolean academy1;
     private boolean academy2;
     private boolean station;
-    private List<String> terraformers = new ArrayList<>(Arrays.asList("","",""));
+    private List<String> terraformers = new ArrayList<>(Arrays.asList());
     private int victory;
     private int ore;
     private int credit;
