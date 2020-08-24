@@ -30,7 +30,7 @@ public class GameDecks {
         avatars.put("hadsch-halla", new UserEntity().setAvatar("hadsch-halla").setMight1(2).setMight2(4).setVictory(10).setCredit(15).setKnowledge(3).setOre(4).setQic(1).setTech(Arrays.asList(0, 0, 0, 0, 1, 0)).setColor("red"));
         avatars.put("ivits", new UserEntity().setAvatar("ivits").setMight1(2).setMight2(4).setVictory(10).setCredit(15).setKnowledge(3).setOre(4).setQic(1).setTech(Arrays.asList(0, 0, 0, 0, 0, 0)).setColor("red"));
         avatars.put("lantida", new UserEntity().setAvatar("lantida").setMight1(4).setMight2(0).setVictory(10).setCredit(13).setKnowledge(3).setOre(4).setQic(1).setTech(Arrays.asList(0, 0, 0, 0, 0, 0)).setColor("blue"));
-        avatars.put("terraner", new UserEntity().setAvatar("terraner").setMight1(4).setMight2(4).setVictory(10).setCredit(15).setKnowledge(3).setOre(4).setQic(1).setTech(Arrays.asList(0, 0, 0, 0, 1, 0)).setColor("blue"));
+        avatars.put("terraner", new UserEntity().setAvatar("terraner").setMight1(4).setMight2(4).setVictory(10).setCredit(15).setKnowledge(3).setOre(4).setQic(1).setTech(Arrays.asList(0, 0, 0, 1, 0, 0)).setColor("blue"));
         avatars.put("itar", new UserEntity().setAvatar("itar").setMight1(4).setMight2(4).setVictory(10).setCredit(15).setKnowledge(3).setOre(5).setQic(1).setTech(Arrays.asList(0, 0, 0, 0, 0, 0)).setColor("white"));
         avatars.put("nevla", new UserEntity().setAvatar("nevla").setMight1(2).setMight2(4).setVictory(10).setCredit(15).setKnowledge(2).setOre(4).setQic(1).setTech(Arrays.asList(0, 0, 0, 0, 0, 1)).setColor("white"));
     }

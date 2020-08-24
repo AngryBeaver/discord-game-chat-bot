@@ -73,9 +73,7 @@ public class Gaia implements Game {
         return GAIA;
     }
 
-    @GameMethod
-    public GameResult getStatistic() {
-        Map<String, List<UserEntity>> stats = new HashMap();
+    private void setStatistic(){
         userList.forEach(user -> {
             String x = round + ".";
             if (turn < 10) {
@@ -85,6 +83,12 @@ public class Gaia implements Game {
             user.setStatsAxis(x);
             this.stats.get(user.getId()).put(x, new UserEntity(user));
         });
+    }
+
+    @GameMethod
+    public GameResult getStatistic() {
+        Map<String, List<UserEntity>> stats = new HashMap();
+        setStatistic();
         this.stats.forEach((key, value) ->
                 stats.put(key, value.values().stream().collect(Collectors.toList()))
         );
@@ -114,10 +118,9 @@ public class Gaia implements Game {
     private void checkAllHasPassed() {
         long amountNonPassedUser = userList.stream()
                 .filter(user -> {
-                    user.setStatsAxis(round + "." + turn);
-                    stats.get(user.getId()).put(round + "." + turn, new UserEntity(user));
                     return !user.isHasPassed();
                 }).count();
+        setStatistic();
         if (amountNonPassedUser == 0) {
             throw new GameResultException(endRound());
         }
@@ -327,8 +330,8 @@ public class Gaia implements Game {
             UserEntity currentUser = userList.get(cur);
             startList.add(currentUser);
             Map<String, UserEntity> map = new TreeMap<>();
-            map.put(round + "." + turn, new UserEntity(currentUser));
-            stats.put(currentUser.getId(), map);
+            map.put(round+".0"+turn,currentUser);
+            stats.put(currentUser.getId(),map);
         }
         userList = startList;
         this.turn = turn + 1;

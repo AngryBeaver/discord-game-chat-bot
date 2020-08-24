@@ -59,13 +59,22 @@ public class Waterdeep implements Game {
         Collections.shuffle(colors);
     }
 
+    private void setStatistic(){
+        userList.forEach(user-> {
+            String x = round+".";
+            if(turn < 10){
+                x = x + "0";
+            }
+            x = x + turn;
+            user.getUserEntity().setStatsAxis(x);
+            this.stats.get(user.getId()).put(x, new UserEntity(user.getUserEntity()));
+        });
+    }
+
     @GameMethod
     public GameResult getStatistic(){
         Map<String,List<UserEntity>> stats = new HashMap();
-        userList.forEach(user-> {
-            user.getUserEntity().setStatsAxis(round + "." + turn);
-            this.stats.get(user.getId()).put(round + "." + turn, new UserEntity(user.getUserEntity()));
-        });
+        setStatistic();
         this.stats.forEach((key,value)->
             stats.put(key,value.values().stream().collect(Collectors.toList()))
         );
@@ -93,11 +102,10 @@ public class Waterdeep implements Game {
 
     private void checkAllHasPassed(){
         long amountNonPassedUser =userList.stream()
-                .filter(user-> {
-                    user.getUserEntity().setStatsAxis(round + "." + turn);
-                    stats.get(user.getId()).put(round + "." + turn, new UserEntity(user.getUserEntity()));
-                    return !user.getUserEntity().isHasPassed();
-                }).count();
+                .filter(user->
+                    !user.getUserEntity().isHasPassed()
+                ).count();
+        setStatistic();
         if(amountNonPassedUser == 0){
             endRound();
             throw new GameResultException(new GameResult()
@@ -188,7 +196,7 @@ public class Waterdeep implements Game {
              currentUser.addIntrigues(gameDecks.getIntrigue());
              currentUser.addIntrigues(gameDecks.getIntrigue());
              Map<String,UserEntity> map = new TreeMap<>();
-             map.put(round+"."+turn,new UserEntity(currentUser.getUserEntity()));
+             map.put(round+".0"+turn,new UserEntity(currentUser.getUserEntity()));
              stats.put(currentUser.getId(),map);
         }
         this.turn = turn +1;
